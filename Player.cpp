@@ -11,6 +11,7 @@ Player::Player(const string name, const Weapon &weapon) :
     //strcpy(this->name, name);
 }
 
+/*
 Player::Player(const Player &player) : name(name), level(player.level),
                                        life(player.life),
                                        strength(player.strength),
@@ -24,6 +25,7 @@ Player::Player(const Player &player) : name(name), level(player.level),
 
 Player::~Player() {
 }
+*/
 
 void Player::nextLevel() {
     this->level++;
@@ -87,6 +89,7 @@ ostream &operator<<(ostream &os, const Player &player) {
               << player.weapon_of_player << "}";
 }
 
+/*
 Player &Player::operator=(const Player &player) {
     if (this == &player)
         return *this;
@@ -98,6 +101,7 @@ Player &Player::operator=(const Player &player) {
     position_of_player = player.position_of_player;
     return *this;
 }
+*/
 
 bool Player::fight(Player &player) {
     if (this->position_of_player != player.position_of_player)

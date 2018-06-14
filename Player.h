@@ -44,10 +44,10 @@ public:
     /**
  * the function destroy class Player
  */
-    ~Player();
+    ~Player()= default;
 
     //copy constractor
-    Player(const Player &player);
+    Player(const Player &player)= default;
 
     /**
  * increase the field level in 1
@@ -135,7 +135,7 @@ public:
      * @param player
      * @return
      */
-    Player &operator=(const Player &player);
+    Player &operator=(const Player &player)= default;
 
 
 };
