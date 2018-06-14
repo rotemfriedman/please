@@ -16,13 +16,15 @@ using std::string;
 class Player {
     string name;
     int level;
-    int life;
     int strength;
+
+protected:
+    int life;
     Weapon weapon_of_player;
     int position_of_player;
 
 
-/**
+    /**
  * help function to fight metoda.
  * check hows the target and lower it in damage
  * @param player
@@ -40,7 +42,7 @@ public:
     * update the other fields in the value 1 or 0
     */
     Player(const string name, const Weapon &weapon);
-    //  Player() = default;
+      Player() = default;
 
     /**
  * the function destroy class Player
@@ -67,7 +69,7 @@ public:
     /**
      * increase the position of the player
      */
-    void makeStep();
+    virtual void makeStep();
 
 /**
  * increase the life of the player
@@ -147,6 +149,54 @@ public:
  * @param player - the player to print
  */
 ostream &operator<<(ostream &os, const Player &player);
+
+
+class Warrior:public Player {
+    bool rider;
+
+public:
+    Warrior(string const &name, Weapon const &weapon, bool rider);
+
+    ~Warrior() = default;
+
+    void makeStep();
+
+};
+
+
+class Troll:public Player {
+    int max_life;
+
+public:
+    Troll(string const &name, Weapon const &weapon, int maxLife);
+
+    ~Troll() = default;
+
+    void makeStep();
+
+};
+
+
+class Wizard:public Player {
+    int range;
+
+public:
+    Wizard(string const &name, Weapon const &weapon, int range);
+
+    ~Wizard() = default;
+
+    void makeStep();
+
+
+    bool fight(Player& player);
+
+};
+
+
+
+
+
+
 
 
 #endif //HW4_PLAYER_H
