@@ -1,11 +1,11 @@
-
+#include "Game.h"
 #include <iostream>
+#include <assert.h>
+using namespace std;
 
-using std::getline;
-using std::fstream;
-using std::cout;
 
 int main() {
-
+  //  simpleTest();
+    printf("check");
     return 0;
 }
