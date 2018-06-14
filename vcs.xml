@@ -6,8 +6,12 @@
           <option name="url" value="https://github.com/shakedmeitav/HW5.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/shakedmeitav/hw5-partC.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="C:\Users\rotem\CLionProjects\HW5" />
+    <option name="cloneParentDir" value="C:\Users\rotem\CLionProjects\HW5-2" />
   </component>
 </application>
