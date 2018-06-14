@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Weapon.h"
 #include <ostream>
+#include "mtm_exceptions.h"
+
 using std::string;
 
 
@@ -162,6 +164,18 @@ public:
     void makeStep();
 
 };
+
+
+// the code of the Warrior
+
+Warrior:: Warrior(string const &name, Weapon const &weapon, bool rider):
+        Player(name, weapon),rider(rider){
+    if(weapon.getTarget()==LEVEL)
+        throw mtm::IllegalWeapon();
+
+}
+
+
 
 
 class Troll:public Player {
