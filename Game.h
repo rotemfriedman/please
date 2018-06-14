@@ -73,7 +73,7 @@ public:
  * @param hit_strength
  * @return
  */
-    GameStatus addPlayer(const char *playerName, const char *weaponName,
+    GameStatus addPlayer(const string playerName, const string weaponName,
                          Target target, int hit_strength);
 
     /**
@@ -81,7 +81,7 @@ public:
      * @param playerName- the name of the player
      * @return- if the player does not exist return - NAME_DOES_NOT_EXIST
      */
-    GameStatus nextLevel(const char *playerName);
+    GameStatus nextLevel(const string playerName);
 
 /**
  *the function
@@ -89,7 +89,7 @@ public:
  * @param playerNamr1
  * @return
  */
-    GameStatus fight(const char *playerName1, const char *playerName2);
+    GameStatus fight(const string playerName1, const string playerName2);
 
 /**
  * get a playerName and increase the position of the player

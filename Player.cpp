@@ -5,26 +5,24 @@
 
 
 
-Player::Player(const char *name, const Weapon &weapon) :
-        name(new char[strlen(name) + 1]), level(1), life(1), strength(1),
+Player::Player(const string name, const Weapon &weapon) :
+        name(name), level(1), life(1), strength(1),
         weapon_of_player(weapon), position_of_player(0) {
-    strcpy(this->name, name);
+    //strcpy(this->name, name);
 }
 
-Player::Player(const Player &player) : name(new char[strlen(player.name) + 1]),
-                                       level(player.level),
+Player::Player(const Player &player) : name(name), level(player.level),
                                        life(player.life),
                                        strength(player.strength),
                                        weapon_of_player(
                                                player.weapon_of_player),
                                        position_of_player
                                                (player.position_of_player) {
-    strcpy(this->name, player.name);
+    //strcpy(this->name, player.name);
 }
 
 
 Player::~Player() {
-    delete[] this->name;
 }
 
 void Player::nextLevel() {
@@ -32,8 +30,8 @@ void Player::nextLevel() {
 }
 
 
-bool Player::isPlayer(const char *playerName) const {
-    if (strcmp(playerName, this->name) == 0)
+bool Player::isPlayer(const string playerName) const {
+    if (playerName==this->name)
         return true;
     else
         return false;
@@ -69,7 +67,7 @@ bool Player::weaponIsWeak(int weaponMinStrength) const {
 
 
 bool Player::operator<(const Player &player2) const {
-    if (strcmp(this->name, player2.name) < 0)
+    if (this->name<player2.name)
         return true;
     else
         return false;
@@ -77,7 +75,7 @@ bool Player::operator<(const Player &player2) const {
 
 
 bool Player::operator>(const Player &player2) const {
-    if (strcmp(this->name, player2.name) > 0)
+    if (this->name>player2.name)
         return true;
     else
         return false;
@@ -92,9 +90,7 @@ ostream &operator<<(ostream &os, const Player &player) {
 Player &Player::operator=(const Player &player) {
     if (this == &player)
         return *this;
-    delete[] this->name;
-    name = (new char[strlen(player.name) + 1]);
-    strcpy(name, player.name);
+    name=player.name;
     level = player.level;
     life = player.life;
     strength = player.strength;
