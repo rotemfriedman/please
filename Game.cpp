@@ -18,13 +18,13 @@ Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
                                array_player(vector<Player *>(maxPlayer,NULL)),
                                last_player_in_the_array
                                        (game.last_player_in_the_array) {
-  //  for (int i = 0; i <= this->last_player_in_the_array; i++) {
-  //      array_player.push_back(game.array_player[i]);
-   // }
-
-  for (int i = 0; i <= this->last_player_in_the_array; i++) {
-        (this->array_player[i]) = new Player(*game.array_player[i]);
+    for (int i = 0; i <= this->last_player_in_the_array; i++) {
+        array_player.push_back(*game.array_player[i]);
     }
+
+ // for (int i = 0; i <= this->last_player_in_the_array; i++) {
+   //     (this->array_player[i]) = new Player(*game.array_player[i]);
+   // }
 }
 
 
@@ -43,7 +43,7 @@ GameStatus Game::addPlayer(const string playerName, const string weaponName,
     Weapon weapon = Weapon(weaponName, target, hit_strength);
     Player *player = new Player(playerName, weapon);
     this->last_player_in_the_array += 1;
-    this->array_player[last_player_in_the_array] = player;
+    this->array_player[last_player_in_the_array]=player;
     return SUCCESS;
 }
 
