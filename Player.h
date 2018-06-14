@@ -12,7 +12,7 @@ using std::ostream;
 using std::endl;
 
 class Player {
-    string name;
+    char *name;
     int level;
     int life;
     int strength;
@@ -37,7 +37,7 @@ public:
     * @param weapon - initialize this value to the player
     * update the other fields in the value 1 or 0
     */
-    Player(const string name, const Weapon &weapon);
+    Player(const char *name, const Weapon &weapon);
     //  Player() = default;
 
     /**
@@ -59,7 +59,7 @@ public:
      * @return - true if the playerName is the player, else false
      */
 
-    bool isPlayer(const string playerName) const;
+    bool isPlayer(const char *playerName) const;
 
 
     /**
