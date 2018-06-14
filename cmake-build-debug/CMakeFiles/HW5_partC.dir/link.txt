@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/HW5_partC.dir/main.cpp.o CMakeFiles/HW5_partC.dir/Game.cpp.o CMakeFiles/HW5_partC.dir/Weapon.cpp.o CMakeFiles/HW5_partC.dir/Player.cpp.o  -o HW5_partC.exe -Wl,--out-implib,libHW5_partC.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

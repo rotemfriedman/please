@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/HW5.dir/main.cpp.o  -o HW5.exe -Wl,--out-implib,libHW5.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
