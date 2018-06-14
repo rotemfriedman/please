@@ -171,7 +171,7 @@ public:
 Warrior:: Warrior(string const &name, Weapon const &weapon, bool rider):
         Player(name, weapon),rider(rider){
     if(weapon.getTarget()==LEVEL)
-        throw IllegalWeapon();
+        throw mtm::IllegalWeapon();
 
 }
 
