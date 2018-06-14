@@ -9,6 +9,8 @@ Game::Game(int maxPlayer) :
     }
 }
 
+
+
 Game::~Game() {
     for (int i = 0; i < this->maxPlayer; i++) {
         delete this->array_player[i];
