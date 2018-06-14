@@ -2,6 +2,7 @@
 #include <cstring>
 #include "Weapon.h"
 #include "Player.h"
+using std::string;
 
 Weapon::Weapon(const string name, Target target, int hit_strength) :
         name(name), target(target),hit_strength(hit_strength) {

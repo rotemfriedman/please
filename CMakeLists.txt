@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
-project(HW5_partC)
+project(hw5-new)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(HW5_partC main.cpp Game.cpp Game.h Weapon.cpp Weapon.h Player.cpp Player.h)
+add_executable(hw5-new main.cpp Game.cpp Game.h Weapon.cpp Weapon.h Player.cpp Player.h)

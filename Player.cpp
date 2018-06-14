@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Weapon.h"
 #include "Player.h"
+using std::string;
 
 
 

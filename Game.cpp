@@ -1,32 +1,28 @@
 #include "Game.h"
-
+using std::string;
+using std::vector;
 
 Game::Game(int maxPlayer) :
-        maxPlayer(maxPlayer), array_player(new Player *[maxPlayer]),
-        last_player_in_the_array(-1) {
-    for (int i = 0; i < maxPlayer; i++) {
-        array_player[i] = NULL;
-    }
+        maxPlayer(maxPlayer),array_player(vector<Player *>(maxPlayer,NULL)),
+     last_player_in_the_array(-1) {
 }
 
 
 
 Game::~Game() {
-    for (int i = 0; i < this->maxPlayer; i++) {
-        delete this->array_player[i];
-    }
-    delete[] this->array_player;
+
 }
 
 
 Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
-                               array_player(new Player *[maxPlayer]),
+                               array_player(vector<Player *>(maxPlayer,NULL)),
                                last_player_in_the_array
                                        (game.last_player_in_the_array) {
-    for (int j = 0; j < this->maxPlayer; j++) {
-        this->array_player[j] = NULL;
-    }
-    for (int i = 0; i <= this->last_player_in_the_array; i++) {
+  //  for (int i = 0; i <= this->last_player_in_the_array; i++) {
+  //      array_player.push_back(game.array_player[i]);
+   // }
+
+  for (int i = 0; i <= this->last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }
 }
@@ -192,12 +188,7 @@ Game &Game::operator=(const Game &game) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         delete this->array_player[i];
     }
-    delete[] this->array_player;
-    array_player = (new Player *[game.maxPlayer]);
-
-    for (int j = 0; j < game.maxPlayer; j++) {
-        this->array_player[j] = NULL;
-    }
+    array_player = (vector<Player *>(maxPlayer,NULL));
     for (int i = 0; i <= game.last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }

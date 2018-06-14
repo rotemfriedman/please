@@ -2,10 +2,11 @@
 #define HW4_GAME_H
 
 
+#include <vector>
 #include "Weapon.h"
 #include "Player.h"
 using std::string;
-
+using std::vector;
 
 enum GameStatus {
     NAME_ALREADY_EXISTS,
@@ -19,7 +20,7 @@ enum GameStatus {
 
 class Game {
     int maxPlayer;
-    Player **array_player;
+    vector<Player *> array_player;
     int last_player_in_the_array;
 
     /**

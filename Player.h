@@ -11,6 +11,7 @@ using std::string;
 
 using std::ostream;
 using std::endl;
+using std::string;
 
 class Player {
     string name;
