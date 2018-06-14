@@ -1,3 +1,0 @@
-/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/CMakeFiles/edit_cache.dir
-/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/CMakeFiles/HW5_partC.dir
