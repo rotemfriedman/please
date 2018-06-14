@@ -5,9 +5,9 @@
 
 Weapon::Weapon(const string name, Target target, int hit_strength) :
         name(name), target(target),hit_strength(hit_strength) {
-    //strcpy(this->name, name);
+    this->name=name;
 }
-
+/*
 Weapon::Weapon(const Weapon &weapon) : name(name),
                                        target(weapon.target),
                                        hit_strength(weapon.hit_strength) {
@@ -17,7 +17,7 @@ Weapon::Weapon(const Weapon &weapon) : name(name),
 Weapon::~Weapon() {
 }
 
-
+*/
 Target Weapon::getTarget() const {
     return this->target;
 }
@@ -42,6 +42,7 @@ bool operator==(const Weapon &weapon1, const Weapon &weapon2) {
     return weapon1.getValue() == weapon2.getValue();
 }
 
+
 bool operator!=(const Weapon &weapon1, const Weapon &weapon2) {
     return weapon1.getValue() != weapon2.getValue();
 }
@@ -58,7 +59,7 @@ bool operator>(const Weapon &weapon1, const Weapon &weapon2) {
 
 
 
-
+/*
 Weapon &Weapon::operator=(const Weapon &weapon) {
     if (this == &weapon) {
         return *this;
@@ -69,6 +70,7 @@ Weapon &Weapon::operator=(const Weapon &weapon) {
     return *this;
 }
 
+*/
 
 std::ostream &operator<<(std::ostream &fl, const Weapon &weapon) {
     return fl << "{weapon name: " << weapon.name << ""

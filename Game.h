@@ -4,6 +4,8 @@
 
 #include "Weapon.h"
 #include "Player.h"
+using std::string;
+
 
 enum GameStatus {
     NAME_ALREADY_EXISTS,

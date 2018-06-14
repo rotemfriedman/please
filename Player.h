@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Weapon.h"
 #include <ostream>
+using std::string;
 
 
 
