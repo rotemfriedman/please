@@ -5,9 +5,7 @@
 #include "Weapon.h"
 #include <ostream>
 
-
-
-
+///////////hey you
 using std::ostream;
 using std::endl;
 
