@@ -1,6 +1,7 @@
 #ifndef HW4_WEAPON_H
 #define HW4_WEAPON_H
 
+
 #include <iostream>
 
 using std::endl;
