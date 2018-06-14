@@ -133,7 +133,7 @@ public:
  * if the players have the same strong in there weapon return false
  * else do the fight and lower the point of the weak player in damage;
  */
-    bool fight(Player &player);
+    virtual bool fight(Player &player);
 
     /**
      * the operator do Placement  between 2 players
@@ -175,6 +175,14 @@ Warrior:: Warrior(string const &name, Weapon const &weapon, bool rider):
 
 }
 
+void Warrior::makeStep(){
+    if(rider==true){
+        position_of_player+=5;
+    }
+    else{
+            position_of_player+=1;
+    }
+}
 
 
 
@@ -191,6 +199,23 @@ public:
 };
 
 
+// the code of the Troll
+
+Troll::Troll(string const &name, Weapon const &weapon, int maxLife):
+        Player(name,weapon),max_life(maxLife){
+    if(max_life<=0)
+        throw mtm::InvalidParam();
+}
+
+
+void Troll::makeStep() {
+    position_of_player += 2;
+    if (life < max_life)
+        this->addLife();
+}
+
+
+
 class Wizard:public Player {
     int range;
 
@@ -199,16 +224,23 @@ public:
 
     ~Wizard() = default;
 
-    void makeStep();
-
-
     bool fight(Player& player);
 
 };
 
 
+// the code of the Wizard
+/*
+Wizard::Wizard(string const &name, Weapon const &weapon, int range) :Player(name, weapon),range(range){
+    if(range<0)
+    throw mtm::InvalidParam;
 
+    if(weapon.getTarget()==LIFE)
+    throw mtm::IllegalWeapon();
 
+}
+
+*/
 
 
 
