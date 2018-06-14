@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug"/>
+				<Option working_dir="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug"/>
+				<Option working_dir="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug"/>
+				<Option working_dir="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="HW5_partC">
-				<Option output="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/HW5_partC.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug"/>
+				<Option output="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug/HW5_partC.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -52,15 +52,15 @@
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 HW5_partC"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 HW5_partC"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="HW5_partC/fast">
-				<Option output="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/HW5_partC.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug"/>
+				<Option output="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug/HW5_partC.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -73,35 +73,35 @@
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 HW5_partC/fast"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 HW5_partC/fast"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/private/Shaked/Technion/shaked_technion/spring\ 2017-2018/matam/ex5_part2_new/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/Game.cpp">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/Game.cpp">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/Game.h">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/Game.h">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/Player.cpp">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/Player.cpp">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/Player.h">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/Player.h">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/Weapon.cpp">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/Weapon.cpp">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/Weapon.h">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/Weapon.h">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/main.cpp">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/main.cpp">
 			<Option target="HW5_partC"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/rotem/CLionProjects/HW5-2/hw5-partC/CMakeLists.txt">
+		<Unit filename="/cygdrive/c/private/Shaked/Technion/shaked_technion/spring 2017-2018/matam/ex5_part2_new/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
