@@ -32,7 +32,7 @@ Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
 }
 
 
-GameStatus Game::addPlayer(const char *playerName, const char *weaponName,
+GameStatus Game::addPlayer(const string playerName, const string weaponName,
                            Target target, int hit_strength) {
 
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
@@ -52,7 +52,7 @@ GameStatus Game::addPlayer(const char *playerName, const char *weaponName,
 }
 
 
-GameStatus Game::fight(const char *playerName1, const char *playerName2) {
+GameStatus Game::fight(const string playerName1, const string playerName2) {
     int player1_place_in_the_array = -1;
     int player2_place_in_the_array = -1;
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
@@ -90,7 +90,7 @@ void Game::helpFight() {
     this->last_player_in_the_array--;
 }
 
-GameStatus Game::nextLevel(const char *playerName) {
+GameStatus Game::nextLevel(const string playerName) {
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {
         bool check_player = (this->array_player[i])->isPlayer(playerName);
         if (check_player == true) {
@@ -101,7 +101,7 @@ GameStatus Game::nextLevel(const char *playerName) {
     return NAME_DOES_NOT_EXIST;
 }
 
-GameStatus Game::makeStep(const char *playerName) {
+GameStatus Game::makeStep(const string playerName) {
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {
         bool check_player = (this->array_player[i])->isPlayer(playerName);
         if (check_player == true) {
@@ -113,7 +113,7 @@ GameStatus Game::makeStep(const char *playerName) {
 }
 
 
-GameStatus Game::addLife(const char *playerName) {
+GameStatus Game::addLife(const string playerName) {
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {
         bool check_player = (this->array_player[i])->isPlayer(playerName);
         if (check_player == true) {
@@ -124,7 +124,7 @@ GameStatus Game::addLife(const char *playerName) {
     return NAME_DOES_NOT_EXIST;
 }
 
-GameStatus Game::addStrength(const char *playerName, int strengthToAdd) {
+GameStatus Game::addStrength(const string playerName, int strengthToAdd) {
     if (strengthToAdd < 0)
         return INVALID_PARAM;
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {

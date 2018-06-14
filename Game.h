@@ -96,7 +96,7 @@ public:
  * @param playerName- the name of the player
  * @return- NAME_DOES_NOT_EXIST if the name doesn't exist or SUCCESS
  */
-    GameStatus makeStep(const char *playerName);
+    GameStatus makeStep(const string playerName);
 
 
 /**
@@ -104,7 +104,7 @@ public:
  * @param playerName - the name of the player
  * @return- NAME_DOES_NOT_EXIST if the name doesn't exist or SUCCESS
  */
-    GameStatus addLife(const char *playerName);
+    GameStatus addLife(const string playerName);
 
 /**
  * add the strength to the player
@@ -113,7 +113,7 @@ public:
  * @return- INVALID_PARAM if the strengthToAdd is minos, or NAME_DOES_NOT_EXIST
  * or SUCCESS
  */
-    GameStatus addStrength(const char *playerName, int strengthToAdd);
+    GameStatus addStrength(const string playerName, int strengthToAdd);
 
 /**
  * remove all the players that thier weapon is weaker than the weaponStrangth.
