@@ -157,32 +157,25 @@ class Warrior:public Player {
     bool rider;
 
 public:
-    Warrior(string const &name, Weapon const &weapon, bool rider);
+    Warrior(string const &name, Weapon const &weapon, bool rider):
+            Player(name, weapon),rider(rider){
+        if(weapon.getTarget()==LEVEL)
+            throw mtm::IllegalWeapon();
+
+    }
 
     ~Warrior() = default;
 
-    void makeStep();
+    void makeStep(){
+        if(rider==true){
+            position_of_player+=5;
+        }
+        else{
+            position_of_player+=1;
+        }
+    }
 
 };
-
-
-// the code of the Warrior
-
-Warrior:: Warrior(string const &name, Weapon const &weapon, bool rider):
-        Player(name, weapon),rider(rider){
-    if(weapon.getTarget()==LEVEL)
-        throw mtm::IllegalWeapon();
-
-}
-
-void Warrior::makeStep(){
-    if(rider==true){
-        position_of_player+=5;
-    }
-    else{
-            position_of_player+=1;
-    }
-}
 
 
 
@@ -190,30 +183,22 @@ class Troll:public Player {
     int max_life;
 
 public:
-    Troll(string const &name, Weapon const &weapon, int maxLife);
+    Troll(string const &name, Weapon const &weapon, int maxLife):
+            Player(name,weapon),max_life(maxLife){
+        if(max_life<=0)
+            throw mtm::InvalidParam();
+    }
 
     ~Troll() = default;
 
-    void makeStep();
+    void makeStep(){
+        position_of_player += 2;
+        if (life < max_life)
+            this->addLife();
+    }
 
 };
 
-
-
-// the code of the Troll
-
-Troll::Troll(string const &name, Weapon const &weapon, int maxLife):
-        Player(name,weapon),max_life(maxLife){
-    if(max_life<=0)
-        throw mtm::InvalidParam();
-}
-
-
-void Troll::makeStep() {
-    position_of_player += 2;
-    if (life < max_life)
-        this->addLife();
-}
 
 
 /*
