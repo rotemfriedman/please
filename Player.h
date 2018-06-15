@@ -20,12 +20,6 @@ class Player {
     int level;
     int strength;
 
-protected:
-    int life;
-    Weapon weapon_of_player;
-    int position_of_player;
-
-
     /**
  * help function to fight metoda.
  * check hows the target and lower it in damage
@@ -34,6 +28,14 @@ protected:
  * @param target
  */
     void help_fight(Player &player, int damage, Target target);
+
+protected:
+    int life;
+    Weapon weapon_of_player;
+    int position_of_player;
+
+
+    static int distance(int position1,int position2);
 
 public:
 
@@ -71,7 +73,7 @@ public:
     /**
      * increase the position of the player
      */
-    void makeStep();
+    virtual void makeStep();
 
 /**
  * increase the life of the player
@@ -142,6 +144,7 @@ public:
      */
     Player &operator=(const Player &player)= default;
 
+    virtual bool canAttack(Player& player1)const ;
 
 };
 
@@ -217,9 +220,13 @@ public:
 
     ~Wizard() = default;
 
-    bool fight(Player &player);
-
-
+    bool canAttack(Player& player)const override {
+        if(this->position_of_player==player.position_of_player)
+            return false;
+        if(distance(this->position_of_player,player.position_of_player)<this->range)
+            return false;
+        return true;
+    }
 };
 
 

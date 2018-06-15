@@ -141,6 +141,30 @@ public:
      */
     Game &operator=(const Game &game);
 
+    /**
+     * the function add new troll to the game
+     * @param playerName - the name of the player that will add to the troll
+     * @param weaponName - the name of the player that will add to the troll
+     * @param target
+     * @param hitStrength
+     * @param maxLife - will add to the new troll
+     */
+    void addTroll(string const& playerName, string const& weaponName,
+                  Target target, int hitStrength, int maxLife);
+
+
+    /**
+     * the function add new warrior to the game
+     * @param playerName
+     * @param weaponName
+     * @param target
+     * @param hitStrength
+     * @param rider
+     */
+    void addWarrior(string const& playerName, string const& weaponName,
+                    Target target, int hitStrength, bool rider);
+
+
 };
 
 

@@ -32,7 +32,6 @@ Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
 
 GameStatus Game::addPlayer(const string playerName, const string weaponName,
                            Target target, int hit_strength) {
-
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         const bool
                 check_if_the_player_exist = this->array_player[i]->isPlayer(
@@ -207,4 +206,28 @@ void Game::swap(Player &player1, Player &player2) {
     Player temp_player = player1;
     player1 = player2;
     player2 = temp_player;
+}
+
+void Game::addTroll(string const& playerName, string const& weaponName,
+              Target target, int hitStrength, int maxLife){
+    for (int i = 0; i <= this->last_player_in_the_array; i++) {
+        const bool
+                check_if_the_player_exist = this->array_player[i]->isPlayer(
+                playerName);
+        if (check_if_the_player_exist == true)
+            throw mtm::NameAlreadyExists();
+    }
+    if (last_player_in_the_array == maxPlayer - 1)
+        throw mtm::GameFull();
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    Troll * troll=new Troll(playerName,weapon,maxLife);
+    this->last_player_in_the_array += 1;
+    this->array_player[last_player_in_the_array]=troll;
+}
+
+
+
+void addWarrior(string const& playerName, string const& weaponName,
+                Target target, int hitStrength, bool rider){
+
 }
