@@ -16,7 +16,9 @@ namespace mtm {
     class NameAlreadyExists : public mtm::exception  {};
     class GameFull : public mtm::exception  {};
     class NameDoesNotExist : public mtm::exception  {};
-};
+
+
+}
 
 
 

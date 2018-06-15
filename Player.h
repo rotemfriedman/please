@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Weapon.h"
 #include <ostream>
-//#include "mtm_exceptions.h"
+#include "mtm_exceptions.h"
 
 using std::string;
 
@@ -20,12 +20,6 @@ class Player {
     int level;
     int strength;
 
-protected:
-    int life;
-    Weapon weapon_of_player;
-    int position_of_player;
-
-
     /**
  * help function to fight metoda.
  * check hows the target and lower it in damage
@@ -34,6 +28,14 @@ protected:
  * @param target
  */
     void help_fight(Player &player, int damage, Target target);
+
+protected:
+    int life;
+    Weapon weapon_of_player;
+    int position_of_player;
+
+
+    static int distance(int position1,int position2);
 
 public:
 
@@ -71,7 +73,7 @@ public:
     /**
      * increase the position of the player
      */
-    void makeStep();
+    virtual void makeStep();
 
 /**
  * increase the life of the player
@@ -142,6 +144,7 @@ public:
      */
     Player &operator=(const Player &player)= default;
 
+    virtual bool canAttack(Player& player1)const ;
 
 };
 
@@ -152,7 +155,7 @@ public:
  */
 ostream &operator<<(ostream &os, const Player &player);
 
-/*
+
 class Warrior:public Player {
     bool rider;
 
@@ -206,21 +209,27 @@ class Wizard:public Player {
     int range;
 
 public:
-    Wizard(string const &name, Weapon const &weapon, int range):Player(name,
-                                                                       weapon),
-                                                                range(range){
-        if(range<0)
+    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
+                                                                         weapon),
+                                                                  range(range) {
+        if (range < 0)
             throw mtm::InvalidParam();
-        if(weapon.getTarget()==LIFE)
+        if (weapon.getTarget() == LIFE)
             throw mtm::IllegalWeapon();
     }
+
     ~Wizard() = default;
-    bool fight(Player& player);
+
+    bool canAttack(Player& player)const override {
+        if(this->position_of_player==player.position_of_player)
+            return false;
+        if(distance(this->position_of_player,player.position_of_player)<this->range)
+            return false;
+        return true;
+    }
+};
 
 
-
-
-*/
 
 
 #endif //HW4_PLAYER_H

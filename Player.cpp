@@ -105,24 +105,35 @@ Player &Player::operator=(const Player &player) {
 */
 
 bool Player::fight(Player &player) {
-    if (this->position_of_player != player.position_of_player)
-        return false;
     Weapon &weapon1 = player.weapon_of_player;
     Weapon &weapon2 = this->weapon_of_player;
-    if (weapon1 == weapon2)
+    if(canAttack(player)==false&&canAttack(*this)==false){
         return false;
-    if (weapon1 > weapon2) {   //weapon of player stronger then this
-        Target target1 = weapon1.getTarget();
-        int damage = player.weapon_of_player.getHitStrength();
-        help_fight(*this, damage, target1);
-        return true;
-    } else if (weapon2 > weapon1) {  //weapon of this stronger then player
+    }else if(canAttack(player)==false&&canAttack(*this)==true){
         Target target2 = weapon2.getTarget();
         int damage = this->weapon_of_player.getHitStrength();
         help_fight(player, damage, target2);
         return true;
+    }else if(canAttack(player)== true&&canAttack(*this)== false){
+        Target target1 = weapon1.getTarget();
+        int damage = player.weapon_of_player.getHitStrength();
+        help_fight(*this, damage, target1);
+        return true;
+    }else {
+        if (weapon1 == weapon2)
+            return false;
+        if (weapon1 > weapon2) {   //weapon of player stronger then this
+            Target target1 = weapon1.getTarget();
+            int damage = player.weapon_of_player.getHitStrength();
+            help_fight(*this, damage, target1);
+            return true;
+        } else if (weapon2 > weapon1) {  //weapon of this stronger then player
+            Target target2 = weapon2.getTarget();
+            int damage = this->weapon_of_player.getHitStrength();
+            help_fight(player, damage, target2);
+            return true;
+        }return true;
     }
-    return true;
 }
 
 
@@ -144,3 +155,19 @@ void Player::help_fight(Player &player, int damage, Target target) {
 }
 
 
+
+int Player::distance(int position1,int position2){
+    if(position1>position2)
+        return position1-position2;
+    else
+        return position2-position1;
+}
+
+
+
+bool Player::canAttack(Player& player1)const{
+    if(this->position_of_player==player1.position_of_player)
+        return true;
+    else
+        return false;
+}
