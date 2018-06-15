@@ -199,6 +199,7 @@ public:
 };
 
 
+
 // the code of the Troll
 
 Troll::Troll(string const &name, Weapon const &weapon, int maxLife):
@@ -215,7 +216,7 @@ void Troll::makeStep() {
 }
 
 
-
+/*
 class Wizard:public Player {
     int range;
 
@@ -227,7 +228,7 @@ public:
     bool fight(Player& player);
 
 };
-
+*/
 
 // the code of the Wizard
 /*
