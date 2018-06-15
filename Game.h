@@ -141,12 +141,22 @@ public:
      */
     Game &operator=(const Game &game);
 
+
+
+    /**
+     * the function is a help function for the add player
+     * @param player - a pointer to a type Player
+     */
+    void addPlayerWithDifferentType(Player* player,string const& playerName);
+
+
+
     /**
      * the function add new troll to the game
      * @param playerName - the name of the player that will add to the troll
      * @param weaponName - the name of the player that will add to the troll
-     * @param target
-     * @param hitStrength
+     * @param target -data for the creation of the weapon
+     * @param hitStrength -data for the creation of the weapon
      * @param maxLife - will add to the new troll
      */
     void addTroll(string const& playerName, string const& weaponName,
@@ -155,17 +165,30 @@ public:
 
     /**
      * the function add new warrior to the game
-     * @param playerName
-     * @param weaponName
-     * @param target
-     * @param hitStrength
-     * @param rider
+     * @param playerName-the name of the player that will add to the warrior
+     * @param weaponName-the name of the player that will add to the warrior
+     * @param target-data for the creation of the weapon
+     * @param hitStrength-data for the creation of the weapon
+     * @param rider - will add to the new warrior
      */
-    //void addWarrior(string const& playerName, string const& weaponName,
-    //                Target target, int hitStrength, bool rider);
+    void addWarrior(string const& playerName, string const& weaponName,
+                    Target target, int hitStrength, bool rider);
 
+
+/**
+ * the function add new wizard to the game
+ * @param playerName -the name of the player that will add to the wizard
+ * @param weaponName -the name of the player that will add to the wizard
+ * @param target -data for the creation of the weapon
+ * @param hitStrength -data for the creation of the weapon
+ * @param range - will add to the new wizard
+ */
+    void addWizard(string const& playerName, string const& weaponName,
+                   Target target, int hitStrength, int range);
 
 };
+
+
 
 
 #endif //HW4_GAME_H
