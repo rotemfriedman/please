@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Weapon.h"
 #include <ostream>
-#include "mtm_exceptions.h"
+//#include "mtm_exceptions.h"
 
 using std::string;
 
@@ -71,7 +71,7 @@ public:
     /**
      * increase the position of the player
      */
-    virtual void makeStep();
+    void makeStep();
 
 /**
  * increase the life of the player
@@ -133,7 +133,7 @@ public:
  * if the players have the same strong in there weapon return false
  * else do the fight and lower the point of the weak player in damage;
  */
-    virtual bool fight(Player &player);
+    bool fight(Player &player);
 
     /**
      * the operator do Placement  between 2 players
@@ -152,7 +152,7 @@ public:
  */
 ostream &operator<<(ostream &os, const Player &player);
 
-
+/*
 class Warrior:public Player {
     bool rider;
 
@@ -216,10 +216,11 @@ public:
     }
     ~Wizard() = default;
     bool fight(Player& player);
-};
 
 
 
+
+*/
 
 
 #endif //HW4_PLAYER_H

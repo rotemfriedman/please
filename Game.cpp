@@ -10,6 +10,9 @@ Game::Game(int maxPlayer) :
 
 
 Game::~Game() {
+for(int i=0; i<maxPlayer; i++){
+    delete array_player[i];
+}
 
 }
 

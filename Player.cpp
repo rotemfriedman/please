@@ -7,7 +7,7 @@ using std::string;
 
 
 Player::Player(const string name, const Weapon &weapon) :
-        name(name), level(1), life(1), strength(1),
+        name(name), level(1), strength(1),life(1),
         weapon_of_player(weapon), position_of_player(0) {
     //strcpy(this->name, name);
 }
