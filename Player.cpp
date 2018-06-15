@@ -108,7 +108,7 @@ bool Player::fight(Player &player) {
     Weapon &weapon1 = player.weapon_of_player;
     Weapon &weapon2 = this->weapon_of_player;
     if(canAttack(player)==false&&canAttack(*this)==false){
-        return false;
+             return false;
     }else if(canAttack(player)==false&&canAttack(*this)==true){
         Target target2 = weapon2.getTarget();
         int damage = this->weapon_of_player.getHitStrength();
@@ -155,7 +155,6 @@ void Player::help_fight(Player &player, int damage, Target target) {
 }
 
 
-
 int Player::distance(int position1,int position2){
     if(position1>position2)
         return position1-position2;
@@ -163,11 +162,9 @@ int Player::distance(int position1,int position2){
         return position2-position1;
 }
 
-
-
 bool Player::canAttack(Player& player1)const{
     if(this->position_of_player==player1.position_of_player)
-        return true;
+return true;
     else
         return false;
 }

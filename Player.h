@@ -20,13 +20,6 @@ class Player {
     int level;
     int strength;
 
-    /**
- * help function to fight metoda.
- * check hows the target and lower it in damage
- * @param player
- * @param damage
- * @param target
- */
     void help_fight(Player &player, int damage, Target target);
 
 protected:
@@ -35,7 +28,14 @@ protected:
     int position_of_player;
 
 
-    static int distance(int position1,int position2);
+static int distance(int position1,int position2);
+    /**
+ * help function to fight metoda.
+ * check hows the target and lower it in damage
+ * @param player
+ * @param damage
+ * @param target
+ */
 
 public:
 
@@ -135,7 +135,7 @@ public:
  * if the players have the same strong in there weapon return false
  * else do the fight and lower the point of the weak player in damage;
  */
-    bool fight(Player &player);
+    virtual bool fight(Player &player);
 
     /**
      * the operator do Placement  between 2 players
@@ -144,8 +144,8 @@ public:
      */
     Player &operator=(const Player &player)= default;
 
-    virtual bool canAttack(Player& player1)const ;
 
+    virtual bool canAttack(Player& player1)const ;
 };
 
 /**
@@ -186,6 +186,7 @@ class Troll:public Player {
     int max_life;
 
 public:
+
     Troll(string const &name, Weapon const &weapon, int maxLife):
             Player(name,weapon),max_life(maxLife){
         if(max_life<=0)
@@ -209,27 +210,65 @@ class Wizard:public Player {
     int range;
 
 public:
-    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
-                                                                         weapon),
-                                                                  range(range) {
-        if (range < 0)
+    Wizard(string const &name, Weapon const &weapon, int range):Player(name,
+                                                                       weapon),
+                                                                range(range){
+        if(range<0)
             throw mtm::InvalidParam();
-        if (weapon.getTarget() == LIFE)
+        if(weapon.getTarget()==LIFE)
             throw mtm::IllegalWeapon();
     }
-
     ~Wizard() = default;
 
     bool canAttack(Player& player)const override {
-        if(this->position_of_player==player.position_of_player)
-            return false;
+            if(this->position_of_player==player.position_of_player)
+                return false;
         if(distance(this->position_of_player,player.position_of_player)<this->range)
             return false;
         return true;
     }
-};
+    };
 
 
+/*
+bool Player::fight(Player &player) {
+    if (this->position_of_player != player.position_of_player)
+        return false;
+    Weapon &weapon1 = player.weapon_of_player;
+    Weapon &weapon2 = this->weapon_of_player;
+    if (weapon1 == weapon2)
+        return false;
+    if (weapon1 > weapon2) {   //weapon of player stronger then this
+        Target target1 = weapon1.getTarget();
+        int damage = player.weapon_of_player.getHitStrength();
+        help_fight(*this, damage, target1);
+        return true;
+    } else if (weapon2 > weapon1) {  //weapon of this stronger then player
+        Target target2 = weapon2.getTarget();
+        int damage = this->weapon_of_player.getHitStrength();
+        help_fight(player, damage, target2);
+        return true;
+    }
+    return true;
+}
 
+
+void Player::help_fight(Player &player, int damage, Target target) {
+    if (target == LEVEL) {
+        player.level -= damage;
+        if (player.level < 0)
+            player.level = 0;
+    } else if (target == LIFE) {
+        player.life -= damage;
+        if (player.life < 0)
+            player.life = 0;
+    } else if (target == STRENGTH) {
+        player.strength -= damage;
+        if (player.strength < 0)
+            player.strength = 0;
+    }
+    return;
+}
+*/
 
 #endif //HW4_PLAYER_H
