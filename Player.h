@@ -201,32 +201,23 @@ public:
 
 
 
-/*
+
 class Wizard:public Player {
     int range;
 
 public:
-    Wizard(string const &name, Weapon const &weapon, int range);
-
+    Wizard(string const &name, Weapon const &weapon, int range):Player(name,
+                                                                       weapon),
+                                                                range(range){
+        if(range<0)
+            throw mtm::InvalidParam();
+        if(weapon.getTarget()==LIFE)
+            throw mtm::IllegalWeapon();
+    }
     ~Wizard() = default;
-
     bool fight(Player& player);
-
 };
-*/
 
-// the code of the Wizard
-/*
-Wizard::Wizard(string const &name, Weapon const &weapon, int range) :Player(name, weapon),range(range){
-    if(range<0)
-    throw mtm::InvalidParam;
-
-    if(weapon.getTarget()==LIFE)
-    throw mtm::IllegalWeapon();
-
-}
-
-*/
 
 
 
