@@ -227,7 +227,7 @@ void Game::addTroll(string const& playerName, string const& weaponName,
 
 
 
-void addWarrior(string const& playerName, string const& weaponName,
-                Target target, int hitStrength, bool rider){
-
-}
+//void addWarrior(string const& playerName, string const& weaponName,
+//                Target target, int hitStrength, bool rider){
+//
+//}

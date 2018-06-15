@@ -209,8 +209,8 @@ class Wizard:public Player {
     int range;
 
 public:
-    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
-                                                                         weapon),
+    Wizard(string const &name, Weapon const &weapon, int range): Player(name,
+                                                                        weapon),
                                                                   range(range) {
         if (range < 0)
             throw mtm::InvalidParam();
@@ -223,7 +223,8 @@ public:
     bool canAttack(Player& player)const override {
         if(this->position_of_player==player.position_of_player)
             return false;
-        if(distance(this->position_of_player,player.position_of_player)<this->range)
+        int distance_check=distance(this->position_of_player, player.position_of_player);
+        if(distance_check<(this->range))
             return false;
         return true;
     }

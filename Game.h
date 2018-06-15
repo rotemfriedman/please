@@ -161,8 +161,8 @@ public:
      * @param hitStrength
      * @param rider
      */
-    void addWarrior(string const& playerName, string const& weaponName,
-                    Target target, int hitStrength, bool rider);
+    //void addWarrior(string const& playerName, string const& weaponName,
+    //                Target target, int hitStrength, bool rider);
 
 
 };
