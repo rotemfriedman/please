@@ -10,10 +10,9 @@ Game::Game(int maxPlayer) :
 
 
 Game::~Game() {
-for(int i=0; i<maxPlayer; i++){
-    delete array_player[i];
-}
-
+    for(int i=0; i<=last_player_in_the_array; i++){
+        delete array_player[i];
+    }
 }
 
 
@@ -191,7 +190,11 @@ Game &Game::operator=(const Game &game) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         delete this->array_player[i];
     }
-    array_player = (vector<Player *>(maxPlayer,NULL));
+    //delete []
+    //array_player = (vector<Player *>(maxPlayer,NULL));
+
+           array_player.resize(game.maxPlayer,NULL);
+
     for (int i = 0; i <= game.last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }

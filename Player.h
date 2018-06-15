@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Weapon.h"
 #include <ostream>
-//#include "mtm_exceptions.h"
+#include "mtm_exceptions.h"
 
 using std::string;
 
@@ -152,7 +152,7 @@ public:
  */
 ostream &operator<<(ostream &os, const Player &player);
 
-/*
+
 class Warrior:public Player {
     bool rider;
 
@@ -206,21 +206,23 @@ class Wizard:public Player {
     int range;
 
 public:
-    Wizard(string const &name, Weapon const &weapon, int range):Player(name,
-                                                                       weapon),
-                                                                range(range){
-        if(range<0)
+    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
+                                                                         weapon),
+                                                                  range(range) {
+        if (range < 0)
             throw mtm::InvalidParam();
-        if(weapon.getTarget()==LIFE)
+        if (weapon.getTarget() == LIFE)
             throw mtm::IllegalWeapon();
     }
+
     ~Wizard() = default;
-    bool fight(Player& player);
+
+    bool fight(Player &player);
 
 
+};
 
 
-*/
 
 
 #endif //HW4_PLAYER_H
