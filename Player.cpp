@@ -168,3 +168,6 @@ return true;
     else
         return false;
 }
+ int Player::getPosition(){
+    return this->position_of_player;
+}

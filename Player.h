@@ -21,12 +21,10 @@ class Player {
     int strength;
 
     void help_fight(Player &player, int damage, Target target);
-
 protected:
     int life;
     Weapon weapon_of_player;
     int position_of_player;
-
 
 static int distance(int position1,int position2);
     /**
@@ -38,6 +36,7 @@ static int distance(int position1,int position2);
  */
 
 public:
+     int getPosition();
 
     /**
     * constractur for the player calss
@@ -221,54 +220,16 @@ public:
     ~Wizard() = default;
 
     bool canAttack(Player& player)const override {
-            if(this->position_of_player==player.position_of_player)
+        int x=player.getPosition();
+            if(this->position_of_player==x)
                 return false;
-        if(distance(this->position_of_player,player.position_of_player)<this->range)
+        if(distance(this->position_of_player,x)<this->range)
             return false;
         return true;
     }
     };
 
 
-/*
-bool Player::fight(Player &player) {
-    if (this->position_of_player != player.position_of_player)
-        return false;
-    Weapon &weapon1 = player.weapon_of_player;
-    Weapon &weapon2 = this->weapon_of_player;
-    if (weapon1 == weapon2)
-        return false;
-    if (weapon1 > weapon2) {   //weapon of player stronger then this
-        Target target1 = weapon1.getTarget();
-        int damage = player.weapon_of_player.getHitStrength();
-        help_fight(*this, damage, target1);
-        return true;
-    } else if (weapon2 > weapon1) {  //weapon of this stronger then player
-        Target target2 = weapon2.getTarget();
-        int damage = this->weapon_of_player.getHitStrength();
-        help_fight(player, damage, target2);
-        return true;
-    }
-    return true;
-}
 
-
-void Player::help_fight(Player &player, int damage, Target target) {
-    if (target == LEVEL) {
-        player.level -= damage;
-        if (player.level < 0)
-            player.level = 0;
-    } else if (target == LIFE) {
-        player.life -= damage;
-        if (player.life < 0)
-            player.life = 0;
-    } else if (target == STRENGTH) {
-        player.strength -= damage;
-        if (player.strength < 0)
-            player.strength = 0;
-    }
-    return;
-}
-*/
 
 #endif //HW4_PLAYER_H
