@@ -20,6 +20,13 @@ class Player {
     int level;
     int strength;
 
+    void help_fight(Player &player, int damage, Target target);
+protected:
+    int life;
+    Weapon weapon_of_player;
+    int position_of_player;
+
+static int distance(int position1,int position2);
     /**
  * help function to fight metoda.
  * check hows the target and lower it in damage
@@ -27,17 +34,9 @@ class Player {
  * @param damage
  * @param target
  */
-    void help_fight(Player &player, int damage, Target target);
-
-protected:
-    int life;
-    Weapon weapon_of_player;
-    int position_of_player;
-
-
-    static int distance(int position1,int position2);
 
 public:
+     int getPosition();
 
     /**
     * constractur for the player calss
@@ -135,7 +134,7 @@ public:
  * if the players have the same strong in there weapon return false
  * else do the fight and lower the point of the weak player in damage;
  */
-    bool fight(Player &player);
+    virtual bool fight(Player &player);
 
     /**
      * the operator do Placement  between 2 players
@@ -144,8 +143,8 @@ public:
      */
     Player &operator=(const Player &player)= default;
 
-    virtual bool canAttack(Player& player1)const ;
 
+    virtual bool canAttack(Player& player1)const ;
 };
 
 /**
@@ -186,6 +185,7 @@ class Troll:public Player {
     int max_life;
 
 public:
+
     Troll(string const &name, Weapon const &weapon, int maxLife):
             Player(name,weapon),max_life(maxLife){
         if(max_life<=0)
@@ -209,26 +209,25 @@ class Wizard:public Player {
     int range;
 
 public:
-    Wizard(string const &name, Weapon const &weapon, int range): Player(name,
-                                                                        weapon),
-                                                                  range(range) {
-        if (range < 0)
+    Wizard(string const &name, Weapon const &weapon, int range):Player(name,
+                                                                       weapon),
+                                                                range(range){
+        if(range<0)
             throw mtm::InvalidParam();
-        if (weapon.getTarget() == LIFE)
+        if(weapon.getTarget()==LIFE)
             throw mtm::IllegalWeapon();
     }
-
     ~Wizard() = default;
 
     bool canAttack(Player& player)const override {
-        if(this->position_of_player==player.position_of_player)
-            return false;
-        int distance_check=distance(this->position_of_player, player.position_of_player);
-        if(distance_check<(this->range))
+        int x=player.getPosition();
+            if(this->position_of_player==x)
+                return false;
+        if(distance(this->position_of_player,x)<this->range)
             return false;
         return true;
     }
-};
+    };
 
 
 
