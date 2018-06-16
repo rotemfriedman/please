@@ -208,8 +208,35 @@ void Game::swap(Player &player1, Player &player2) {
     player2 = temp_player;
 }
 
+
+
 void Game::addTroll(string const& playerName, string const& weaponName,
-              Target target, int hitStrength, int maxLife){
+                    Target target, int hitStrength, int maxLife) {
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    Troll *troll = new Troll(playerName, weapon, maxLife);
+    this->addPlayerWithDifferentType(troll,playerName);
+}
+
+
+
+void Game::addWarrior(string const& playerName, string const& weaponName,
+                      Target target, int hitStrength, bool rider){
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    Warrior *warrior = new Warrior(playerName, weapon, false);
+    this->addPlayerWithDifferentType(warrior,playerName);
+}
+
+
+void Game::addWizard(string const& playerName, string const& weaponName,
+                     Target target, int hitStrength, int range){
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    Wizard *wizard = new Wizard(playerName, weapon, range);
+    this->addPlayerWithDifferentType(wizard,playerName);
+}
+
+
+
+void Game::addPlayerWithDifferentType(Player* player, string const& playerName){
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         const bool
                 check_if_the_player_exist = this->array_player[i]->isPlayer(
@@ -219,15 +246,6 @@ void Game::addTroll(string const& playerName, string const& weaponName,
     }
     if (last_player_in_the_array == maxPlayer - 1)
         throw mtm::GameFull();
-    Weapon weapon = Weapon(weaponName, target, hitStrength);
-    Troll * troll=new Troll(playerName,weapon,maxLife);
     this->last_player_in_the_array += 1;
-    this->array_player[last_player_in_the_array]=troll;
-}
-
-
-
-void addWarrior(string const& playerName, string const& weaponName,
-                Target target, int hitStrength, bool rider){
-
+    this->array_player[last_player_in_the_array]=player;
 }

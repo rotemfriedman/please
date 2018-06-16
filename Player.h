@@ -21,12 +21,18 @@ class Player {
     int strength;
 
     void help_fight(Player &player, int damage, Target target);
+
+
 protected:
     int life;
     Weapon weapon_of_player;
     int position_of_player;
 
-static int distance(int position1,int position2);
+    static int getPosition(Player& player);
+
+    static Weapon getWeapon(Player& player);
+
+    static int distance(int position1,int position2);
     /**
  * help function to fight metoda.
  * check hows the target and lower it in damage
@@ -36,7 +42,6 @@ static int distance(int position1,int position2);
  */
 
 public:
-     int getPosition();
 
     /**
     * constractur for the player calss
@@ -219,15 +224,8 @@ public:
     }
     ~Wizard() = default;
 
-    bool canAttack(Player& player)const override {
-        int x=player.getPosition();
-            if(this->position_of_player==x)
-                return false;
-        if(distance(this->position_of_player,x)<this->range)
-            return false;
-        return true;
-    }
-    };
+    bool canAttack(Player& player)const override;
+};
 
 
 

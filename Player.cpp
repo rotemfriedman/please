@@ -107,35 +107,19 @@ Player &Player::operator=(const Player &player) {
 bool Player::fight(Player &player) {
     Weapon &weapon1 = player.weapon_of_player;
     Weapon &weapon2 = this->weapon_of_player;
-    if(canAttack(player)==false&&canAttack(*this)==false){
-             return false;
-    }else if(canAttack(player)==false&&canAttack(*this)==true){
-        Target target2 = weapon2.getTarget();
-        int damage = this->weapon_of_player.getHitStrength();
-        help_fight(player, damage, target2);
-        return true;
-    }else if(canAttack(player)== true&&canAttack(*this)== false){
+    if (player.canAttack(*this)){
         Target target1 = weapon1.getTarget();
         int damage = player.weapon_of_player.getHitStrength();
         help_fight(*this, damage, target1);
         return true;
-    }else {
-        if (weapon1 == weapon2)
-            return false;
-        if (weapon1 > weapon2) {   //weapon of player stronger then this
-            Target target1 = weapon1.getTarget();
-            int damage = player.weapon_of_player.getHitStrength();
-            help_fight(*this, damage, target1);
-            return true;
-        } else if (weapon2 > weapon1) {  //weapon of this stronger then player
-            Target target2 = weapon2.getTarget();
-            int damage = this->weapon_of_player.getHitStrength();
-            help_fight(player, damage, target2);
-            return true;
-        }return true;
-    }
+    } else if (this->canAttack(player)) {  //weapon of this stronger then player
+        Target target2 = weapon2.getTarget();
+        int damage = this->weapon_of_player.getHitStrength();
+        help_fight(player, damage, target2);
+        return true;
+    }else
+    return false;
 }
-
 
 void Player::help_fight(Player &player, int damage, Target target) {
     if (target == LEVEL) {
@@ -163,11 +147,34 @@ int Player::distance(int position1,int position2){
 }
 
 bool Player::canAttack(Player& player1)const{
-    if(this->position_of_player==player1.position_of_player)
-return true;
+  if (position_of_player!=player1.position_of_player)
+      return false;
+    if(weapon_of_player==player1.weapon_of_player)
+        return false;
+    if(weapon_of_player>player1.weapon_of_player)
+      return true;
     else
         return false;
 }
- int Player::getPosition(){
-    return this->position_of_player;
+
+ int Player::getPosition(Player& player){
+    return player.position_of_player;
+}
+
+ Weapon Player::getWeapon(Player& player){
+    return player.weapon_of_player;
+
+}
+
+bool Wizard::canAttack(Player& player)const  {
+int x=player.getPosition(player);
+if(this->position_of_player==x)
+return false;
+if(distance(this->position_of_player,x)>this->range)
+return false;
+Weapon weapon=player.getWeapon(player);
+if(weapon_of_player>weapon)
+return true;
+else
+return false;
 }
