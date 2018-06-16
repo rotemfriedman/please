@@ -162,6 +162,7 @@ public:
                   Target target, int hitStrength, int maxLife);
 
 
+
     /**
      * the function add new warrior to the game
      * @param playerName-the name of the player that will add to the warrior

@@ -12,6 +12,7 @@ Player::Player(const string name, const Weapon &weapon) :
     //strcpy(this->name, name);
 }
 
+
 /*
 Player::Player(const Player &player) : name(name), level(player.level),
                                        life(player.life),

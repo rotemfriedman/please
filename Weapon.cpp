@@ -49,6 +49,7 @@ bool operator!=(const Weapon &weapon1, const Weapon &weapon2) {
 }
 
 
+
 bool operator<(const Weapon &weapon1, const Weapon &weapon2) {
     return weapon1.getValue() < weapon2.getValue();
 }
