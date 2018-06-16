@@ -186,6 +186,34 @@ public:
     void addWizard(string const& playerName, string const& weaponName,
                    Target target, int hitStrength, int range);
 
+
+
+    /**
+ * extend the function removeAllPlayersWithWeakWeapon
+ * @param fcn - the function that according to her we will know if to remove
+ * the player or not
+ * @return true- if the players removed. else false
+ */
+    template <class FCN>
+    bool removePlayersIf(FCN& fcn){
+        int check_if_remove = 0; //if change to 1, than we already remove players
+        for(int i=0; i<=last_player_in_the_array; i++){
+            if((fcn(*this->array_player[i]))==true){
+                *this->array_player[i]=*this->array_player[last_player_in_the_array];
+                delete (array_player[last_player_in_the_array]);
+                array_player[last_player_in_the_array] = NULL;
+                last_player_in_the_array--;
+                check_if_remove = 1;
+                i--;
+            }
+        }
+        if (check_if_remove == 1)
+            return true;
+        else
+            return false;
+    }
+
+
 };
 
 
