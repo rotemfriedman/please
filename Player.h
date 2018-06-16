@@ -173,7 +173,7 @@ public:
 
     ~Warrior() = default;
 
-    void makeStep(){
+    void makeStep()override {
         if(rider==true){
             position_of_player+=5;
         }
@@ -199,7 +199,7 @@ public:
 
     ~Troll() = default;
 
-    void makeStep(){
+    void makeStep() override {
         position_of_player += 2;
         if (life < max_life)
             this->addLife();
