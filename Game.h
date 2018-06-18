@@ -146,8 +146,7 @@ public:
      * the function is a help function for the add player
      * @param player - a pointer to a type Player
      */
-    void addPlayerWithDifferentType(Player* player,string const& playerName);
-
+    void addPlayerWithDifferentType(Player *player, string const &playerName);
 
 
     /**
@@ -158,9 +157,8 @@ public:
      * @param hitStrength -data for the creation of the weapon
      * @param maxLife - will add to the new troll
      */
-    void addTroll(string const& playerName, string const& weaponName,
+    void addTroll(string const &playerName, string const &weaponName,
                   Target target, int hitStrength, int maxLife);
-
 
 
     /**
@@ -171,7 +169,7 @@ public:
      * @param hitStrength-data for the creation of the weapon
      * @param rider - will add to the new warrior
      */
-    void addWarrior(string const& playerName, string const& weaponName,
+    void addWarrior(string const &playerName, string const &weaponName,
                     Target target, int hitStrength, bool rider);
 
 
@@ -183,9 +181,8 @@ public:
  * @param hitStrength -data for the creation of the weapon
  * @param range - will add to the new wizard
  */
-    void addWizard(string const& playerName, string const& weaponName,
+    void addWizard(string const &playerName, string const &weaponName,
                    Target target, int hitStrength, int range);
-
 
 
     /**
@@ -194,12 +191,12 @@ public:
  * the player or not
  * @return true- if the players removed. else false
  */
-    template <class FCN>
-    bool removePlayersIf(FCN& fcn){
+    template<class FCN>
+    bool removePlayersIf(FCN &fcn) {
         int check_if_remove = 0; //if change to 1, than we already remove players
-        for(int i=0; i<=last_player_in_the_array; i++){
-            if((fcn(*this->array_player[i]))==true){
-                *this->array_player[i]=*this->array_player[last_player_in_the_array];
+        for (int i = 0; i <= last_player_in_the_array; i++) {
+            if ((fcn(static_cast<Player const &> (*this->array_player[i])) == true) ){
+                *this->array_player[i] = *this->array_player[last_player_in_the_array];
                 delete (array_player[last_player_in_the_array]);
                 array_player[last_player_in_the_array] = NULL;
                 last_player_in_the_array--;

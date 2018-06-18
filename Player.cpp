@@ -2,12 +2,12 @@
 #include <iostream>
 #include "Weapon.h"
 #include "Player.h"
+
 using std::string;
 
 
-
 Player::Player(const string name, const Weapon &weapon) :
-        name(name), level(1), strength(1),life(1),
+        name(name), level(1), strength(1), life(1),
         weapon_of_player(weapon), position_of_player(0) {
 }
 
@@ -34,7 +34,7 @@ void Player::nextLevel() {
 
 
 bool Player::isPlayer(const string playerName) const {
-    if (playerName==this->name)
+    if (playerName == this->name)
         return true;
     else
         return false;
@@ -70,7 +70,7 @@ bool Player::weaponIsWeak(int weaponMinStrength) const {
 
 
 bool Player::operator<(const Player &player2) const {
-    if (this->name<player2.name)
+    if (this->name < player2.name)
         return true;
     else
         return false;
@@ -78,7 +78,7 @@ bool Player::operator<(const Player &player2) const {
 
 
 bool Player::operator>(const Player &player2) const {
-    if (this->name>player2.name)
+    if (this->name > player2.name)
         return true;
     else
         return false;
@@ -107,7 +107,7 @@ Player &Player::operator=(const Player &player) {
 bool Player::fight(Player &player) {
     Weapon &weapon1 = player.weapon_of_player;
     Weapon &weapon2 = this->weapon_of_player;
-    if (player.canAttack(*this)){
+    if (player.canAttack(*this)) {
         Target target1 = weapon1.getTarget();
         int damage = player.weapon_of_player.getHitStrength();
         help_fight(*this, damage, target1);
@@ -117,8 +117,8 @@ bool Player::fight(Player &player) {
         int damage = this->weapon_of_player.getHitStrength();
         help_fight(player, damage, target2);
         return true;
-    }else
-    return false;
+    } else
+        return false;
 }
 
 void Player::help_fight(Player &player, int damage, Target target) {
@@ -139,42 +139,42 @@ void Player::help_fight(Player &player, int damage, Target target) {
 }
 
 
-int Player::distance(int position1,int position2){
-    if(position1>position2)
-        return position1-position2;
+int Player::distance(int position1, int position2) {
+    if (position1 > position2)
+        return position1 - position2;
     else
-        return position2-position1;
+        return position2 - position1;
 }
 
-bool Player::canAttack(Player& player1)const{
-  if (position_of_player!=player1.position_of_player)
-      return false;
-    if(weapon_of_player==player1.weapon_of_player)
+bool Player::canAttack(Player &player1) const {
+    if (position_of_player != player1.position_of_player)
         return false;
-    if(weapon_of_player>player1.weapon_of_player)
-      return true;
+    if (weapon_of_player == player1.weapon_of_player)
+        return false;
+    if (weapon_of_player > player1.weapon_of_player)
+        return true;
     else
         return false;
 }
 
- int Player::getPosition(Player& player){
+int Player::getPosition(Player &player) {
     return player.position_of_player;
 }
 
- Weapon Player::getWeapon(Player& player){
+Weapon Player::getWeapon(Player &player) {
     return player.weapon_of_player;
 
 }
 
-bool Wizard::canAttack(Player& player)const  {
-int x=player.getPosition(player);
-if(this->position_of_player==x)
-return false;
-if(distance(this->position_of_player,x)>this->range)
-return false;
-Weapon weapon=player.getWeapon(player);
-if(weapon_of_player>weapon)
-return true;
-else
-return false;
+bool Wizard::canAttack(Player &player) const {
+    int x = player.getPosition(player);
+    if (this->position_of_player == x)
+        return false;
+    if (distance(this->position_of_player, x) > this->range)
+        return false;
+    Weapon weapon = player.getWeapon(player);
+    if (weapon_of_player > weapon)
+        return true;
+    else
+        return false;
 }
