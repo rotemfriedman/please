@@ -2,8 +2,13 @@
 #define HW4_GAME_H
 
 
+#include <vector>
 #include "Weapon.h"
 #include "Player.h"
+#include "mtm_exceptions.h"
+
+using std::string;
+using std::vector;
 
 enum GameStatus {
     NAME_ALREADY_EXISTS,
@@ -17,7 +22,7 @@ enum GameStatus {
 
 class Game {
     int maxPlayer;
-    Player **array_player;
+    vector<Player *> array_player;
     int last_player_in_the_array;
 
     /**
@@ -135,6 +140,76 @@ public:
      * @return - reference of the new game
      */
     Game &operator=(const Game &game);
+
+
+    /**
+     * the function is a help function for the add player
+     * @param player - a pointer to a type Player
+     */
+    void addPlayerWithDifferentType(Player *player, string const &playerName);
+
+
+    /**
+     * the function add new troll to the game
+     * @param playerName - the name of the player that will add to the troll
+     * @param weaponName - the name of the player that will add to the troll
+     * @param target -data for the creation of the weapon
+     * @param hitStrength -data for the creation of the weapon
+     * @param maxLife - will add to the new troll
+     */
+    void addTroll(string const &playerName, string const &weaponName,
+                  Target target, int hitStrength, int maxLife);
+
+
+    /**
+     * the function add new warrior to the game
+     * @param playerName-the name of the player that will add to the warrior
+     * @param weaponName-the name of the player that will add to the warrior
+     * @param target-data for the creation of the weapon
+     * @param hitStrength-data for the creation of the weapon
+     * @param rider - will add to the new warrior
+     */
+    void addWarrior(string const &playerName, string const &weaponName,
+                    Target target, int hitStrength, bool rider);
+
+
+/**
+ * the function add new wizard to the game
+ * @param playerName -the name of the player that will add to the wizard
+ * @param weaponName -the name of the player that will add to the wizard
+ * @param target -data for the creation of the weapon
+ * @param hitStrength -data for the creation of the weapon
+ * @param range - will add to the new wizard
+ */
+    void addWizard(string const &playerName, string const &weaponName,
+                   Target target, int hitStrength, int range);
+
+
+    /**
+ * extend the function removeAllPlayersWithWeakWeapon
+ * @param fcn - the function that according to her we will know if to remove
+ * the player or not
+ * @return true- if the players removed. else false
+ */
+    template<class FCN>
+    bool removePlayersIf(FCN &fcn) {
+        int check_if_remove = 0; //if change to 1, than we already remove players
+        for (int i = 0; i <= last_player_in_the_array; i++) {
+            if ((fcn(static_cast<Player const &> (*this->array_player[i])) == true) ){
+                *this->array_player[i] = *this->array_player[last_player_in_the_array];
+                delete (array_player[last_player_in_the_array]);
+                array_player[last_player_in_the_array] = NULL;
+                last_player_in_the_array--;
+                check_if_remove = 1;
+                i--;
+            }
+        }
+        if (check_if_remove == 1)
+            return true;
+        else
+            return false;
+    }
+
 
 };
 

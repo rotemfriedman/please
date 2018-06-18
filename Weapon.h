@@ -2,6 +2,7 @@
 #define HW4_WEAPON_H
 
 #include <iostream>
+#include "mtm_exceptions.h"
 
 
 using std::endl;
@@ -33,12 +34,12 @@ public:
     * the function destroy struct weapon
     */
 
-    Weapon(const Weapon &weapon);
+    Weapon(const Weapon &weapon) = default;
 
     /**
      * the destructor of the weapon
      */
-    ~Weapon();
+    ~Weapon() = default;
 
 /**
  * the function return the target of the weapon
@@ -64,7 +65,7 @@ public:
      * @param weapon
      * @return weapon
      */
-    Weapon &operator=(const Weapon &weapon);
+    Weapon &operator=(const Weapon &weapon)= default;
 
 /**
  * the function print the weapon in the format that needed

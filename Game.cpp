@@ -1,31 +1,30 @@
 #include "Game.h"
 
+using std::string;
+using std::vector;
+using std::cout;
 
 Game::Game(int maxPlayer) :
-        maxPlayer(maxPlayer), array_player(new Player *[maxPlayer]),
+        maxPlayer(maxPlayer), array_player(vector<Player *>(maxPlayer, NULL)),
         last_player_in_the_array(-1) {
-    for (int i = 0; i < maxPlayer; i++) {
-        array_player[i] = NULL;
-    }
 }
 
 
-
 Game::~Game() {
-    for (int i = 0; i < this->maxPlayer; i++) {
-        delete this->array_player[i];
+    for (int i = 0; i <= last_player_in_the_array; i++) {
+        delete array_player[i];
     }
-    delete[] this->array_player;
 }
 
 
 Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
-                               array_player(new Player *[maxPlayer]),
+                               array_player(vector<Player *>(maxPlayer, NULL)),
                                last_player_in_the_array
                                        (game.last_player_in_the_array) {
-    for (int j = 0; j < this->maxPlayer; j++) {
-        this->array_player[j] = NULL;
-    }
+    // for (int i = 0; i <= this->last_player_in_the_array; i++) {
+    //    array_player.push_back(game.array_player[i]);
+    // }
+
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }
@@ -34,7 +33,6 @@ Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
 
 GameStatus Game::addPlayer(const string playerName, const string weaponName,
                            Target target, int hit_strength) {
-
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         const bool
                 check_if_the_player_exist = this->array_player[i]->isPlayer(
@@ -65,24 +63,32 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
         if (check_if_the_player2_exist == true)
             player2_place_in_the_array = i;
     }
-    if (player1_place_in_the_array == -1 || player2_place_in_the_array == -1)
-        return NAME_DOES_NOT_EXIST;
-    bool check_if_fight_success = this->
-            array_player[player1_place_in_the_array]->fight(
-            *this->array_player[player2_place_in_the_array]);
-    for (int i = 0; i <= (this->last_player_in_the_array); i++) {
-        bool check_if_alive = this->array_player[i]->isAlive();
-        if (check_if_alive == false) {
-           *this->array_player[i]=*this->array_player[last_player_in_the_array];
-            this->helpFight();
-            i--;
+    try {
+        if (player1_place_in_the_array == -1 ||
+            player2_place_in_the_array == -1)
+            throw mtm::NameDoesNotExist();
+        bool check_if_fight_success = this->
+                array_player[player1_place_in_the_array]->fight(
+                *this->array_player[player2_place_in_the_array]);
+        for (int i = 0; i <= (this->last_player_in_the_array); i++) {
+            bool check_if_alive = this->array_player[i]->isAlive();
+            if (check_if_alive == false) {
+                *this->array_player[i] = *this->array_player[last_player_in_the_array];
+                this->helpFight();
+                i--;
+            }
         }
+        if (check_if_fight_success == false)
+            return FIGHT_FAILED;
+        else
+            return SUCCESS;
     }
-    if (check_if_fight_success == false)
-        return FIGHT_FAILED;
-    else
-        return SUCCESS;
+    catch (mtm::NameDoesNotExist &e) {
+        cout << "NameDoesNotExist" << endl;
+    }
+
 }
+
 
 void Game::helpFight() {
     delete this->array_player[this->last_player_in_the_array];
@@ -143,7 +149,7 @@ bool Game::removeAllPlayersWithWeakWeapon(int weaponStrangth) {
         bool check_weaknes_of_player = this->array_player[i]->
                 weaponIsWeak(weaponStrangth);
         if (check_weaknes_of_player == true) {
-           *this->array_player[i]=*this->array_player[last_player_in_the_array];
+            *this->array_player[i] = *this->array_player[last_player_in_the_array];
             delete (array_player[last_player_in_the_array]);
             array_player[last_player_in_the_array] = NULL;
             last_player_in_the_array--;
@@ -192,12 +198,11 @@ Game &Game::operator=(const Game &game) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         delete this->array_player[i];
     }
-    delete[] this->array_player;
-    array_player = (new Player *[game.maxPlayer]);
+    //delete []
+    //array_player = (vector<Player *>(maxPlayer,NULL));
 
-    for (int j = 0; j < game.maxPlayer; j++) {
-        this->array_player[j] = NULL;
-    }
+    array_player.resize(game.maxPlayer, NULL);
+
     for (int i = 0; i <= game.last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }
@@ -210,4 +215,62 @@ void Game::swap(Player &player1, Player &player2) {
     Player temp_player = player1;
     player1 = player2;
     player2 = temp_player;
+}
+
+
+void Game::addTroll(string const &playerName, string const &weaponName,
+                    Target target, int hitStrength, int maxLife) {
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    try {
+        Troll *troll = new Troll(playerName, weapon, maxLife);
+        this->addPlayerWithDifferentType(troll, playerName);
+    }
+    catch (mtm::InvalidParam &e) {
+        cout << "InvalidParam" << endl;
+    }
+}
+
+
+void Game::addWarrior(string const &playerName, string const &weaponName,
+                      Target target, int hitStrength, bool rider) {
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    try {
+        Warrior *warrior = new Warrior(playerName, weapon, false);
+        this->addPlayerWithDifferentType(warrior, playerName);
+    }
+    catch (mtm::IllegalWeapon &e) {
+        cout << "IllegalWeapon" << endl;;
+    }
+}
+
+
+void Game::addWizard(string const &playerName, string const &weaponName,
+                     Target target, int hitStrength, int range) {
+    Weapon weapon = Weapon(weaponName, target, hitStrength);
+    try {
+        Wizard *wizard = new Wizard(playerName, weapon, range);
+        this->addPlayerWithDifferentType(wizard, playerName);
+    }
+    catch (mtm::InvalidParam &e) {
+        cout << "InvalidParam" << endl;;
+    }
+    catch (mtm::IllegalWeapon &e) {
+        cout << "IllegalWeapon" << endl;
+    }
+}
+
+
+void
+Game::addPlayerWithDifferentType(Player *player, string const &playerName) {
+    for (int i = 0; i <= this->last_player_in_the_array; i++) {
+        const bool
+                check_if_the_player_exist = this->array_player[i]->isPlayer(
+                playerName);
+        if (check_if_the_player_exist == true)
+            throw mtm::NameAlreadyExists();
+    }
+    if (last_player_in_the_array == maxPlayer - 1)
+        throw mtm::GameFull();
+    this->last_player_in_the_array += 1;
+    this->array_player[last_player_in_the_array] = player;
 }

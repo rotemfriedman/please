@@ -4,30 +4,61 @@
 #include <iostream>
 #include "Weapon.h"
 #include <ostream>
+#include "mtm_exceptions.h"
+
+using std::string;
 
 
 
 
 using std::ostream;
 using std::endl;
+using std::string;
 
 class Player {
     string name;
     int level;
-    int life;
     int strength;
+
+
+    /**
+    * help function to fight metoda.
+    * check hows the target and lower it in damage
+    * @param player
+    * @param damage
+    * @param target
+    */
+    void help_fight(Player &player, int damage, Target target);
+
+
+protected:
+    int life;
     Weapon weapon_of_player;
     int position_of_player;
 
+    /**
+     * the function get a player and return his position
+     * @param player
+     * @return position of player
+     */
+    static int getPosition(Player &player);
 
-/**
- * help function to fight metoda.
- * check hows the target and lower it in damage
- * @param player
- * @param damage
- * @param target
- */
-    void help_fight(Player &player, int damage, Target target);
+    /**
+     * the function get a player and return his weapon
+     * @param player
+     * @return weapon of player
+     */
+    static Weapon getWeapon(Player &player);
+
+    /**
+     * the dunction check what the distance between 2 position
+     * in abs
+     * @param position1
+     * @param position2
+     * @return int distance
+     */
+    static int distance(int position1, int position2);
+
 
 public:
 
@@ -38,15 +69,16 @@ public:
     * update the other fields in the value 1 or 0
     */
     Player(const string name, const Weapon &weapon);
-    //  Player() = default;
+
+    Player() = default;
 
     /**
  * the function destroy class Player
  */
-    ~Player();
+    virtual ~Player() = default;
 
     //copy constractor
-    Player(const Player &player);
+    Player(const Player &player) = default;
 
     /**
  * increase the field level in 1
@@ -65,7 +97,7 @@ public:
     /**
      * increase the position of the player
      */
-    void makeStep();
+    virtual void makeStep();
 
 /**
  * increase the life of the player
@@ -134,9 +166,15 @@ public:
      * @param player
      * @return
      */
-    Player &operator=(const Player &player);
+    Player &operator=(const Player &player)= default;
 
-
+/**
+ * check if the player can attack in the fight
+ * virtual becuse we use the function in different way with wizard player
+ * @param player1
+ * @return true if the player can attack the other player and false else.
+ */
+    virtual bool canAttack(Player &player1) const;
 };
 
 /**
@@ -145,6 +183,111 @@ public:
  * @param player - the player to print
  */
 ostream &operator<<(ostream &os, const Player &player);
+
+
+class Warrior : public Player {
+    bool rider;
+
+public:
+    /**
+     * the warrior constructor
+     * @param name
+     * @param weapon
+     * @param rider
+     */
+    Warrior(string const &name, Weapon const &weapon, bool rider) :
+            Player(name, weapon), rider(rider) {
+        if (weapon.getTarget() == LEVEL)
+            throw mtm::IllegalWeapon();
+
+    }
+
+    /**
+     * warrior destructor
+     */
+    ~Warrior() = default;
+
+    /**
+     * the function check if rider= true add to position of player 5, ans else
+     * add 1
+     */
+    void makeStep() override {
+        if (rider == true) {
+            position_of_player += 5;
+        } else {
+            position_of_player += 1;
+        }
+    }
+
+};
+
+
+class Troll : public Player {
+    int max_life;
+
+public:
+/**
+ * Troll constructor
+ * @param name
+ * @param weapon
+ * @param maxLife
+ */
+    Troll(string const &name, Weapon const &weapon, int maxLife) :
+            Player(name, weapon), max_life(maxLife) {
+        if (max_life <= 0)
+            throw mtm::InvalidParam();
+    }
+
+    /**
+     * Troll distructor
+     */
+    ~Troll() = default;
+
+    /**
+     * the function add 2 to thr troll position of player and check if
+     * life<maxlife, if yes add 1 to his life
+     */
+    void makeStep() override {
+        position_of_player += 2;
+        if (life < max_life)
+            this->addLife();
+    }
+
+};
+
+
+class Wizard : public Player {
+    int range;
+
+public:
+/**
+ * wiazrd constructor
+ * @param name
+ * @param weapon
+ * @param range
+ */
+    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
+                                                                         weapon),
+                                                                  range(range) {
+        if (range < 0)
+            throw mtm::InvalidParam();
+        if (weapon.getTarget() == LIFE)
+            throw mtm::IllegalWeapon();
+    }
+
+    /**
+     * wizard destructor
+     */
+    ~Wizard() = default;
+
+/**
+ * the function check if the wizard can attack (check the range,position and
+ * mor)
+ * @param player
+ * @return
+ */
+    bool canAttack(Player &player) const override;
+};
 
 
 #endif //HW4_PLAYER_H
