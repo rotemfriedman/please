@@ -190,7 +190,6 @@ ostream &operator<<(ostream &os, const Player &player);
 
 class Warrior : public Player {
     bool rider;
-
 public:
     /**
      * the warrior constructor
@@ -208,20 +207,19 @@ public:
     /**
      * warrior destructor
      */
-    ~Warrior() = default;
+    ~Warrior() override= default;
 
     /**
      * the function check if rider= true add to position of player 5, ans else
      * add 1
      */
-    void makeStep() override {
+    void makeStep() override{
         if (rider == true) {
             position_of_player += 5;
         } else {
             position_of_player += 1;
         }
     }
-
 };
 
 
@@ -244,7 +242,7 @@ public:
     /**
      * Troll distructor
      */
-    ~Troll() = default;
+    ~Troll() override = default;
 
     /**
      * the function add 2 to thr troll position of player and check if
@@ -255,13 +253,11 @@ public:
         if (life < max_life)
             this->addLife();
     }
-
 };
 
 
 class Wizard : public Player {
     int range;
-
 public:
 /**
  * wiazrd constructor
@@ -269,20 +265,17 @@ public:
  * @param weapon
  * @param range
  */
-    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
-                                                                         weapon),
-                                                                  range(range) {
+    Wizard(string const &name, Weapon const &weapon, int range) :
+            Player(name, weapon), range(range) {
         if (range < 0)
             throw mtm::InvalidParam();
         if (weapon.getTarget() == LIFE)
             throw mtm::IllegalWeapon();
     }
-
     /**
      * wizard destructor
      */
-    ~Wizard() = default;
-
+    ~Wizard() override = default;
 /**
  * the function check if the wizard can attack (check the range,position and
  * mor)

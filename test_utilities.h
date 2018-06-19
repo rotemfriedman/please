@@ -3,7 +3,6 @@
 
 #include <cstdio>
 #include <cmath>
-#include <iostream>
 
 using std::endl;
 using std::cout;
@@ -49,55 +48,106 @@ void test(bool expression, const char *error_code, int line) {
     test_number += 1;
 
 }
+void silient_test_passed() {
+    test_number++;
+    tests_passed++;
+}
+
+void getEnter() {
+    cout << "              _                                                \n"
+            "             | |                                               \n"
+            "             | |===( )   //////                                \n"
+            "             |_|   |||  | o o|                                 \n"
+            "                    ||| ( c  )                  ____           \n"
+            "                     ||| \\= /                  ||   \\_       \n"
+            "                      ||||||                   ||     |        \n"
+            "                      ||||||                ...||__/|-\"       \n"
+            "                      ||||||             __|________|__        \n"
+            "                        |||             |______________|       \n"
+            "                        |||             || ||      || ||       \n"
+            "                        |||             || ||      || ||       \n"
+            "------------------------|||-------------||-||------||-||-------\n"
+            "                        |__>            || ||      || ||       \n"
+            "                                                               \n"
+            "                                                               \n"
+            "     hit ENTER to continue                                     \n";
+    getchar();
+}
 
 void print_grade() {
     auto grade = (int) (((double) tests_passed / test_number) * 100);
     if (grade == 100) {
-        printf(" \n __________________________________________________ \n");
-        printf("| Windows Dialog                      [-] [ ] [X]  |\n");
-        printf("| ''''''''''''''                                   |\n");
-        printf("| Windows has detected that YOU are awesome!       |\n");
-        printf("|    Do you agree?                                 |\n");
-        printf("|                                                  |\n");
-        printf("|         |YES!|      |YES!|      |YES!|           |\n");
-        printf("|                                                  |\n");
-        printf("|__________________________________________________|\n");
-        printf("               Now go grab a beer!                  \n");
+        cout
+                << "             ________________________________________________               \n"
+                        "            /                                                \\             \n"
+                        "           |    _________________________________________     |             \n"
+                        "           |   |                                         |    |             \n"
+                        "           |   |    Congratulations, You've done it!     |    |             \n"
+                        "           |   |                                         |    |             \n"
+                        "           |   |       Good luck with the Exams,         |    |             \n"
+                        "           |   |                                         |    |             \n"
+                        "           |   |    See you on Data Structures course!   |    |             \n"
+                        "           |   |                                         |    |             \n"
+                        "           |   |_________________________________________|    |             \n"
+                        "           |                                                  |             \n"
+                        "            \\_________________________________________________/            \n"
+                        "                   \\___________________________________/                   \n"
+                        "                              -Vova Parakhin-                               \n";
     }
     if (grade <= 99 && grade > 55) {
-        printf("\n 		Not that much left!					             \n");
-        printf("                                      &&   &&            \n");
-        printf("  &&&&.                         &&&  .&&&&&              \n");
-        printf("      &&     &&&                   &&&&&&&&&             \n");
-        printf(" &&&&&&&&&  &         &`           &&       &&           \n");
-        printf("      .&&&&&          &&&;        &8                     \n");
-        printf("  .&&&:     &&        &` &      &&                       \n");
-        printf("             8&&      &   `&   &&                        \n");
-        printf("               &&    .&_ oO_&.-.-.                       \n");
-        printf("                 && ( __     -/--'                       \n");
-        printf("                  &&~ .'-__-'&                           \n");
-        printf("                   &&&~`'\\`&                            \n");
-        printf("                     &&&~` _&                            \n");
-        printf("                      &&&&` &&                           \n");
-        printf("                 &     &&8&&&&                           \n");
-        printf("                  &    &&&&&&&                           \n");
-        printf("                   &  &&&&&&&                            \n");
-        printf("                 &&;&&&&&&&                              \n");
-        printf("                &&&&&&&&&&     ~~~                       \n");
-        printf("         .~~~~~ `&&&&&&&&&    ~~~~                       \n");
-        printf("     ~~~~~~~~~;!&&&&&&&&&&~/~~~~~~~~~                    \n");
-        printf("  ~~~~~~~~\\~~~~&/`      \\`~~~~~~~~~~~~                 \n");
-        printf("   ~~~~~~~~             `~~~~~~~~~~                      \n");
-        printf("    ~~~~~~              ~~~~~~~                          \n");
-        printf("    ~~~~                ~~~~                             \n");
+        cout << "      .--..--..--..--..--..--.            \n"
+                "    .' \\  (`._   (_)     _   \\            \n"
+                "  .'    |  '._)         (_)  |            \n"
+                "  \\ _.')\\      .----..---.   /            \n"
+                "  |(_.'  |    /    .-\\-.  \\  |            \n"
+                "  \\     0|    |   ( O| O) | o|            \n"
+                "   |  _  |  .--.____.'._.-.  |            \n"
+                "   \\ (_) | o         -` .-`  |            \n"
+                "    |    \\   |`-._ _ _ _ _\\ /             \n"
+                "    \\    |   |  `. |_||_|   |             \n"
+                "    | o  |    \\_      \\     |     -.   .-.\n"
+                "    |.-.  \\     `--..-'   O |     `.`-' .'\n"
+                "  _.'  .' |     `-.-'      /-.__   ' .-'  \n"
+                ".' `-.` '.|='=.='=.='=.='=|._/_ `-'.'     \n"
+                "`-._  `.  |________/\\_____|    `-.'       \n"
+                "   .'   ).| '=' '='\\/ '=' |               \n"
+                "   `._.`  '---------------'               \n"
+                "           //___\\   //___\\                \n"
+                "             ||       ||                  \n"
+                "    LGB      ||_.-.   ||_.-.              \n"
+                "            (_.--__) (_.--__)             \n"
+                "         Not that much left!              \n";
     }
-    if (grade <= 55)
-        printf(
-                " \t  ___________\n\t/   R.I.P.   \\ \n\t| Here lies   |\n\t| Your  grade |\n\t|_____%2d______|\n",
-                grade);
-    printf("\nYour grade is: %d\n", grade);
-    printf("You've passed %d tests out of %d\n", tests_passed, test_number);
-    printf("Good luck!\n");
+    if (grade <= 55) {
+        cout << "                             __           \n"
+                "                   _ ,___,-'\",-=-.        \n"
+                "       __,-- _ _,-'_)_  (\"\"`'-._\\ `.      \n"
+                "    _,'  __ |,' ,-' __)  ,-     /. |      \n"
+                "  ,'_,--'   |     -'  _)/         `\\      \n"
+                ",','      ,'       ,-'_,`           :     \n"
+                ",'     ,-'       ,(,-(              :     \n"
+                "     ,'       ,-' ,    _            ;     \n"
+                "    /        ,-._/`---'            /      \n"
+                "   /        (____)(----. )       ,'       \n"
+                "  /         (      `.__,     /\\ /,        \n"
+                " :           ;-.___         /__\\/|        \n"
+                " |         ,'      `--.      -,\\ |        \n"
+                " :        /            \\    .__/          \n"
+                "  \\      (__            \\    |_           \n"
+                "   \\       ,`-, *       /   _|,\\          \n"
+                "    \\    ,'   `-.     ,'_,-'    \\         \n"
+                "   (_\\,-'    ,'\")--,'-'       __\\        \n"
+                "    \\       /  // ,'|      ,--'  `-.      \n"
+                "     `-.    `-/ \'  |   _,'         `.    \n"
+                "        `-._ /      `--'/             \\   \n"
+                "-OMG-      ,'           |              \\  \n"
+                "          /             |               \\ \n"
+                "       ,-'              |               / \n"
+                "      /                 |             -'  \n"
+                "         What are you doing here?...      \n";
+    }
+    printf("\nYour grade is: %d", grade);
+    printf("\nYou've passed %d tests out of %d\n", tests_passed, test_number);
 }
 
 #endif /* TEST_UTILITIES_H_ */

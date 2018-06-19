@@ -16,7 +16,8 @@ enum GameStatus {
     SUCCESS,
     NAME_DOES_NOT_EXIST,
     INVALID_PARAM,
-    FIGHT_FAILED
+    FIGHT_FAILED,
+    ILLEGAL_WEAPON
 };
 
 
@@ -224,8 +225,6 @@ public:
             return(player.weaponIsWeak(weaponStrength));
         }
     };
-
-
 };
 
 
