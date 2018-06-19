@@ -211,7 +211,23 @@ public:
     }
 
 
+
+/**
+ * this class help to the function "removeAllPlayersWithWeakWeapon"
+ */
+    class checkIfWeaponIsWeak{
+        int weaponStrength;
+    public:
+        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength(weaponStrength){
+        }
+        bool operator()(Player const& player) const {
+            return(player.weaponIsWeak(weaponStrength));
+        }
+    };
+
+
 };
+
 
 
 #endif //HW4_GAME_H

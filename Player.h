@@ -36,6 +36,18 @@ protected:
     Weapon weapon_of_player;
     int position_of_player;
 
+
+    /**
+ * constractur for the player calss
+ * @param name - allocate a name
+ * @param weapon - initialize this value to the player
+ * update the other fields in the value 1 or 0
+ */
+    Player(const string name, const Weapon &weapon);
+
+    Player() = default;
+
+
     /**
      * the function get a player and return his position
      * @param player
@@ -62,15 +74,6 @@ protected:
 
 public:
 
-    /**
-    * constractur for the player calss
-    * @param name - allocate a name
-    * @param weapon - initialize this value to the player
-    * update the other fields in the value 1 or 0
-    */
-    Player(const string name, const Weapon &weapon);
-
-    Player() = default;
 
     /**
  * the function destroy class Player

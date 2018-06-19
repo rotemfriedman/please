@@ -33,6 +33,7 @@ Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
 
 GameStatus Game::addPlayer(const string playerName, const string weaponName,
                            Target target, int hit_strength) {
+    Player* player;
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         const bool
                 check_if_the_player_exist = this->array_player[i]->isPlayer(
@@ -43,7 +44,13 @@ GameStatus Game::addPlayer(const string playerName, const string weaponName,
     if (last_player_in_the_array == maxPlayer - 1)
         return GAME_FULL;
     Weapon weapon = Weapon(weaponName, target, hit_strength);
-    Player *player = new Player(playerName, weapon);
+    try{
+        player = new Warrior(playerName, weapon,false);
+    }
+    catch (mtm::IllegalWeapon &e) {
+        cout << "IllegalWeapon" << endl;
+    }
+
     this->last_player_in_the_array += 1;
     this->array_player[last_player_in_the_array] = player;
     return SUCCESS;
@@ -144,6 +151,10 @@ GameStatus Game::addStrength(const string playerName, int strengthToAdd) {
 }
 
 bool Game::removeAllPlayersWithWeakWeapon(int weaponStrangth) {
+    checkIfWeaponIsWeak weakWeapon(weaponStrangth);
+    return(removePlayersIf(weakWeapon));
+
+/*
     int check_if_remove = 0; //if change to 1, than we already remove players
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {
         bool check_weaknes_of_player = this->array_player[i]->
@@ -161,6 +172,7 @@ bool Game::removeAllPlayersWithWeakWeapon(int weaponStrangth) {
         return true;
     else
         return false;
+        */
 }
 
 
@@ -239,7 +251,7 @@ void Game::addWarrior(string const &playerName, string const &weaponName,
         this->addPlayerWithDifferentType(warrior, playerName);
     }
     catch (mtm::IllegalWeapon &e) {
-        cout << "IllegalWeapon" << endl;;
+        cout << "IllegalWeapon" << endl;
     }
 }
 
