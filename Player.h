@@ -197,12 +197,7 @@ public:
      * @param weapon
      * @param rider
      */
-    Warrior(string const &name, Weapon const &weapon, bool rider) :
-            Player(name, weapon), rider(rider) {
-        if (weapon.getTarget() == LEVEL)
-            throw mtm::IllegalWeapon();
-
-    }
+    Warrior(string const &name, Weapon const &weapon, bool rider);
 
     /**
      * warrior destructor
@@ -213,13 +208,7 @@ public:
      * the function check if rider= true add to position of player 5, ans else
      * add 1
      */
-    void makeStep() override{
-        if (rider == true) {
-            position_of_player += 5;
-        } else {
-            position_of_player += 1;
-        }
-    }
+    void makeStep() override;
 };
 
 
@@ -233,11 +222,7 @@ public:
  * @param weapon
  * @param maxLife
  */
-    Troll(string const &name, Weapon const &weapon, int maxLife) :
-            Player(name, weapon), max_life(maxLife) {
-        if (max_life <= 0)
-            throw mtm::InvalidParam();
-    }
+    Troll(string const &name, Weapon const &weapon, int maxLife);
 
     /**
      * Troll distructor
@@ -248,11 +233,7 @@ public:
      * the function add 2 to thr troll position of player and check if
      * life<maxlife, if yes add 1 to his life
      */
-    void makeStep() override {
-        position_of_player += 2;
-        if (life < max_life)
-            this->addLife();
-    }
+    void makeStep() override ;
 };
 
 
@@ -265,13 +246,7 @@ public:
  * @param weapon
  * @param range
  */
-    Wizard(string const &name, Weapon const &weapon, int range) :
-            Player(name, weapon), range(range) {
-        if (range < 0)
-            throw mtm::InvalidParam();
-        if (weapon.getTarget() == LIFE)
-            throw mtm::IllegalWeapon();
-    }
+    Wizard(string const &name, Weapon const &weapon, int range);
     /**
      * wizard destructor
      */
