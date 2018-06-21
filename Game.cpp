@@ -5,7 +5,7 @@ using std::vector;
 using std::cout;
 
 Game::Game(int maxPlayer) :
-        maxPlayer(maxPlayer), array_player(vector<Player *>(maxPlayer, NULL)),
+        maxPlayer(maxPlayer), array_player(vector<Player *>(maxPlayer, nullptr)),
         last_player_in_the_array(-1) {
 }
 
@@ -18,7 +18,7 @@ Game::~Game() {
 
 
 Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
-                               array_player(vector<Player *>(maxPlayer, NULL)),
+                               array_player(vector<Player *>(maxPlayer, nullptr)),
                                last_player_in_the_array
                                        (game.last_player_in_the_array) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
@@ -86,7 +86,7 @@ cout << "NameDoesNotExist" << endl;
 
 void Game::helpFight() {
     delete this->array_player[this->last_player_in_the_array];
-    this->array_player[this->last_player_in_the_array] = NULL;
+    this->array_player[this->last_player_in_the_array] = nullptr;
     this->last_player_in_the_array--;
 }
 
@@ -189,7 +189,7 @@ Game &Game::operator=(const Game &game) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         delete this->array_player[i];
     }
-    array_player.resize(game.maxPlayer, NULL);
+    array_player.resize(game.maxPlayer, nullptr);
     for (int i = 0; i <= game.last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }
