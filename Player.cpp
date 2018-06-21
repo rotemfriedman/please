@@ -12,21 +12,6 @@ Player::Player(const string name, const Weapon &weapon) :
 }
 
 
-/*
-Player::Player(const Player &player) : name(name), level(player.level),
-                                       life(player.life),
-                                       strength(player.strength),
-                                       weapon_of_player(
-                                               player.weapon_of_player),
-                                       position_of_player
-                                               (player.position_of_player) {
-    //strcpy(this->name, player.name);
-}
-
-
-Player::~Player() {
-}
-*/
 
 void Player::nextLevel() {
     this->level++;
@@ -90,19 +75,6 @@ ostream &operator<<(ostream &os, const Player &player) {
               << player.weapon_of_player << "}";
 }
 
-/*
-Player &Player::operator=(const Player &player) {
-    if (this == &player)
-        return *this;
-    name=player.name;
-    level = player.level;
-    life = player.life;
-    strength = player.strength;
-    weapon_of_player = player.weapon_of_player;
-    position_of_player = player.position_of_player;
-    return *this;
-}
-*/
 
 bool Player::fight(Player &player) {
     Weapon &weapon1 = player.weapon_of_player;
@@ -166,6 +138,16 @@ Weapon Player::getWeapon(Player &player) {
 
 }
 
+
+//wizard
+Wizard::Wizard(string const &name, Weapon const &weapon, int range) :
+Player(name, weapon), range(range) {
+        if (range < 0)
+        throw mtm::InvalidParam();
+        if (weapon.getTarget() == LIFE)
+        throw mtm::IllegalWeapon();
+}
+
 bool Wizard::canAttack(Player &player) const {
     int x = player.getPosition(player);
     if (this->position_of_player == x)
@@ -177,4 +159,33 @@ bool Wizard::canAttack(Player &player) const {
         return true;
     else
         return false;
+}
+
+//troll
+Troll::Troll(string const &name, Weapon const &weapon, int maxLife) :
+Player(name, weapon), max_life(maxLife) {
+        if (max_life <= 0)
+        throw mtm::InvalidParam();
+}
+
+void Troll::makeStep()  {
+    position_of_player += 2;
+    if (life < max_life)
+        this->addLife();
+}
+
+//warrior
+Warrior::Warrior(string const &name, Weapon const &weapon, bool rider) :
+Player(name, weapon), rider(rider) {
+        if (weapon.getTarget() == LEVEL)
+        throw mtm::IllegalWeapon();
+
+}
+
+void Warrior::makeStep() {
+    if (rider == true) {
+        position_of_player += 5;
+    } else {
+        position_of_player += 1;
+    }
 }

@@ -36,6 +36,18 @@ protected:
     Weapon weapon_of_player;
     int position_of_player;
 
+
+    /**
+ * constractur for the player calss
+ * @param name - allocate a name
+ * @param weapon - initialize this value to the player
+ * update the other fields in the value 1 or 0
+ */
+    Player(const string name, const Weapon &weapon);
+
+    Player() = default;
+
+
     /**
      * the function get a player and return his position
      * @param player
@@ -62,20 +74,11 @@ protected:
 
 public:
 
-    /**
-    * constractur for the player calss
-    * @param name - allocate a name
-    * @param weapon - initialize this value to the player
-    * update the other fields in the value 1 or 0
-    */
-    Player(const string name, const Weapon &weapon);
-
-    Player() = default;
 
     /**
  * the function destroy class Player
  */
-    virtual ~Player() = default;
+    virtual ~Player() throw() = default;
 
     //copy constractor
     Player(const Player &player) = default;
@@ -187,7 +190,6 @@ ostream &operator<<(ostream &os, const Player &player);
 
 class Warrior : public Player {
     bool rider;
-
 public:
     /**
      * the warrior constructor
@@ -195,30 +197,18 @@ public:
      * @param weapon
      * @param rider
      */
-    Warrior(string const &name, Weapon const &weapon, bool rider) :
-            Player(name, weapon), rider(rider) {
-        if (weapon.getTarget() == LEVEL)
-            throw mtm::IllegalWeapon();
-
-    }
+    Warrior(string const &name, Weapon const &weapon, bool rider);
 
     /**
      * warrior destructor
      */
-    ~Warrior() = default;
+    ~Warrior() throw() override = default;
 
     /**
      * the function check if rider= true add to position of player 5, ans else
      * add 1
      */
-    void makeStep() override {
-        if (rider == true) {
-            position_of_player += 5;
-        } else {
-            position_of_player += 1;
-        }
-    }
-
+    void makeStep() override;
 };
 
 
@@ -232,33 +222,23 @@ public:
  * @param weapon
  * @param maxLife
  */
-    Troll(string const &name, Weapon const &weapon, int maxLife) :
-            Player(name, weapon), max_life(maxLife) {
-        if (max_life <= 0)
-            throw mtm::InvalidParam();
-    }
+    Troll(string const &name, Weapon const &weapon, int maxLife);
 
     /**
      * Troll distructor
      */
-    ~Troll() = default;
+    ~Troll() throw() override = default;
 
     /**
      * the function add 2 to thr troll position of player and check if
      * life<maxlife, if yes add 1 to his life
      */
-    void makeStep() override {
-        position_of_player += 2;
-        if (life < max_life)
-            this->addLife();
-    }
-
+    void makeStep() override ;
 };
 
 
 class Wizard : public Player {
     int range;
-
 public:
 /**
  * wiazrd constructor
@@ -266,20 +246,11 @@ public:
  * @param weapon
  * @param range
  */
-    Wizard(string const &name, Weapon const &weapon, int range) : Player(name,
-                                                                         weapon),
-                                                                  range(range) {
-        if (range < 0)
-            throw mtm::InvalidParam();
-        if (weapon.getTarget() == LIFE)
-            throw mtm::IllegalWeapon();
-    }
-
+    Wizard(string const &name, Weapon const &weapon, int range);
     /**
      * wizard destructor
      */
-    ~Wizard() = default;
-
+    ~Wizard() throw() override = default;
 /**
  * the function check if the wizard can attack (check the range,position and
  * mor)

@@ -16,7 +16,8 @@ enum GameStatus {
     SUCCESS,
     NAME_DOES_NOT_EXIST,
     INVALID_PARAM,
-    FIGHT_FAILED
+    FIGHT_FAILED,
+    ILLEGAL_WEAPON
 };
 
 
@@ -30,6 +31,10 @@ class Game {
      */
     void helpFight();
 
+    /**
+     * ths function checl if one of the players dead, if yes, we remove them.
+     */
+    void fightCheckIfAlive();
 
     /**
      * the function find the max index, sort by the playerName
@@ -211,7 +216,22 @@ public:
     }
 
 
+
+/**
+ * this class help to the function "removeAllPlayersWithWeakWeapon"
+ */
+    class checkIfWeaponIsWeak{
+        int weaponStrength;
+    public:
+        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength(weaponStrength){
+        }
+        bool operator()(Player const& player) const {
+            return(player.weaponIsWeak(weaponStrength));
+        }
+    };
+
 };
+
 
 
 #endif //HW4_GAME_H
