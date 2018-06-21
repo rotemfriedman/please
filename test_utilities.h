@@ -71,7 +71,7 @@ void getEnter() {
             "                                                               \n"
             "                                                               \n"
             "     hit ENTER to continue                                     \n";
-    getchar();
+  // getchar();
 }
 
 void print_grade() {

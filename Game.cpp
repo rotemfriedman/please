@@ -5,7 +5,7 @@ using std::vector;
 using std::cout;
 
 Game::Game(int maxPlayer) :
-        maxPlayer(maxPlayer), array_player(vector<Player *>(maxPlayer, nullptr)),
+        maxPlayer(maxPlayer), array_player(vector<Player *>(maxPlayer, NULL)),
         last_player_in_the_array(-1) {
 }
 
@@ -18,7 +18,7 @@ Game::~Game() {
 
 
 Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
-                               array_player(vector<Player *>(maxPlayer, nullptr)),
+                               array_player(vector<Player *>(maxPlayer, NULL)),
                                last_player_in_the_array
                                        (game.last_player_in_the_array) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
@@ -78,15 +78,15 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
             return SUCCESS;
     }
     catch (mtm::NameDoesNotExist &e) {
-cout << "NameDoesNotExist" << endl;
-}
+        cout << "NameDoesNotExist" << endl;
+    }
     return SUCCESS;
 }
 
 
 void Game::helpFight() {
     delete this->array_player[this->last_player_in_the_array];
-    this->array_player[this->last_player_in_the_array] = nullptr;
+    this->array_player[this->last_player_in_the_array] = NULL;
     this->last_player_in_the_array--;
 }
 
@@ -189,7 +189,7 @@ Game &Game::operator=(const Game &game) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         delete this->array_player[i];
     }
-    array_player.resize(game.maxPlayer, nullptr);
+    array_player.resize(game.maxPlayer, NULL);
     for (int i = 0; i <= game.last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }
@@ -234,11 +234,15 @@ void Game::addPlayerWithDifferentType(Player *player, string const &playerName) 
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         const bool check_if_the_player_exist = this->array_player[i]->isPlayer(
                 playerName);
-        if (check_if_the_player_exist == true)
+        if (check_if_the_player_exist == true) {
+            delete player;
             throw mtm::NameAlreadyExists();
+        }
     }
-    if (last_player_in_the_array == maxPlayer - 1)
+    if (last_player_in_the_array == maxPlayer - 1) {
+        delete player;
         throw mtm::GameFull();
+    }
     this->last_player_in_the_array += 1;
     this->array_player[last_player_in_the_array] = player;
 }

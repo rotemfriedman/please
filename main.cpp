@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "test_utilities.h"
-#include "Player.h"
 
 using namespace std;
 
@@ -331,14 +330,11 @@ public:
     }
 };
 
-
-
 void GameRemovePlayerIfTest() {
     Game game(5);
-//    isWeak isWeak(5);
     game.addWarrior("l", "", LIFE, 10, false);
-    game.addWarrior("k", "", LIFE, 10, false);
-    game.addWarrior("a", "", LIFE, 10, false);
+    game.addWizard("k", "", LEVEL, 10, 1);
+    game.addTroll("a", "", LIFE, 10, 50);
     game.addWarrior("b", "", LIFE, 10, false);
     game.addWarrior("z", "", LIFE, 10, false);
     string s("k");
