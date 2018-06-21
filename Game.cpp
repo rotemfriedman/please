@@ -172,7 +172,7 @@ void Game::max_sort() {
     int length;
     for (length = this->last_player_in_the_array + 1; length > 1; length--) {
         int index_max = index_of_max(length);
-        swap(*(array_player[index_max]), *(array_player[length - 1]));
+        swap((array_player[index_max]), (array_player[length - 1]));
     }
 }
 
@@ -202,8 +202,8 @@ Game &Game::operator=(const Game &game) {
     return *this;
 }
 
-void Game::swap(Player &player1, Player &player2) {
-    Player temp_player = player1;
+void Game::swap(Player* &player1, Player* &player2) {
+    Player* temp_player = player1;
     player1 = player2;
     player2 = temp_player;
 }

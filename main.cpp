@@ -3,6 +3,8 @@
 
 using namespace std;
 
+/*
+
 void GameAddPlayerTest() {
     _print_mode_name("Testing GameAddPlayer function");
     Game game(3);
@@ -76,14 +78,18 @@ void GameAddStrengthTest() {
          __LINE__);
 }
 
+
 void GameRemoveAllPlayersWIthWeakWeaponTest() {
     _print_mode_name("Testing GameRemoveAllPlayersWIthWeakWeapon function");
     Game game(6);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 1);
+    game.addWarrior("Linoy", "lazer gun", LIFE, 1,true);
     game.addPlayer("Nazar", "lazer gun", LIFE, 7);
     game.addPlayer("Max", "lazer gun", LIFE, 3);
-    game.addPlayer("Guy", "lazer gun", STRENGTH, 4);
+    game.addWizard("rotem", "m16", STRENGTH, 1,3);
+    game.addTroll("Guy", "lazer gun", STRENGTH, 4, 3);
+    game.addWarrior("shaked", "lazer", LIFE, 2, true);
     game.removeAllPlayersWithWeakWeapon(6);
+
     test(game.addPlayer("Linoy", "lazer gun", LIFE, 5) != SUCCESS,
          "GameRemoveAllPlayersWIthWeakWeapon didn't remove the player correctly.",
          __LINE__);
@@ -96,7 +102,11 @@ void GameRemoveAllPlayersWIthWeakWeaponTest() {
     test(game.addPlayer("Guy", "lazer gun", LIFE, 5) != NAME_ALREADY_EXISTS,
          "GameRemoveAllPlayersWIthWeakWeapon removes players with weapon value higher than required.",
          __LINE__);
+
+
 }
+
+
 
 void GameAddWarriorTest() {
     _print_mode_name("Testing GameAddWarrior function");
@@ -359,30 +369,44 @@ void GameRemovePlayerIfTest() {
          "There are no players, shouldn't remove anything.",
          __LINE__);
 }
+*/
+
+void GamePrintTest(){
+    Game game(6);
+    game.addWarrior("Linoy", "lazer gun", LIFE, 1,true);
+    game.addPlayer("Nazar", "lazer gun", LIFE, 7);
+    game.addPlayer("Max", "lazer gun", LIFE, 3);
+    game.addWizard("rotem", "m16", STRENGTH, 1,3);
+    game.addTroll("Guy", "lazer gun", STRENGTH, 4, 3);
+    game.addWarrior("shaked", "lazer", LIFE, 2, true);
+    cout << game << endl;
+}
+
 
 int main() {
     cout <<
          "\nWelcome to the homework MTM 5 Call of Matam Duties tests"
-                 "\nThe tests were written by: Vova Parakhin."
-                 "\n\n------Passing those tests won't"
-                 " guarantee you a good grade------\nBut they might get you closer"
-                 ",make some tests yourself to be sure.\n\n";
+         "\nThe tests were written by: Vova Parakhin."
+         "\n\n------Passing those tests won't"
+         " guarantee you a good grade------\nBut they might get you closer"
+         ",make some tests yourself to be sure.\n\n";
     cout << "You can change w/e you want in the file itself"
             " but make sure \nto contact me if you want to upload";
     cout << " \'upgraded version\' of the file.\n" << endl;
     getEnter();
-    GameAddPlayerTest();
-    GameNextLevelTest();
-    GameMakeStepTest();
-    GameAddLifeTest();
-    GameAddStrengthTest();
-    GameRemoveAllPlayersWIthWeakWeaponTest();
-    GameAddTrollTest();
-    GameAddWizardTest();
-    GameAddWarriorTest();
-    GameFightPart1Test();
-    GameFightPart2Test();
-    GameRemovePlayerIfTest();
-    print_grade();
+    //GameAddPlayerTest();
+    //GameNextLevelTest();
+    //GameMakeStepTest();
+    //GameAddLifeTest();
+    //GameAddStrengthTest();
+    //GameRemoveAllPlayersWIthWeakWeaponTest();
+    //GameAddTrollTest();
+    //GameAddWizardTest();
+    //GameAddWarriorTest();
+    //GameFightPart1Test();
+    //GameFightPart2Test();
+    GamePrintTest();
+    //GameRemovePlayerIfTest();
+    //print_grade();
     return 0;
 }

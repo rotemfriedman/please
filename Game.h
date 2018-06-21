@@ -55,7 +55,7 @@ class Game {
  * @param player1
  * @param player2
  */
-    void swap(Player &player1, Player &player2);
+    void swap(Player* &player1, Player* &player2);
 
 
 public:
