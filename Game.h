@@ -9,6 +9,8 @@
 
 using std::string;
 using std::vector;
+using std::swap;
+
 
 enum GameStatus {
     NAME_ALREADY_EXISTS,
@@ -201,12 +203,12 @@ public:
         int check_if_remove = 0; //if change to 1, than we already remove players
         for (int i = 0; i <= last_player_in_the_array; i++) {
             if ((fcn(static_cast<Player const &> (*this->array_player[i])) == true) ){
-                *this->array_player[i] = *this->array_player[last_player_in_the_array];
-                delete (array_player[last_player_in_the_array]);
-                array_player[last_player_in_the_array] = NULL;
+                delete array_player[i];
+                array_player.erase(array_player.begin() + i);
                 last_player_in_the_array--;
                 check_if_remove = 1;
                 i--;
+                array_player.resize(maxPlayer, nullptr);
             }
         }
         if (check_if_remove == 1)

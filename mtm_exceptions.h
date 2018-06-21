@@ -1,5 +1,9 @@
-#ifndef HW5_NEW_MTM_EXCEPTIONS_H
-#define HW5_NEW_MTM_EXCEPTIONS_H
+//
+// Created by Yuri on 10/06/2018.
+//
+
+#ifndef EX5_MTM_EXCEPTIONS_H
+#define EX5_MTM_EXCEPTIONS_H
 
 #include <exception>
 
@@ -10,17 +14,11 @@ namespace mtm {
 
     // Specific exceptions. Can be also caught as mtm::exceptions
     // or std::exceptions
-
     class InvalidParam : public mtm::exception {};
     class IllegalWeapon : public mtm::exception {};
     class NameAlreadyExists : public mtm::exception  {};
     class GameFull : public mtm::exception  {};
     class NameDoesNotExist : public mtm::exception  {};
-
-
 }
 
-
-
-
-#endif //HW5_NEW_MTM_EXCEPTIONS_H
+#endif //EX5_MTM_EXCEPTIONS_H
