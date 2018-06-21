@@ -66,28 +66,21 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
             player2_place_in_the_array = i;
     }
     try {
-        if (player1_place_in_the_array == -1 ||
-            player2_place_in_the_array == -1)
+        if (player1_place_in_the_array == -1 ||player2_place_in_the_array == -1)
             throw mtm::NameDoesNotExist();
         bool check_if_fight_success = this->
                 array_player[player1_place_in_the_array]->fight(
                 *this->array_player[player2_place_in_the_array]);
-        for (int i = 0; i <= (this->last_player_in_the_array); i++) {
-            bool check_if_alive = this->array_player[i]->isAlive();
-            if (check_if_alive == false) {
-                *this->array_player[i] = *this->array_player[last_player_in_the_array];
-                this->helpFight();
-                i--;
-            }
-        }
+        this->fightCheckIfAlive();
         if (check_if_fight_success == false)
             return FIGHT_FAILED;
         else
             return SUCCESS;
     }
     catch (mtm::NameDoesNotExist &e) {
-        cout << "NameDoesNotExist" << endl;
-    }
+cout << "NameDoesNotExist" << endl;
+}
+    return SUCCESS;
 }
 
 
@@ -95,6 +88,18 @@ void Game::helpFight() {
     delete this->array_player[this->last_player_in_the_array];
     this->array_player[this->last_player_in_the_array] = NULL;
     this->last_player_in_the_array--;
+}
+
+void Game::fightCheckIfAlive(){
+    for (int i = 0; i <= (this->last_player_in_the_array); i++) {
+        bool check_if_alive = this->array_player[i]->isAlive();
+        if (check_if_alive == false) {
+            *this->array_player[i] =
+                    *this->array_player[last_player_in_the_array];
+            this->helpFight();
+            i--;
+        }
+    }
 }
 
 GameStatus Game::nextLevel(const string playerName) {

@@ -78,7 +78,7 @@ public:
     /**
  * the function destroy class Player
  */
-    virtual ~Player() = default;
+    virtual ~Player() throw() = default;
 
     //copy constractor
     Player(const Player &player) = default;
@@ -207,7 +207,7 @@ public:
     /**
      * warrior destructor
      */
-    ~Warrior() override= default;
+    ~Warrior() throw() override = default;
 
     /**
      * the function check if rider= true add to position of player 5, ans else
@@ -242,7 +242,7 @@ public:
     /**
      * Troll distructor
      */
-    ~Troll() override = default;
+    ~Troll() throw() override = default;
 
     /**
      * the function add 2 to thr troll position of player and check if
@@ -275,7 +275,7 @@ public:
     /**
      * wizard destructor
      */
-    ~Wizard() override = default;
+    ~Wizard() throw() override = default;
 /**
  * the function check if the wizard can attack (check the range,position and
  * mor)

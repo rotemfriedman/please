@@ -31,6 +31,10 @@ class Game {
      */
     void helpFight();
 
+    /**
+     * ths function checl if one of the players dead, if yes, we remove them.
+     */
+    void fightCheckIfAlive();
 
     /**
      * the function find the max index, sort by the playerName
@@ -225,6 +229,7 @@ public:
             return(player.weaponIsWeak(weaponStrength));
         }
     };
+
 };
 
 
