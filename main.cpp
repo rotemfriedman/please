@@ -1,305 +1,265 @@
 //
-// Created By Alon Libling
+// Created by ron on 28/05/18.
 //
 
-#include <cassert>
 #include <sstream>
+#include <cstring>
+#include <string>
+
+#include "Weapon.h"
+#include "Player.h"
 #include "Game.h"
+#include "test_utilities.h"
+#include "mtm_exceptions.h"
+//#include "Warrior.h"
+//#include "Wizard.h"
+//#include "Troll.h"
 
-using namespace std;
-using namespace mtm;
+using std::cout;
+using std::endl;
+using std::string;
+using mtm::IllegalWeapon;
+using mtm::InvalidParam;
+using mtm::NameAlreadyExists;
+using mtm::GameFull;
+using mtm::NameDoesNotExist;
 
-void test1() {
-    {
-        int hi = 0;
-        assert(++hi);
-        if (!hi) {
-            cout << "This test requires asserts!" << endl;
-            cout << "Did you compile with DNDEBUG flag?" << endl;
-            return;
-        }
+bool weaponTest() {
+    Weapon w1("Lazer Gun", LIFE, 5);
+    Weapon w2("Assault Riglt", STRENGTH, 10);
+    Weapon w3("Plastic Hammer", LEVEL, 1);
+
+    ASSERT_TEST(w1.getTarget() == LIFE);
+    ASSERT_TEST(w2.getTarget() == STRENGTH);
+    ASSERT_TEST(w3.getTarget() == LEVEL);
+
+    ASSERT_TEST(w1.getHitStrength() == 5);
+    ASSERT_TEST(w2.getHitStrength() == 10);
+    ASSERT_TEST(w3.getHitStrength() == 1);
+
+    ASSERT_TEST(w1.getValue() == 3*5);
+    ASSERT_TEST(w2.getValue() == 2*10);
+    ASSERT_TEST(w3.getValue() == 1*1);
+
+    ASSERT_TEST(w1 != w2);
+    ASSERT_TEST(w2 != w3);
+    ASSERT_TEST(w1 != w3);
+
+    ASSERT_TEST(w1 < w2);
+    ASSERT_TEST(w2 > w1);
+
+    Weapon w4("Different Lazer Gun", LIFE, 5);
+    ASSERT_TEST(w1 == w4);
+
+    Weapon w5("Strong Plastic Hammer", LEVEL, 15);
+    ASSERT_TEST(w1 == w5);
+
+    Weapon w6(w1);
+    ASSERT_TEST(w6 == w1);
+
+    Weapon w7 = w1 = w1;
+    ASSERT_TEST(w7 == w1);
+
+    return true;
+}
+
+bool warriorTest() {
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon weak_sword = Weapon("Weak Sword", LIFE, 1);
+    Warrior w1 = Warrior("Jerry", sword, false);
+    Warrior w2 = Warrior("George", sword, true);
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(!w1.fight(w2));
+    w2 = Warrior("George", weak_sword, true);
+    ASSERT_TEST((w1.fight(w2)));
+    ASSERT_TEST(!w2.isAlive());
+    w2 = Warrior("George", weak_sword, true);
+    w2.makeStep();
+    ASSERT_TEST(!w1.fight(w2));
+    ASSERT_TEST(!w2.fight(w1));
+    for (int i = 0; i < 4; ++i) {
+        w1.makeStep();
+        ASSERT_TEST(!w1.fight(w2));
+        ASSERT_TEST(!w2.fight(w1));
+    }
+    w1.makeStep();
+
+    Weapon level_gun = Weapon("Level Gun", LEVEL, 5);
+    ASSERT_THROW(Warrior w3 = Warrior("Kramer", level_gun, false);, IllegalWeapon);
+
+    return true;
+}
+
+bool wizardTest() {
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon staff = Weapon("Staff", LEVEL, 5);
+    Weapon wand = Weapon("Wand", LEVEL, 3);
+
+    ASSERT_THROW(Wizard w1 = Wizard("Jerry", sword, 5);, IllegalWeapon);
+
+    Wizard w1 = Wizard("Jerry", staff, 5);
+    Wizard w2 = Wizard("George", wand, 3);
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(w2.isAlive());
+    ASSERT_TEST(!w1.fight(w2));
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(w2.isAlive());
+
+    w2 = Wizard("George", wand, 10);
+    for (int i = 0; i < 10; ++i) {
+        w2.makeStep();
+    }
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(!w1.fight(w2));
+
+    w1 = Wizard("Jerry", staff, 20);
+    ASSERT_TEST(w2.fight(w1));
+
+    ASSERT_TEST(!w2.isAlive());
+    ASSERT_TEST(w1.isAlive());
+
+    w1 = Wizard("Jerry", wand, 20);
+    w2 = Wizard("George", staff, 10);
+    for (int i = 0; i < 15; ++i) {
+        w2.makeStep();
+    }
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(!w1.fight(w2));
+    for (int i = 0; i < 5; ++i) {
+        w1.makeStep();
+    }
+    ASSERT_TEST(w2.fight(w1));
+    ASSERT_TEST(w1.fight(w2));
+
+
+    return true;
+}
+
+bool trollTest() {
+    Weapon club = Weapon("Club", STRENGTH, 6);
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon staff = Weapon("Staff", LEVEL, 5);
+
+    Troll t1 = Troll("Danny Devito", sword, 5);
+    t1 = Troll("Danny Devito", staff, 5);
+    t1 = Troll("Danny Devito", sword, 5);
+    Troll t2 = Troll("Ron Kantorovich", staff, 5);
+    for (int i = 0; i < 30; ++i) {
+        t1.makeStep();
+        t2.makeStep();
     }
 
-    std::ostringstream stream; //saves the output
-    // Part 1
+    ASSERT_TEST(t1.fight(t2));
+    ASSERT_TEST(t1.isAlive());
+    ASSERT_TEST(t2.isAlive());
+    ASSERT_TEST(t1.fight(t2));
+    ASSERT_TEST(t1.isAlive());
+    ASSERT_TEST(!t2.isAlive());
 
-    int catches = 0;
-    Game g(4);
-    // player
-    try {
-        assert(g.addPlayer("p2", "ak47", LIFE, 2) == SUCCESS);
-        assert(g.addPlayer("p2", "ak47", LIFE, 2) == NAME_ALREADY_EXISTS);
-        assert(g.addPlayer("p1", "ak47", LEVEL, 2) == ILLEGAL_WEAPON);
-    } catch (...) {
-        cout << endl << "error 01! :o" << endl;
-        return;
+    return true;
+}
+
+bool gameTest() {
+    Game g1(4);
+    ASSERT_TEST(g1.addPlayer("Jerry", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Jerry", "not Sword", STRENGTH, 3) == NAME_ALREADY_EXISTS);
+    ASSERT_TEST(g1.addPlayer("George", "Sword", LIFE, 1) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Elaine", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Kramer", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == GAME_FULL);
+    ASSERT_TEST(g1.addPlayer("warrior", "level weapon", LEVEL, 4) == GAME_FULL);
+    ASSERT_TEST(g1.removeAllPlayersWithWeakWeapon(5) == true);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == NAME_ALREADY_EXISTS);
+    ASSERT_TEST(g1.addPlayer("George", "Sword", LIFE, 3) == GAME_FULL);
+    Game g2(4);
+    ASSERT_TEST(g2.addPlayer("warrior", "level weapon", LEVEL, 4) == ILLEGAL_WEAPON);
+
+    Game g3(3);
+    g3.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g3.addWizard("George", "Staff", LEVEL, 4, 3);
+    g3.addTroll("Kramer", "Club", STRENGTH, 3, 5);
+    ASSERT_THROW(g3.addWarrior("Jerry", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g3.addWarrior("Elaine", "Sword", STRENGTH, 5, false);, mtm::GameFull);
+
+    Game g4(100);
+    g4.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g4.addWizard("George", "Staff", LEVEL, 4, 3);
+    g4.addTroll("Kramer", "Club", STRENGTH, 3, 5);
+    ASSERT_THROW(g4.addWarrior("Jerry", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g4.addWarrior("Elaine", "Sword", LEVEL, 5, false);, mtm::IllegalWeapon);
+    ASSERT_THROW(g4.addTroll("Elaine", "Sword", LEVEL, 4, -5);, mtm::InvalidParam);
+    ASSERT_THROW(g4.addWizard("Elaine", "Sword", LEVEL, 4, -3);, mtm::InvalidParam);
+
+    Game g5(4);
+    g5.addWizard("George", "Staff", LEVEL, 5, 1);
+    g5.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g5.addTroll("Kramer", "Sword", LIFE, 3, 4);
+    g5.makeStep("George");
+    ASSERT_TEST(g5.makeStep("I dont exist") == NAME_DOES_NOT_EXIST);
+    ASSERT_TEST(g5.fight("Jerry", "George") == FIGHT_FAILED);
+    g5.addWizard("Elaine", "Staff", STRENGTH, 5, 10);
+    for (int i = 0; i < 11; ++i) {
+        g5.makeStep("Elaine");
     }
-
-
-    // warrior
-    try {
-        g.addWarrior("p1", "grenade", LEVEL, 3, true);
-    } catch (IllegalWeapon &e) {
-        ++catches;
+    ASSERT_TEST(g5.fight("Kramer", "Elaine") == FIGHT_FAILED);
+    ASSERT_THROW(g5.addWarrior("Kramer", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g5.addWarrior("Newman", "Sword", LIFE, 5, false);, mtm::GameFull);
+    g5.makeStep("Kramer");
+    ASSERT_TEST(g5.fight("Kramer", "Elaine") == SUCCESS);
+    ASSERT_TEST(g5.makeStep("Kramer") == NAME_DOES_NOT_EXIST);
+    g5.addWarrior("Newman", "Sword", LIFE, 5, false);
+    for (int i = 0; i < 5; ++i) {
+        g5.makeStep("Elaine");
     }
-    assert(catches == 1);
-    try {
-        g.addWarrior("p2", "grenade", STRENGTH, 3, true);
-    } catch (NameAlreadyExists &e) {
-        ++catches;
-    }
-    assert(catches == 2);
-    try {
-        g.addWarrior("p1", "grenade", STRENGTH, 3, true);
-    } catch (...) {
-        cout << endl << "error 02! :o" << endl;
-        return;
-    }
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == FIGHT_FAILED);
+    g5.makeStep("Jerry");
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == FIGHT_FAILED);
+    g5.makeStep("Jerry");
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == SUCCESS);
+    ASSERT_TEST(g5.makeStep("Jerry") == NAME_DOES_NOT_EXIST);
 
+    return true;
+}
 
-    // wizard
-    try {
-        g.addWizard("p4", "arrow", LIFE, 1, 2);
-    } catch (IllegalWeapon &e) {
-        ++catches;
-    }
-    assert(catches == 3);
-    try {
-        g.addWizard("p2", "arrow", LEVEL, 1, 2);
-    } catch (NameAlreadyExists &e) {
-        ++catches;
-    }
-    assert(catches == 4);
-    try {
-        g.addWizard("p4", "arrow", LEVEL, 1, -1);
-    } catch (InvalidParam &e) {
-        ++catches;
-    }
-    assert(catches == 5);
-    try {
-        g.addWizard("p4", "arrow", LEVEL, 1, 2);
-    } catch (...) {
-        cout << endl << "error 03! :o" << endl;
-        return;
-    }
+bool isJerry(const Player& player) {
+    return player.isPlayer("Jerry");
+}
 
+bool isNotJerry(const Player& player) {
+    return !isJerry(player);
+}
 
-    // troll
-    try {
-        g.addTroll("p2", "butterfly", LEVEL, 1, 2);
-    } catch (NameAlreadyExists &e) {
-        ++catches;
-    }
-    assert(catches == 6);
-    try {
-        g.addTroll("p3", "butterfly", LEVEL, 1, 0);
-    } catch (InvalidParam &e) {
-        ++catches;
-    }
-    assert(catches == 7);
-    try {
-        g.addTroll("p3", "f16", LEVEL, 1, 2);
-    } catch (...) {
-        cout << endl << "error 04! :o" << endl;
-        return;
-    }
+bool fcnTest() {
+    Game g1(4);
+    g1.addWarrior("Jerry", "sword", LIFE, 5, false);
+    g1.addWarrior("Elaine", "sword", STRENGTH, 5, false);
+    g1.addWizard("George", "axe", LEVEL, 5, 10);
+    g1.addTroll("Kramer", "polearm", STRENGTH, 5, 10);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+    g1.removePlayersIf(isJerry);
+    ASSERT_THROW(g1.fight("Jerry", "Elaine");, mtm::NameDoesNotExist);
+    g1.addWarrior("Jerry", "sword", LIFE, 5, false);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+    g1.removePlayersIf(isNotJerry);
+    ASSERT_THROW(g1.addWarrior("Jerry", "sword", LIFE, 5, false);, mtm::NameAlreadyExists);
+    g1.addWarrior("Elaine", "sword", STRENGTH, 5, false);
+    g1.addWarrior("George", "axe", LIFE, 5, false);
+    g1.addWarrior("Kramer", "polearm", STRENGTH, 5, false);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
 
-
-    // game is full
-    assert(g.addPlayer("p5", "sword", STRENGTH, 1) == GAME_FULL);
-    try {
-        g.addTroll("p5", "sword", STRENGTH, 1, 1);
-    } catch (GameFull &e) {
-        ++catches;
-    }
-    assert(catches == 8);
-    try {
-        g.addWarrior("p5", "sword", STRENGTH, 1, false);
-    } catch (GameFull &e) {
-        ++catches;
-    }
-    assert(catches == 9);
-    try {
-        g.addWizard("p5", "sword", STRENGTH, 1, 1);
-    } catch (GameFull &e) {
-        ++catches;
-    }
-    assert(catches == 10);
-
-
-    // other: NameDoesNotExist
-    try {
-        assert(g.makeStep("p5") == NAME_DOES_NOT_EXIST);
-        assert(g.addLife("p5") == NAME_DOES_NOT_EXIST);
-        assert(g.nextLevel("p5") == NAME_DOES_NOT_EXIST);
-        assert(g.addStrength("p5", 1) == NAME_DOES_NOT_EXIST);
-    } catch (...) {
-        cout << endl << "error 04! :o" << endl;
-        return;
-    }
-    try {
-        g.fight("p1", "p5");
-    } catch (NameDoesNotExist &e) {
-        ++catches;
-    }
-    assert(catches == 11);
-    // in fight you need to throw NameDoesNotExist and not return FIGHT_FAILED
-    try {
-        g.fight("p5", "p1");
-    } catch (NameDoesNotExist &e) {
-        ++catches;
-    }
-    assert(catches == 12);
-
-
-    // fight
-    try {
-        assert(g.fight("p4", "p3") == FIGHT_FAILED); // both has same value
-        assert(g.fight("p1", "p2") == FIGHT_FAILED); // both has same value
-
-        // print current. problem here most likely means your print is
-        // not sorted by order(p1, p2..)
-        stream << endl << g; // lines 1-4:
-
-        assert(g.makeStep("p4") == SUCCESS);
-        assert(g.makeStep("p4") == SUCCESS);
-        assert(g.makeStep("p4") == SUCCESS);
-        assert(g.fight("p4", "p3") == FIGHT_FAILED);
-        assert(g.makeStep("p3") == SUCCESS);
-        assert(g.makeStep("p3") == SUCCESS);
-        assert(g.fight("p4", "p3") == FIGHT_FAILED);
-        assert(g.addStrength("p4", 1) == SUCCESS);
-        assert(g.fight("p4", "p3") == FIGHT_FAILED);
-        assert(g.fight("p1", "p3") == FIGHT_FAILED);
-        assert(g.fight("p2", "p3") == FIGHT_FAILED);
-        assert(g.fight("p1", "p4") == FIGHT_FAILED);
-        assert(g.addLife("p3") == SUCCESS);
-        assert(g.addLife("p3") == SUCCESS);
-        assert(g.addLife("p3") == SUCCESS);
-        assert(g.addLife("p3") == SUCCESS);
-        assert(g.addLife("p3") == SUCCESS);
-
-        assert(g.makeStep("p2") == SUCCESS);
-        assert(g.makeStep("p2") == SUCCESS);
-        assert(g.makeStep("p2") == SUCCESS);
-        assert(g.makeStep("p2") == SUCCESS);
-        assert(g.fight("p2", "p3") == SUCCESS);
-
-        // print current: p3 is dead. if he is alive it means that his life
-        // has increased over the allowed limit using addLife
-        stream << endl << g; // lines 6-8:
-
-        assert(g.addLife("p4") == SUCCESS);
-        assert(g.addLife("p4") == SUCCESS);
-        assert(g.addLife("p4") == SUCCESS);
-        assert(g.fight("p2", "p4") == FIGHT_FAILED);
-        // nothing changed
-
-        assert(g.makeStep("p1") == SUCCESS);
-        assert(g.addLife("p4") == SUCCESS);
-        assert(g.addLife("p4") == SUCCESS);
-        assert(g.fight("p1", "p4") == FIGHT_FAILED);
-        // nothing changed
-
-        assert(g.makeStep("p4") == SUCCESS);
-        assert(g.makeStep("p4") == SUCCESS);
-        assert(g.addLife("p4") == SUCCESS);
-        assert(g.fight("p4", "p1") == SUCCESS);
-        // print current: p4 died.
-        stream << endl << g; // lines 10-11:
-
-    } catch (...) {
-        cout << endl << "error 05! :o  " <<endl;
-        return;
-    }
-
-
-    // Part 2:
-
-    try {
-        Game h(8);
-        assert(h.addPlayer("e", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("a", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("r", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("c", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("u", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("k", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("f", "-", STRENGTH, 1) == SUCCESS);
-        assert(h.addPlayer("g", "-", STRENGTH, 1) == SUCCESS);
-
-        class Name {
-            Warrior player;
-        public:
-            explicit Name(string const &name) : player(name, Weapon("atam", STRENGTH, 1), 0) {}
-
-            bool operator()(Player const &player) const {
-                return (player < this->player);
-            }
-        };
-
-        Name d("d");
-        h.removePlayersIf(d);
-        stream << endl << h; // lines 13-18
-
-        Name i("i");
-        h.removePlayersIf(i);
-        stream << endl << h; // lines 20-22
-        Name j("j");
-        h.removePlayersIf(j);
-        stream << endl << h; // lines 24-27
-
-
-        Name z("z");
-        h.removePlayersIf(z);
-        stream << endl << h; // line 28
-    } catch (...) {
-        cout << endl << "error 06! :o" << endl;
-        return;
-    }
-
-    // final check
-    string output = "\n" // lines 1-4:
-            "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
-            "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
-            "player 2: {player name: p3, weapon: {weapon name: f16, weapon value:1}},\n"
-            "player 3: {player name: p4, weapon: {weapon name: arrow, weapon value:1}},\n"
-            "\n" // lines 6-8:
-            "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
-            "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
-            "player 2: {player name: p4, weapon: {weapon name: arrow, weapon value:1}},\n"
-            "\n" // lines 10-11:
-            "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
-            "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
-            "\n" // lines 13-18:
-            "player 0: {player name: e, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 1: {player name: f, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 2: {player name: g, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 3: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 4: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 5: {player name: u, weapon: {weapon name: -, weapon value:2}},\n"
-            "\n" // lines 20-22:
-            "player 0: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 1: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 2: {player name: u, weapon: {weapon name: -, weapon value:2}},\n"
-            "\n" // lines 24-27:
-            "player 0: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 1: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
-            "player 2: {player name: u, weapon: {weapon name: -, weapon value:2}},\n\n";
-
-    int index = 0, line = 0;
-    for(char& c : stream.str()) {
-        if (c == '\n') ++line;
-        if (c != output[index++]) {
-            cout << "error with line: " << line << ", wrong char: " << c << endl;
-            cout << "should have been: " << output[index-1];
-            // if you got here: check your output manually in the source file.
-            // you can use cout instead of stream to see the output.
-            return;
-        }
-    }
-    cout << "okey dokey! " << endl;
+    return true;
 }
 
 int main() {
-    test1();
+
+    RUN_TEST(weaponTest);
+    RUN_TEST(gameTest);
+    RUN_TEST(fcnTest);
+
+    RUN_TEST(warriorTest);
+    RUN_TEST(wizardTest);
+    RUN_TEST(trollTest);
+
 }

@@ -29,10 +29,12 @@ class Game {
     vector<Player *> array_player;
     int last_player_in_the_array;
 
+
     /**
      * the function help the function fight to delete the user(if he dead)
      */
-    void helpFight();
+    //void helpFight();
+
 
     /**
      * ths function checl if one of the players dead, if yes, we remove them.

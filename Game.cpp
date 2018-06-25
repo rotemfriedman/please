@@ -82,20 +82,15 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
     }
 
 
-void Game::helpFight() {
-    delete this->array_player[this->last_player_in_the_array];
-    this->array_player[this->last_player_in_the_array] = nullptr;
-    this->last_player_in_the_array--;
-}
-
 void Game::fightCheckIfAlive() {
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {
         bool check_if_alive = this->array_player[i]->isAlive();
         if (check_if_alive == false) {
-            *this->array_player[i] =
-                    *this->array_player[last_player_in_the_array];
-            this->helpFight();
+            delete array_player[i];
+            array_player.erase(array_player.begin() + i);
+            last_player_in_the_array--;
             i--;
+            array_player.resize(maxPlayer, nullptr);
         }
     }
 }
