@@ -6,6 +6,7 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "mtm_exceptions.h"
+using namespace mtm;
 
 using std::string;
 using std::vector;
@@ -200,9 +201,10 @@ public:
  */
     template<class FCN>
     bool removePlayersIf(FCN &fcn) {
-        int check_if_remove = 0; //if change to 1, than we already remove players
+        int check_if_remove = 0;//if change to 1,than we already remove players
         for (int i = 0; i <= last_player_in_the_array; i++) {
-            if ((fcn(static_cast<Player const &> (*this->array_player[i])) == true) ){
+            if ((fcn(static_cast<Player const &> (*this->array_player[i])) ==
+                 true) ){
                 delete array_player[i];
                 array_player.erase(array_player.begin() + i);
                 last_player_in_the_array--;
@@ -225,7 +227,8 @@ public:
     class checkIfWeaponIsWeak{
         int weaponStrength;
     public:
-        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength(weaponStrength){
+        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength
+                                                          (weaponStrength){
         }
         bool operator()(Player const& player) const {
             return(player.weaponIsWeak(weaponStrength));
