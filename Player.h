@@ -45,6 +45,9 @@ protected:
  */
     Player(const string name, const Weapon &weapon);
 
+    /**
+     * the constructor of the player
+     */
     Player() = default;
 
 
@@ -233,7 +236,7 @@ public:
      * the function add 2 to thr troll position of player and check if
      * life<maxlife, if yes add 1 to his life
      */
-    void makeStep() override ;
+    void makeStep() override;
 };
 
 
@@ -247,10 +250,12 @@ public:
  * @param range
  */
     Wizard(string const &name, Weapon const &weapon, int range);
+
     /**
      * wizard destructor
      */
     ~Wizard() throw() override = default;
+
 /**
  * the function check if the wizard can attack (check the range,position and
  * mor)
