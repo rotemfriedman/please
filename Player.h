@@ -108,7 +108,7 @@ public:
 /**
  * increase the life of the player
  */
-    void addLife();
+    virtual void addLife();
 
 /**
  * add the value to the strength of the player
@@ -237,6 +237,14 @@ public:
      * life<maxlife, if yes add 1 to his life
      */
     void makeStep() override;
+
+
+    /**
+     * the function add life to the troll. if the maxlife==life of the troll,
+     * we will stop to add life
+     */
+    void addLife() override ;
+
 };
 
 

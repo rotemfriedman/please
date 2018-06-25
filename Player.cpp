@@ -173,6 +173,14 @@ void Troll::makeStep() {
         this->addLife();
 }
 
+
+void Troll::addLife(){
+    if(life<max_life)
+        this->life++;
+}
+
+
+
 //warrior
 Warrior::Warrior(string const &name, Weapon const &weapon, bool rider) :
         Player(name, weapon), rider(rider) {
