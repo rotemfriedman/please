@@ -46,7 +46,7 @@ protected:
     Player(const string name, const Weapon &weapon);
 
     /**
-     * the constructor of the player
+     * the constructor of the players
      */
     Player() = default;
 

@@ -1,3 +1,7 @@
+//
+// Created By Alon Libling
+//
+
 #include <cassert>
 #include <sstream>
 #include "Game.h"
@@ -6,8 +10,17 @@ using namespace std;
 using namespace mtm;
 
 void test1() {
-    std::ostringstream stream; //saves the output
+    {
+        int hi = 0;
+        assert(++hi);
+        if (!hi) {
+            cout << "This test requires asserts!" << endl;
+            cout << "Did you compile with DNDEBUG flag?" << endl;
+            return;
+        }
+    }
 
+    std::ostringstream stream; //saves the output
     // Part 1
 
     int catches = 0;
@@ -124,18 +137,19 @@ void test1() {
         cout << endl << "error 04! :o" << endl;
         return;
     }
-  //  try {
-  //      g.fight("p1", "p5");
-  //  } catch (NameDoesNotExist &e) {
-  //      ++catches;
-  //  }
-  //  assert(catches == 11);
-   // try {
-   //     g.fight("p5", "p1");
-   // } catch (NameDoesNotExist &e) {
-   //     ++catches;
-   // }
-   // assert(catches == 11);
+    try {
+        g.fight("p1", "p5");
+    } catch (NameDoesNotExist &e) {
+        ++catches;
+    }
+    assert(catches == 11);
+    // in fight you need to throw NameDoesNotExist and not return FIGHT_FAILED
+    try {
+        g.fight("p5", "p1");
+    } catch (NameDoesNotExist &e) {
+        ++catches;
+    }
+    assert(catches == 12);
 
 
     // fight
@@ -143,7 +157,8 @@ void test1() {
         assert(g.fight("p4", "p3") == FIGHT_FAILED); // both has same value
         assert(g.fight("p1", "p2") == FIGHT_FAILED); // both has same value
 
-        // print current
+        // print current. problem here most likely means your print is
+        // not sorted by order(p1, p2..)
         stream << endl << g; // lines 1-4:
 
         assert(g.makeStep("p4") == SUCCESS);
@@ -170,8 +185,9 @@ void test1() {
         assert(g.makeStep("p2") == SUCCESS);
         assert(g.fight("p2", "p3") == SUCCESS);
 
-        // print current: p3 is dead.
-        stream << endl << g; // lines 5-8:
+        // print current: p3 is dead. if he is alive it means that his life
+        // has increased over the allowed limit using addLife
+        stream << endl << g; // lines 6-8:
 
         assert(g.addLife("p4") == SUCCESS);
         assert(g.addLife("p4") == SUCCESS);
@@ -243,32 +259,32 @@ void test1() {
 
     // final check
     string output = "\n" // lines 1-4:
-                    "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
-                    "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
-                    "player 2: {player name: p3, weapon: {weapon name: f16, weapon value:1}},\n"
-                    "player 3: {player name: p4, weapon: {weapon name: arrow, weapon value:1}},\n"
-                    "\n" // lines 5-8:
-                    "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
-                    "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
-                    "player 2: {player name: p4, weapon: {weapon name: arrow, weapon value:1}},\n"
-                    "\n" // lines 10-11:
-                    "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
-                    "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
-                    "\n" // lines 13-18:
-                    "player 0: {player name: e, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 1: {player name: f, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 2: {player name: g, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 3: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 4: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 5: {player name: u, weapon: {weapon name: -, weapon value:2}},\n"
-                    "\n" // lines 20-22:
-                    "player 0: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 1: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 2: {player name: u, weapon: {weapon name: -, weapon value:2}},\n"
-                    "\n" // lines 24-27:
-                    "player 0: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 1: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
-                    "player 2: {player name: u, weapon: {weapon name: -, weapon value:2}},\n\n";
+            "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
+            "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
+            "player 2: {player name: p3, weapon: {weapon name: f16, weapon value:1}},\n"
+            "player 3: {player name: p4, weapon: {weapon name: arrow, weapon value:1}},\n"
+            "\n" // lines 6-8:
+            "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
+            "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
+            "player 2: {player name: p4, weapon: {weapon name: arrow, weapon value:1}},\n"
+            "\n" // lines 10-11:
+            "player 0: {player name: p1, weapon: {weapon name: grenade, weapon value:6}},\n"
+            "player 1: {player name: p2, weapon: {weapon name: ak47, weapon value:6}},\n"
+            "\n" // lines 13-18:
+            "player 0: {player name: e, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 1: {player name: f, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 2: {player name: g, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 3: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 4: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 5: {player name: u, weapon: {weapon name: -, weapon value:2}},\n"
+            "\n" // lines 20-22:
+            "player 0: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 1: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 2: {player name: u, weapon: {weapon name: -, weapon value:2}},\n"
+            "\n" // lines 24-27:
+            "player 0: {player name: k, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 1: {player name: r, weapon: {weapon name: -, weapon value:2}},\n"
+            "player 2: {player name: u, weapon: {weapon name: -, weapon value:2}},\n\n";
 
     int index = 0, line = 0;
     for(char& c : stream.str()) {
@@ -276,10 +292,12 @@ void test1() {
         if (c != output[index++]) {
             cout << "error with line: " << line << ", wrong char: " << c << endl;
             cout << "should have been: " << output[index-1];
+            // if you got here: check your output manually in the source file.
+            // you can use cout instead of stream to see the output.
             return;
         }
     }
-    cout << "okey dokey";
+    cout << "okey dokey! " << endl;
 }
 
 int main() {

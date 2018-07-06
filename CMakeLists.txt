@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 11)
 
 
 add_executable(hw5-new main.cpp Game.cpp Game.h Weapon.cpp Weapon.h Player.cpp
-        Player.h mtm_exceptions.h)
+        Player.h mtm_exceptions.h )

@@ -68,7 +68,6 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
         if (check_if_the_player2_exist == true)
             player2_place_in_the_array = i;
     }
-    try {
         if (player1_place_in_the_array == -1 ||
             player2_place_in_the_array == -1)
             throw mtm::NameDoesNotExist();
@@ -81,11 +80,6 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
         else
             return SUCCESS;
     }
-    catch (mtm::NameDoesNotExist &e) {
-        cout << "NameDoesNotExist" << endl;
-    }
-    return SUCCESS;
-}
 
 
 void Game::helpFight() {
