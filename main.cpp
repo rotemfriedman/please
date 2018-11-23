@@ -1,388 +1,265 @@
+//
+// Created by ron on 28/05/18.
+//
+
+#include <sstream>
+#include <cstring>
+#include <string>
+
+#include "Weapon.h"
+#include "Player.h"
 #include "Game.h"
 #include "test_utilities.h"
+#include "mtm_exceptions.h"
+//#include "Warrior.h"
+//#include "Wizard.h"
+//#include "Troll.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
+using mtm::IllegalWeapon;
+using mtm::InvalidParam;
+using mtm::NameAlreadyExists;
+using mtm::GameFull;
+using mtm::NameDoesNotExist;
 
-void GameAddPlayerTest() {
-    _print_mode_name("Testing GameAddPlayer function");
-    Game game(3);
-    test(game.addPlayer("Censor", "integral", LIFE, 3) != SUCCESS,
-         "GameAddPlayer doesn't return SUCCESS on successful addition",
-         __LINE__);
-    test(game.addPlayer("Censor", "integral", LIFE, 3) != NAME_ALREADY_EXISTS,
-         "GameAddPlayer doesn't return NAME_ALREADY_EXISTS error",
-         __LINE__);
-    game.addPlayer("Alex", "derivative", LIFE, 3);
-    //Checking whether addPlayer adds a non-rider warrior..
-    game.addWarrior("Anubis", "Claw", LIFE, 1, false);
-    game.makeStep("Anubis");
-    game.makeStep("Alex");
-    game.fight("Anubis", "Alex"); // both should be in same cell.
-    silient_test_passed();
-    game.addWarrior("Anubis", "Claw", LIFE, 1, false);
-    test(game.addPlayer("Aliza", "Matrix", LIFE, 5) != GAME_FULL,
-         "GameAddPlayer doesn't return GAME_FULL on error",
-         __LINE__);
+bool weaponTest() {
+    Weapon w1("Lazer Gun", LIFE, 5);
+    Weapon w2("Assault Riglt", STRENGTH, 10);
+    Weapon w3("Plastic Hammer", LEVEL, 1);
+
+    ASSERT_TEST(w1.getTarget() == LIFE);
+    ASSERT_TEST(w2.getTarget() == STRENGTH);
+    ASSERT_TEST(w3.getTarget() == LEVEL);
+
+    ASSERT_TEST(w1.getHitStrength() == 5);
+    ASSERT_TEST(w2.getHitStrength() == 10);
+    ASSERT_TEST(w3.getHitStrength() == 1);
+
+    ASSERT_TEST(w1.getValue() == 3*5);
+    ASSERT_TEST(w2.getValue() == 2*10);
+    ASSERT_TEST(w3.getValue() == 1*1);
+
+    ASSERT_TEST(w1 != w2);
+    ASSERT_TEST(w2 != w3);
+    ASSERT_TEST(w1 != w3);
+
+    ASSERT_TEST(w1 < w2);
+    ASSERT_TEST(w2 > w1);
+
+    Weapon w4("Different Lazer Gun", LIFE, 5);
+    ASSERT_TEST(w1 == w4);
+
+    Weapon w5("Strong Plastic Hammer", LEVEL, 15);
+    ASSERT_TEST(w1 == w5);
+
+    Weapon w6(w1);
+    ASSERT_TEST(w6 == w1);
+
+    Weapon w7 = w1 = w1;
+    ASSERT_TEST(w7 == w1);
+
+    return true;
 }
 
-void GameNextLevelTest() {
-    _print_mode_name("Testing GameNextLevel function");
-    Game game(1);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 5);
-    test(game.nextLevel("Linoy") != SUCCESS,
-         "GameNextLevel doesn't return SUCCESS on successful increase of lvl",
-         __LINE__);
-    test(game.nextLevel("Moshe") != NAME_DOES_NOT_EXIST,
-         "GameNextLevel doesn't return NAME_DOES_NOT_EXIST on player which doesn't exists.",
-         __LINE__);
+bool warriorTest() {
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon weak_sword = Weapon("Weak Sword", LIFE, 1);
+    Warrior w1 = Warrior("Jerry", sword, false);
+    Warrior w2 = Warrior("George", sword, true);
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(!w1.fight(w2));
+    w2 = Warrior("George", weak_sword, true);
+    ASSERT_TEST((w1.fight(w2)));
+    ASSERT_TEST(!w2.isAlive());
+    w2 = Warrior("George", weak_sword, true);
+    w2.makeStep();
+    ASSERT_TEST(!w1.fight(w2));
+    ASSERT_TEST(!w2.fight(w1));
+    for (int i = 0; i < 4; ++i) {
+        w1.makeStep();
+        ASSERT_TEST(!w1.fight(w2));
+        ASSERT_TEST(!w2.fight(w1));
+    }
+    w1.makeStep();
+
+    Weapon level_gun = Weapon("Level Gun", LEVEL, 5);
+    ASSERT_THROW(Warrior w3 = Warrior("Kramer", level_gun, false);, IllegalWeapon);
+
+    return true;
 }
 
-void GameMakeStepTest() {
-    _print_mode_name("Testing GameMakeStep function");
-    Game game(1);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 5);
-    test(game.makeStep("Linoy") != SUCCESS,
-         "GameMakeStep doesn't return SUCCES on successful step.",
-         __LINE__);
-    test(game.makeStep("Chris") != NAME_DOES_NOT_EXIST,
-         "GameMakeStep doesn't return NAME_DOES_NOT_EXISTS on player which doesn't exists.",
-         __LINE__);
+bool wizardTest() {
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon staff = Weapon("Staff", LEVEL, 5);
+    Weapon wand = Weapon("Wand", LEVEL, 3);
+
+    ASSERT_THROW(Wizard w1 = Wizard("Jerry", sword, 5);, IllegalWeapon);
+
+    Wizard w1 = Wizard("Jerry", staff, 5);
+    Wizard w2 = Wizard("George", wand, 3);
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(w2.isAlive());
+    ASSERT_TEST(!w1.fight(w2));
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(w2.isAlive());
+
+    w2 = Wizard("George", wand, 10);
+    for (int i = 0; i < 10; ++i) {
+        w2.makeStep();
+    }
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(!w1.fight(w2));
+
+    w1 = Wizard("Jerry", staff, 20);
+    ASSERT_TEST(w2.fight(w1));
+
+    ASSERT_TEST(!w2.isAlive());
+    ASSERT_TEST(w1.isAlive());
+
+    w1 = Wizard("Jerry", wand, 20);
+    w2 = Wizard("George", staff, 10);
+    for (int i = 0; i < 15; ++i) {
+        w2.makeStep();
+    }
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(!w1.fight(w2));
+    for (int i = 0; i < 5; ++i) {
+        w1.makeStep();
+    }
+    ASSERT_TEST(w2.fight(w1));
+    ASSERT_TEST(w1.fight(w2));
+
+
+    return true;
 }
 
-void GameAddLifeTest() {
-    _print_mode_name("Testing GameAddLife function");
-    Game game(1);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 5);
-    test(game.addLife("Linoy") != SUCCESS,
-         "GameAddLife doesn't return SUCCESS on successful step.",
-         __LINE__);
-    test(game.addLife("Chris") != NAME_DOES_NOT_EXIST,
-         "GameAddLife doesn't return NAME_DOES_NOT_EXISTS on player which doesn't exists.",
-         __LINE__);
+bool trollTest() {
+    Weapon club = Weapon("Club", STRENGTH, 6);
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon staff = Weapon("Staff", LEVEL, 5);
+
+    Troll t1 = Troll("Danny Devito", sword, 5);
+    t1 = Troll("Danny Devito", staff, 5);
+    t1 = Troll("Danny Devito", sword, 5);
+    Troll t2 = Troll("Ron Kantorovich", staff, 5);
+    for (int i = 0; i < 30; ++i) {
+        t1.makeStep();
+        t2.makeStep();
+    }
+
+    ASSERT_TEST(t1.fight(t2));
+    ASSERT_TEST(t1.isAlive());
+    ASSERT_TEST(t2.isAlive());
+    ASSERT_TEST(t1.fight(t2));
+    ASSERT_TEST(t1.isAlive());
+    ASSERT_TEST(!t2.isAlive());
+
+    return true;
 }
 
-void GameAddStrengthTest() {
-    _print_mode_name("Testing GameAddStrength function");
-    Game game(1);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 5);
-    test(game.addStrength("Linoy", 5) != SUCCESS,
-         "GameAddLife doesn't return SUCCESS on successful step.",
-         __LINE__);
-    test(game.addStrength("Chris", 5) != NAME_DOES_NOT_EXIST,
-         "GameAddStrength doesn't return NAME_DOES_NOT_EXISTS on player which doesn't exists.",
-         __LINE__);
-    test(game.addStrength("Linoy", -1) != INVALID_PARAM,
-         "GameAddStrength doesn't return INVALID_PARAM on negative strength input.",
-         __LINE__);
+bool gameTest() {
+    Game g1(4);
+    ASSERT_TEST(g1.addPlayer("Jerry", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Jerry", "not Sword", STRENGTH, 3) == NAME_ALREADY_EXISTS);
+    ASSERT_TEST(g1.addPlayer("George", "Sword", LIFE, 1) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Elaine", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Kramer", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == GAME_FULL);
+    ASSERT_TEST(g1.addPlayer("warrior", "level weapon", LEVEL, 4) == GAME_FULL);
+    ASSERT_TEST(g1.removeAllPlayersWithWeakWeapon(5) == true);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == NAME_ALREADY_EXISTS);
+    ASSERT_TEST(g1.addPlayer("George", "Sword", LIFE, 3) == GAME_FULL);
+    Game g2(4);
+    ASSERT_TEST(g2.addPlayer("warrior", "level weapon", LEVEL, 4) == ILLEGAL_WEAPON);
+
+    Game g3(3);
+    g3.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g3.addWizard("George", "Staff", LEVEL, 4, 3);
+    g3.addTroll("Kramer", "Club", STRENGTH, 3, 5);
+    ASSERT_THROW(g3.addWarrior("Jerry", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g3.addWarrior("Elaine", "Sword", STRENGTH, 5, false);, mtm::GameFull);
+
+    Game g4(100);
+    g4.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g4.addWizard("George", "Staff", LEVEL, 4, 3);
+    g4.addTroll("Kramer", "Club", STRENGTH, 3, 5);
+    ASSERT_THROW(g4.addWarrior("Jerry", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g4.addWarrior("Elaine", "Sword", LEVEL, 5, false);, mtm::IllegalWeapon);
+    ASSERT_THROW(g4.addTroll("Elaine", "Sword", LEVEL, 4, -5);, mtm::InvalidParam);
+    ASSERT_THROW(g4.addWizard("Elaine", "Sword", LEVEL, 4, -3);, mtm::InvalidParam);
+
+    Game g5(4);
+    g5.addWizard("George", "Staff", LEVEL, 5, 1);
+    g5.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g5.addTroll("Kramer", "Sword", LIFE, 3, 4);
+    g5.makeStep("George");
+    ASSERT_TEST(g5.makeStep("I dont exist") == NAME_DOES_NOT_EXIST);
+    ASSERT_TEST(g5.fight("Jerry", "George") == FIGHT_FAILED);
+    g5.addWizard("Elaine", "Staff", STRENGTH, 5, 10);
+    for (int i = 0; i < 11; ++i) {
+        g5.makeStep("Elaine");
+    }
+    ASSERT_TEST(g5.fight("Kramer", "Elaine") == FIGHT_FAILED);
+    ASSERT_THROW(g5.addWarrior("Kramer", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g5.addWarrior("Newman", "Sword", LIFE, 5, false);, mtm::GameFull);
+    g5.makeStep("Kramer");
+    ASSERT_TEST(g5.fight("Kramer", "Elaine") == SUCCESS);
+    ASSERT_TEST(g5.makeStep("Kramer") == NAME_DOES_NOT_EXIST);
+    g5.addWarrior("Newman", "Sword", LIFE, 5, false);
+    for (int i = 0; i < 5; ++i) {
+        g5.makeStep("Elaine");
+    }
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == FIGHT_FAILED);
+    g5.makeStep("Jerry");
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == FIGHT_FAILED);
+    g5.makeStep("Jerry");
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == SUCCESS);
+    ASSERT_TEST(g5.makeStep("Jerry") == NAME_DOES_NOT_EXIST);
+
+    return true;
 }
 
-void GameRemoveAllPlayersWIthWeakWeaponTest() {
-    _print_mode_name("Testing GameRemoveAllPlayersWIthWeakWeapon function");
-    Game game(6);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 1);
-    game.addPlayer("Nazar", "lazer gun", LIFE, 7);
-    game.addPlayer("Max", "lazer gun", LIFE, 3);
-    game.addPlayer("Guy", "lazer gun", STRENGTH, 4);
-    game.removeAllPlayersWithWeakWeapon(6);
-    test(game.addPlayer("Linoy", "lazer gun", LIFE, 5) != SUCCESS,
-         "GameRemoveAllPlayersWIthWeakWeapon didn't remove the player correctly.",
-         __LINE__);
-    test(game.addPlayer("Nazar", "lazer gun", LIFE, 5) != NAME_ALREADY_EXISTS,
-         "GameRemoveAllPlayersWIthWeakWeapon removes players with weapon value higher than required.",
-         __LINE__);
-    test(game.addPlayer("Max", "lazer gun", LIFE, 5) != NAME_ALREADY_EXISTS,
-         "GameRemoveAllPlayersWIthWeakWeapon removes players with weapon value higher than required.",
-         __LINE__);
-    test(game.addPlayer("Guy", "lazer gun", LIFE, 5) != NAME_ALREADY_EXISTS,
-         "GameRemoveAllPlayersWIthWeakWeapon removes players with weapon value higher than required.",
-         __LINE__);
+bool isJerry(const Player& player) {
+    return player.isPlayer("Jerry");
 }
 
-void GameAddWarriorTest() {
-    _print_mode_name("Testing GameAddWarrior function");
-    Game game(2);
-    game.addWarrior("Thrall", "Mace", LIFE, 100500, false);
-    try {
-        game.addWarrior("Thrall", "Mace", LIFE, 100500, false);
-    }
-    catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    try {
-        game.addWarrior("Illidan Stormrage", "Warglaives of Azzinoth",
-                        LEVEL, 70, false);
-    }
-    catch (mtm::IllegalWeapon& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.addWarrior("Garrosh Hellscream", "2H-Mace", LIFE, 9001, false);
-    try {
-        game.addWarrior("Grom Hellscream", "Axe", LIFE, 1000, false);
-    }
-    catch (mtm::GameFull& a) {
-        test(false, "NOERROR", __LINE__);
-    }
+bool isNotJerry(const Player& player) {
+    return !isJerry(player);
 }
 
-void GameAddWizardTest() {
-    _print_mode_name("Testing GameWizard function");
-    Game game(2);
-    game.addWizard("Gandalf", "StafF", LEVEL, 100500, 5);
-    try {
-        game.addWizard("Gandalf", "Staff", LEVEL, 100500, 5);
-    }
-    catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    try {
-        game.addWizard("Saruman", "Staff", LIFE, 100500, 5);
-    }
-    catch (mtm::IllegalWeapon& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    try {
-        game.addWizard("Saruman", "Staff", LEVEL, 9001, -1);
-    }
-    catch (mtm::InvalidParam& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.addWizard("Saruman", "Staff", LEVEL, 9001, 5);
-    try {
-        game.addWizard("Galadriel", "Telepathy", LEVEL, 9000, 5);
-    }
-    catch (mtm::GameFull& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-}
+bool fcnTest() {
+    Game g1(4);
+    g1.addWarrior("Jerry", "sword", LIFE, 5, false);
+    g1.addWarrior("Elaine", "sword", STRENGTH, 5, false);
+    g1.addWizard("George", "axe", LEVEL, 5, 10);
+    g1.addTroll("Kramer", "polearm", STRENGTH, 5, 10);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+    g1.removePlayersIf(isJerry);
+    ASSERT_THROW(g1.fight("Jerry", "Elaine");, mtm::NameDoesNotExist);
+    g1.addWarrior("Jerry", "sword", LIFE, 5, false);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+    g1.removePlayersIf(isNotJerry);
+    ASSERT_THROW(g1.addWarrior("Jerry", "sword", LIFE, 5, false);, mtm::NameAlreadyExists);
+    g1.addWarrior("Elaine", "sword", STRENGTH, 5, false);
+    g1.addWarrior("George", "axe", LIFE, 5, false);
+    g1.addWarrior("Kramer", "polearm", STRENGTH, 5, false);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
 
-void GameAddTrollTest() {
-    _print_mode_name("Testing GameTroll function");
-    Game game(2);
-    game.addTroll("Grendel", "LongLongMace", LIFE, 100500, 5);
-    try {
-        game.addTroll("Grendel", "LongLongMace", LIFE, 100500, 5);
-    }
-    catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    try {
-        game.addTroll("Dunker", "Fists", LIFE, 9001, 0);
-    }
-    catch (mtm::InvalidParam& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    try {
-        game.addTroll("Dunker", "Fists", LIFE, 9001, -1);
-    }
-    catch (mtm::InvalidParam& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.addTroll("Hrungnir", "Mace", LIFE, 9001, 5);
-    try {
-        game.addTroll("Dovregubben", "Fists", LIFE, 9000, 5);
-    }
-    catch (mtm::GameFull& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-}
-
-void GameFightPart1Test() {
-    _print_mode_name("Testing GameFight function part 1");
-    Game game(10);
-    game.addPlayer("Roi", "lazer gun", LIFE, 2);
-    game.addPlayer("Guy", "lazer gun", STRENGTH, 2);
-    game.addPlayer("Kevin", "lazer gun", STRENGTH, 2);
-    game.addPlayer("Linoy", "lazer gun", LIFE, 1);
-    game.addPlayer("Markus", "lazer gun", STRENGTH, 1);
-    game.addPlayer("Max", "lazer gun", LIFE, 2);
-    game.addPlayer("Nazar", "lazer gun", LIFE, 2);
-    game.addPlayer("Terry", "lazer gun", LIFE, 1);
-    game.addPlayer("Alex", "sword", STRENGTH, 9);
-    game.makeStep("Markus");
-    game.makeStep("Linoy");
-    game.makeStep("Nazar");
-    game.makeStep("Kevin");
-    game.makeStep("Terry");
-    game.makeStep("Roi");
-    game.makeStep("Max");
-    game.makeStep("Max");
-    game.fight("Terry", "Roi");
-    game.fight("Markus", "Kevin");
-    test(game.fight("Linoy", "Nazar") != SUCCESS,
-         "GameFight didn't return SUCCESS on valid fight.",
-         __LINE__);
-    try { //Linoy died in previous fight.
-        game.fight("Linoy", "Nazar");
-    } catch (mtm::NameDoesNotExist& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    test(game.addPlayer("Linoy", "lazer gun", LIFE, 1) != SUCCESS,
-         "GameFight didn't remove dead player after fight(Linoy) died due to Level = 0.",
-         __LINE__);
-    test(game.addPlayer("Terry", "lazer gun", LIFE, 1) != SUCCESS,
-         "GameFight didn't remove dead player after fight(Terry) died due to Life = 0.",
-         __LINE__);
-    test(game.addPlayer("Markus", "lazer gun", LIFE, 1) != SUCCESS,
-         "GameFight didn't remove dead player after fight(Markus) died due to Strength = 0.",
-         __LINE__);
-    test(game.fight("Nazar", "Max") != FIGHT_FAILED,
-         "GameFight didn't return FIGHT_FAILED when 2 players were in different cells.",
-         __LINE__);
-    try { //Player1 doesn't exists
-        game.fight("Player1", "Max");
-    } catch (mtm::NameDoesNotExist& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    try { //Player1 doesn't exists
-        game.fight("Max", "Player1");
-    } catch (mtm::NameDoesNotExist& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.addStrength("Max", 10);
-    game.fight("Max", "Alex");
-    try { // "GameFight calculates hitStrength wrong(Max died, he had 10 strength and alex hits for 9)."
-        game.addPlayer("Max", "lazer gun", LIFE, 2);
-    } catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.nextLevel("Linoy");
-    game.nextLevel("Linoy"); // Linoy level should be 3 now
-    game.fight("Linoy", "Nazar");
-    try { //Linoy shouldn't die.
-        game.addPlayer("Linoy", "lazer gun", LIFE, 2);
-    } catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.addLife("Linoy");
-    game.addLife("Linoy"); // Linoy life is now 3
-    game.fight("Linoy", "Roi");
-    try { //Linoy shouldn't die.
-        game.addPlayer("Linoy", "lazer gun", LIFE, 2);
-    } catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-}
-
-void GameFightPart2Test() {
-    _print_mode_name("Testing GameFight function part 2");
-    Game game(10);
-    game.addWarrior("Varian Wrynn", "Sword", LIFE, 1, true);
-    game.addWarrior("Thrall", "Mace", LIFE, 2, false);
-    game.addWizard("Gandalf", "Staff", LEVEL, 4, 6);
-    game.addWizard("Saruman", "Staff", LEVEL, 4, 2);
-    game.addTroll("Dovregubben", "Fists", LIFE, 1, 5);
-    game.makeStep("Varian Wrynn");
-    game.makeStep("Thrall");
-    for (int i = 0; i < 10; i++) {
-        game.nextLevel("Varian Wrynn");
-        game.addLife("Gandalf");
-    }
-    test(game.fight("Varian Wrynn", "Thrall") != FIGHT_FAILED,
-         "GameFight didn't return FIGHT_FAILED when warriors were in different cells",
-         __LINE__);
-    test(game.fight("Varian Wrynn", "Saruman") != FIGHT_FAILED,
-         "GameFight didn't return FIGHT_FAILED when wizard had not enough range to attack.",
-         __LINE__);
-    test(game.fight("Varian Wrynn", "Gandalf") != SUCCESS,
-         "GameFight didn't return SUCCESS when wizard had enough range to attack.",
-         __LINE__);
-    test(game.fight("Gandalf", "Dovregubben")
-         != FIGHT_FAILED, //https://moodle.technion.ac.il/mod/hsuforum/discuss.php?d=612 link with the clarification.
-         "GameFight didn't return FIGHT_FAILED when wizard had better so the troll couldn't attack him even when they are in same cell",
-         __LINE__);
-    game.addLife("Dovregubben");
-    game.makeStep("Thrall");
-    game.makeStep("Dovregubben"); //he should have 3 life now due to regeneration
-    game.fight("Dovregubben", "Thrall");
-    try { //Dovregubben shouldn't die he has 3 life's and Thrall hits for 2.
-        game.addTroll("Dovregubben", "Fists", LIFE, 1, 5);
-    } catch (mtm::NameAlreadyExists& a) {
-        test(false, "NOERROR", __LINE__);
-    }
-    game.addWarrior("Geralt of Rivia", "Sword", LIFE, 5, true);
-    game.addTroll("Hrungnir", "Mace", LIFE, 1, 4);
-    game.makeStep("Geralt of Rivia");
-    game.makeStep("Geralt of Rivia"); // position = 10 (rider).
-    for (int j = 0; j < 5; ++j) {
-        game.makeStep("Hrungnir");
-    } // position = troll (+=2 each step).
-    test(game.fight("Hrungnir", "Geralt of Rivia") != SUCCESS,
-         "GameFight didn't return SUCCESS on valid fight(either troll ain't walking properly or rider).",
-         __LINE__);
-    //After this fight troll should die, he could regen his HP only to 4(which is max) and Geralt hits for 5)
-    //Next line shouldn't throw an exception.
-    game.addTroll("Hrungnir", "Mace", LIFE, 1, 4);
-    game.addWarrior("Konnan", "Axe", LIFE, 50000, true);
-    game.makeStep("Konnan");
-    test(game.fight("Gandalf", "Konnan") != FIGHT_FAILED,
-         "GameFight didn't return FIGHT_FAILED when wizard had worse weapon but warrior couldn't attack him due to range.",
-         __LINE__);
-    silient_test_passed();
-}
-
-
-class ifLowerName {
-    Wizard w;
-public:
-    explicit ifLowerName(string s) : w(s, Weapon("Staff", LEVEL, 1), 1) {}
-    bool operator()(Player const& player) const {
-        return w > player;
-    }
-};
-
-void GameRemovePlayerIfTest() {
-    Game game(5);
-    game.addWarrior("l", "", LIFE, 10, false);
-    game.addWizard("k", "", LEVEL, 10, 1);
-    game.addTroll("a", "", LIFE, 10, 50);
-    game.addWarrior("b", "", LIFE, 10, false);
-    game.addWarrior("z", "", LIFE, 10, false);
-    string s("k");
-    string s2("z");
-    string s3("~"); //Should remove every player cuz of it's ascii value.
-    ifLowerName Lower(s);
-    ifLowerName Lower2(s2);
-    ifLowerName Lower3(s3);
-    test(!game.removePlayersIf(Lower),
-         "Function should remove players A,B,L",
-         __LINE__);
-    test(!game.removePlayersIf(Lower2),
-         "Function should remove player K",
-         __LINE__);
-    test(game.removePlayersIf(Lower2),
-         "Player shouldn't be removed, player with the name \"Z\" coulnn't be removed by Z itself.",
-         __LINE__);
-    test(!game.removePlayersIf(Lower3),
-         "Removing all players",
-         __LINE__);
-    test(game.removePlayersIf(Lower3),
-         "There are no players, shouldn't remove anything.",
-         __LINE__);
+    return true;
 }
 
 int main() {
-    cout <<
-         "\nWelcome to the homework MTM 5 Call of Matam Duties tests"
-                 "\nThe tests were written by: Vova Parakhin."
-                 "\n\n------Passing those tests won't"
-                 " guarantee you a good grade------\nBut they might get you closer"
-                 ",make some tests yourself to be sure.\n\n";
-    cout << "You can change w/e you want in the file itself"
-            " but make sure \nto contact me if you want to upload";
-    cout << " \'upgraded version\' of the file.\n" << endl;
-    getEnter();
-    GameAddPlayerTest();
-    GameNextLevelTest();
-    GameMakeStepTest();
-    GameAddLifeTest();
-    GameAddStrengthTest();
-    GameRemoveAllPlayersWIthWeakWeaponTest();
-    GameAddTrollTest();
-    GameAddWizardTest();
-    GameAddWarriorTest();
-    GameFightPart1Test();
-    GameFightPart2Test();
-    GameRemovePlayerIfTest();
-    print_grade();
-    return 0;
+
+    RUN_TEST(weaponTest);
+    RUN_TEST(gameTest);
+    RUN_TEST(fcnTest);
+
+    RUN_TEST(warriorTest);
+    RUN_TEST(wizardTest);
+    RUN_TEST(trollTest);
+
 }

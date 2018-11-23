@@ -10,6 +10,7 @@ Weapon::Weapon(const string name, Target target, int hit_strength) :
     this->name = name;
 }
 
+
 Target Weapon::getTarget() const {
     return this->target;
 }

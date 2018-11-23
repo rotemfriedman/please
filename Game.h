@@ -6,9 +6,12 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "mtm_exceptions.h"
+using namespace mtm;
 
 using std::string;
 using std::vector;
+using std::swap;
+
 
 enum GameStatus {
     NAME_ALREADY_EXISTS,
@@ -26,10 +29,12 @@ class Game {
     vector<Player *> array_player;
     int last_player_in_the_array;
 
+
     /**
      * the function help the function fight to delete the user(if he dead)
      */
-    void helpFight();
+    //void helpFight();
+
 
     /**
      * ths function checl if one of the players dead, if yes, we remove them.
@@ -53,7 +58,7 @@ class Game {
  * @param player1
  * @param player2
  */
-    void swap(Player &player1, Player &player2);
+    void swap(Player* &player1, Player* &player2);
 
 
 public:
@@ -198,15 +203,16 @@ public:
  */
     template<class FCN>
     bool removePlayersIf(FCN &fcn) {
-        int check_if_remove = 0; //if change to 1, than we already remove players
+        int check_if_remove = 0;//if change to 1,than we already remove players
         for (int i = 0; i <= last_player_in_the_array; i++) {
-            if ((fcn(static_cast<Player const &> (*this->array_player[i])) == true) ){
-                *this->array_player[i] = *this->array_player[last_player_in_the_array];
-                delete (array_player[last_player_in_the_array]);
-                array_player[last_player_in_the_array] = NULL;
+            if ((fcn(static_cast<Player const &> (*this->array_player[i])) ==
+                 true) ){
+                delete array_player[i];
+                array_player.erase(array_player.begin() + i);
                 last_player_in_the_array--;
                 check_if_remove = 1;
                 i--;
+                array_player.resize(maxPlayer, nullptr);
             }
         }
         if (check_if_remove == 1)
@@ -223,7 +229,8 @@ public:
     class checkIfWeaponIsWeak{
         int weaponStrength;
     public:
-        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength(weaponStrength){
+        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength
+                                                          (weaponStrength){
         }
         bool operator()(Player const& player) const {
             return(player.weaponIsWeak(weaponStrength));

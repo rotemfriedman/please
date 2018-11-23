@@ -12,7 +12,6 @@ Player::Player(const string name, const Weapon &weapon) :
 }
 
 
-
 void Player::nextLevel() {
     this->level++;
 }
@@ -84,7 +83,7 @@ bool Player::fight(Player &player) {
         int damage = player.weapon_of_player.getHitStrength();
         help_fight(*this, damage, target1);
         return true;
-    } else if (this->canAttack(player)) {  //weapon of this stronger then player
+    } else if (this->canAttack(player)) { //weapon of this stronger then player
         Target target2 = weapon2.getTarget();
         int damage = this->weapon_of_player.getHitStrength();
         help_fight(player, damage, target2);
@@ -141,10 +140,10 @@ Weapon Player::getWeapon(Player &player) {
 
 //wizard
 Wizard::Wizard(string const &name, Weapon const &weapon, int range) :
-Player(name, weapon), range(range) {
-        if (range < 0)
+        Player(name, weapon), range(range) {
+    if (range < 0)
         throw mtm::InvalidParam();
-        if (weapon.getTarget() == LIFE)
+    if (weapon.getTarget() == LIFE)
         throw mtm::IllegalWeapon();
 }
 
@@ -163,21 +162,29 @@ bool Wizard::canAttack(Player &player) const {
 
 //troll
 Troll::Troll(string const &name, Weapon const &weapon, int maxLife) :
-Player(name, weapon), max_life(maxLife) {
-        if (max_life <= 0)
+        Player(name, weapon), max_life(maxLife) {
+    if (max_life <= 0)
         throw mtm::InvalidParam();
 }
 
-void Troll::makeStep()  {
+void Troll::makeStep() {
     position_of_player += 2;
     if (life < max_life)
         this->addLife();
 }
 
+
+void Troll::addLife(){
+    if(life<max_life)
+        this->life++;
+}
+
+
+
 //warrior
 Warrior::Warrior(string const &name, Weapon const &weapon, bool rider) :
-Player(name, weapon), rider(rider) {
-        if (weapon.getTarget() == LEVEL)
+        Player(name, weapon), rider(rider) {
+    if (weapon.getTarget() == LEVEL)
         throw mtm::IllegalWeapon();
 
 }

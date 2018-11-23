@@ -1,11 +1,13 @@
 #include "Game.h"
+#include <algorithm>
 
 using std::string;
 using std::vector;
 using std::cout;
 
 Game::Game(int maxPlayer) :
-        maxPlayer(maxPlayer), array_player(vector<Player *>(maxPlayer, NULL)),
+        maxPlayer(maxPlayer),
+        array_player(vector<Player *>(maxPlayer, nullptr)),
         last_player_in_the_array(-1) {
 }
 
@@ -18,7 +20,8 @@ Game::~Game() {
 
 
 Game::Game(const Game &game) : maxPlayer(game.maxPlayer),
-                               array_player(vector<Player *>(maxPlayer, NULL)),
+                               array_player(
+                                       vector<Player *>(maxPlayer, nullptr)),
                                last_player_in_the_array
                                        (game.last_player_in_the_array) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
@@ -65,8 +68,8 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
         if (check_if_the_player2_exist == true)
             player2_place_in_the_array = i;
     }
-    try {
-        if (player1_place_in_the_array == -1 ||player2_place_in_the_array == -1)
+        if (player1_place_in_the_array == -1 ||
+            player2_place_in_the_array == -1)
             throw mtm::NameDoesNotExist();
         bool check_if_fight_success = this->
                 array_player[player1_place_in_the_array]->fight(
@@ -77,27 +80,17 @@ GameStatus Game::fight(const string playerName1, const string playerName2) {
         else
             return SUCCESS;
     }
-    catch (mtm::NameDoesNotExist &e) {
-        cout << "NameDoesNotExist" << endl;
-    }
-    return SUCCESS;
-}
 
 
-void Game::helpFight() {
-    delete this->array_player[this->last_player_in_the_array];
-    this->array_player[this->last_player_in_the_array] = NULL;
-    this->last_player_in_the_array--;
-}
-
-void Game::fightCheckIfAlive(){
+void Game::fightCheckIfAlive() {
     for (int i = 0; i <= (this->last_player_in_the_array); i++) {
         bool check_if_alive = this->array_player[i]->isAlive();
         if (check_if_alive == false) {
-            *this->array_player[i] =
-                    *this->array_player[last_player_in_the_array];
-            this->helpFight();
+            delete array_player[i];
+            array_player.erase(array_player.begin() + i);
+            last_player_in_the_array--;
             i--;
+            array_player.resize(maxPlayer, nullptr);
         }
     }
 }
@@ -168,7 +161,7 @@ void Game::max_sort() {
     int length;
     for (length = this->last_player_in_the_array + 1; length > 1; length--) {
         int index_max = index_of_max(length);
-        swap(*(array_player[index_max]), *(array_player[length - 1]));
+        swap((array_player[index_max]), (array_player[length - 1]));
     }
 }
 
@@ -189,7 +182,7 @@ Game &Game::operator=(const Game &game) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         delete this->array_player[i];
     }
-    array_player.resize(game.maxPlayer, NULL);
+    array_player.resize(game.maxPlayer, nullptr);
     for (int i = 0; i <= game.last_player_in_the_array; i++) {
         (this->array_player[i]) = new Player(*game.array_player[i]);
     }
@@ -198,8 +191,8 @@ Game &Game::operator=(const Game &game) {
     return *this;
 }
 
-void Game::swap(Player &player1, Player &player2) {
-    Player temp_player = player1;
+void Game::swap(Player* &player1, Player* &player2) {
+    Player* temp_player = player1;
     player1 = player2;
     player2 = temp_player;
 }
@@ -230,7 +223,8 @@ void Game::addWizard(string const &playerName, string const &weaponName,
 }
 
 
-void Game::addPlayerWithDifferentType(Player *player, string const &playerName) {
+void
+Game::addPlayerWithDifferentType(Player *player, string const &playerName) {
     for (int i = 0; i <= this->last_player_in_the_array; i++) {
         const bool check_if_the_player_exist = this->array_player[i]->isPlayer(
                 playerName);
