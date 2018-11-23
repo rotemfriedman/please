@@ -34,12 +34,12 @@ public:
     * the function destroy struct weapon
     */
 
-    Weapon(const Weapon &weapon)= default;
+    Weapon(const Weapon &weapon) = default;
 
     /**
      * the destructor of the weapon
      */
-    ~Weapon()= default;
+    ~Weapon() = default;
 
 /**
  * the function return the target of the weapon

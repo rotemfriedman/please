@@ -1,165 +1,265 @@
-#include <iostream>
+//
+// Created by ron on 28/05/18.
+//
+
+#include <sstream>
+#include <cstring>
+#include <string>
+
+#include "Weapon.h"
+#include "Player.h"
 #include "Game.h"
-#include "cassert"
-#include <fstream>
-using std::ofstream;
+#include "test_utilities.h"
+#include "mtm_exceptions.h"
+//#include "Warrior.h"
+//#include "Wizard.h"
+//#include "Troll.h"
+
 using std::cout;
 using std::endl;
+using std::string;
+using mtm::IllegalWeapon;
+using mtm::InvalidParam;
+using mtm::NameAlreadyExists;
+using mtm::GameFull;
+using mtm::NameDoesNotExist;
 
-Game InputTest() {
-    cout << "cheak input Test" << endl;
-    Game game(6);
-    (game.addPlayer("itai", "lazer gun", LEVEL, 5) == SUCCESS)?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-    (game.addPlayer("sean", "light saver", LIFE, 6) == SUCCESS)?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-    (game.addPlayer("liad", "pirate sword", STRENGTH, 7) == SUCCESS)?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-    (game.addPlayer("ari", "lazer gun", LEVEL, 5) == SUCCESS)?cout<<"pass test 4"<<endl:cout<<"failed test 4"<<endl;
-    (game.addPlayer("sean", "TNT", LEVEL, 5) == NAME_ALREADY_EXISTS)?cout<<"pass test 5"<<endl:cout<<"failed test 5"<<endl;
-    (game.addPlayer("ari", "TNT", LEVEL, 5) == NAME_ALREADY_EXISTS)?cout<<"pass test 6"<<endl:cout<<"failed test 6"<<endl;
-    (game.addPlayer("yuval", "ATOM", LEVEL, 10) == SUCCESS)?cout<<"pass test 7"<<endl:cout<<"failed test 7"<<endl;
-    (game.addPlayer("yuval", "ATOM", LEVEL, 10) == NAME_ALREADY_EXISTS)?cout<<"pass test 8"<<endl:cout<<"failed test 8"<<endl;
-    (game.addPlayer("seana", "ATOM", LIFE, 10) == SUCCESS)?cout<<"pass test 9"<<endl:cout<<"failed test 9"<<endl;
-    (game.addPlayer("orr", "ATOM", LIFE, 100) == GAME_FULL)?cout<<"pass test 10"<<endl:cout<<"failed test 10"<<endl;
-    (game.addPlayer("sean", "ATOM", LIFE, 100) == GAME_FULL)?cout<<"pass test 11"<<endl:cout<<"failed test 11"<<endl;
-    return game;
+bool weaponTest() {
+    Weapon w1("Lazer Gun", LIFE, 5);
+    Weapon w2("Assault Riglt", STRENGTH, 10);
+    Weapon w3("Plastic Hammer", LEVEL, 1);
+
+    ASSERT_TEST(w1.getTarget() == LIFE);
+    ASSERT_TEST(w2.getTarget() == STRENGTH);
+    ASSERT_TEST(w3.getTarget() == LEVEL);
+
+    ASSERT_TEST(w1.getHitStrength() == 5);
+    ASSERT_TEST(w2.getHitStrength() == 10);
+    ASSERT_TEST(w3.getHitStrength() == 1);
+
+    ASSERT_TEST(w1.getValue() == 3*5);
+    ASSERT_TEST(w2.getValue() == 2*10);
+    ASSERT_TEST(w3.getValue() == 1*1);
+
+    ASSERT_TEST(w1 != w2);
+    ASSERT_TEST(w2 != w3);
+    ASSERT_TEST(w1 != w3);
+
+    ASSERT_TEST(w1 < w2);
+    ASSERT_TEST(w2 > w1);
+
+    Weapon w4("Different Lazer Gun", LIFE, 5);
+    ASSERT_TEST(w1 == w4);
+
+    Weapon w5("Strong Plastic Hammer", LEVEL, 15);
+    ASSERT_TEST(w1 == w5);
+
+    Weapon w6(w1);
+    ASSERT_TEST(w6 == w1);
+
+    Weapon w7 = w1 = w1;
+    ASSERT_TEST(w7 == w1);
+
+    return true;
 }
 
-void nextLevelTest(Game &game) {
-    cout << "cheak nextLevelTest" << endl;
-    (game.nextLevel("ari")==SUCCESS)?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-    (game.nextLevel("itai")==SUCCESS)?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-    (game.nextLevel("itai")==SUCCESS)?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-    (game.nextLevel("liad")==SUCCESS)?cout<<"pass test 4"<<endl:cout<<"failed test 4"<<endl;
-    (game.nextLevel("yuval")==SUCCESS)?cout<<"pass test 5"<<endl:cout<<"failed test 5"<<endl;
-    (game.nextLevel("liad")==SUCCESS)?cout<<"pass test 6"<<endl:cout<<"failed test 6"<<endl;
-    (game.nextLevel("orr")==NAME_DOES_NOT_EXIST)?cout<<"pass test 7"<<endl:cout<<"failed test 7"<<endl;
-    (game.nextLevel("sean")==SUCCESS)?cout<<"pass test 8"<<endl:cout<<"failed test 8"<<endl;
-    (game.nextLevel("seana")==SUCCESS)?cout<<"pass test 9"<<endl:cout<<"failed test 9"<<endl;
-    (game.nextLevel("Yuval")==NAME_DOES_NOT_EXIST)?cout<<"pass test 10"<<endl:cout<<"failed test 11"<<endl;
-}
-void makeStepTest(Game &game) {
-    cout << "cheak makeStep" << endl;
-    (game.makeStep("ari")==SUCCESS)?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-    (game.makeStep("itai")==SUCCESS)?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-    (game.makeStep("itai")==SUCCESS)?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-    (game.makeStep("liad")==SUCCESS)?cout<<"pass test 4"<<endl:cout<<"failed test 4"<<endl;
-    (game.makeStep("yuval")==SUCCESS)?cout<<"pass test 5"<<endl:cout<<"failed test 5"<<endl;
-    (game.makeStep("liad")==SUCCESS)?cout<<"pass test 6"<<endl:cout<<"failed test 6"<<endl;
-    (game.makeStep("orr")==NAME_DOES_NOT_EXIST)?cout<<"pass test 7"<<endl:cout<<"failed test 7"<<endl;
-    (game.makeStep("sean")==SUCCESS)?cout<<"pass test 8"<<endl:cout<<"failed test 8"<<endl;
-    (game.makeStep("seana")==SUCCESS)?cout<<"pass test 9"<<endl:cout<<"failed test 9"<<endl;
-    (game.makeStep("Yuval")==NAME_DOES_NOT_EXIST)?cout<<"pass test 10"<<endl:cout<<"failed test 10"<<endl;
-}
-void addLife(Game &game) {
-    cout << "cheak addLife" << endl;
-    (game.addLife("ari")==SUCCESS)?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-    (game.addLife("itai")==SUCCESS)?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-    (game.addLife("itai")==SUCCESS)?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-    (game.addLife("liad")==SUCCESS)?cout<<"pass test 4"<<endl:cout<<"failed test 4"<<endl;
-    (game.addLife("yuval")==SUCCESS)?cout<<"pass test 5"<<endl:cout<<"failed test 5"<<endl;
-    (game.addLife("liad")==SUCCESS)?cout<<"pass test 6"<<endl:cout<<"failed test 6"<<endl;
-    (game.addLife("orr")==NAME_DOES_NOT_EXIST)?cout<<"pass test 7"<<endl:cout<<"failed test 7"<<endl;
-    (game.addLife("sean")==SUCCESS)?cout<<"pass test 8"<<endl:cout<<"failed test 8"<<endl;
-    (game.addLife("seana")==SUCCESS)?cout<<"pass test 9"<<endl:cout<<"failed test 9"<<endl;
-    (game.addLife("Yuval")==NAME_DOES_NOT_EXIST)?cout<<"pass test 10"<<endl:cout<<"failed test 10"<<endl;
-}
-
-void addStrength(Game &game){
-    cout << "cheak addStrength " << endl;
-    (game.addStrength("ari",1)==SUCCESS)?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-    (game.addStrength("itai",1)==SUCCESS)?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-    (game.addStrength("itai",2)==SUCCESS)?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-    (game.addStrength("liad",-5)==INVALID_PARAM)?cout<<"pass test 4"<<endl:cout<<"failed test 4"<<endl;
-    (game.addStrength("yuval",0)==SUCCESS)?cout<<"pass test 5"<<endl:cout<<"failed test 5"<<endl;
-    (game.addStrength("liad",1)==SUCCESS)?cout<<"pass test 6"<<endl:cout<<"failed test 6"<<endl;
-    (game.addStrength("orr",10)==NAME_DOES_NOT_EXIST)?cout<<"pass test 7"<<endl:cout<<"failed test 7"<<endl;
-    (game.addStrength("sean",2)==SUCCESS)?cout<<"pass test 8"<<endl:cout<<"failed test 8"<<endl;
-    (game.addStrength("seana",2)==SUCCESS)?cout<<"pass test 9"<<endl:cout<<"failed test 9"<<endl;
-    (game.addStrength("Yuval",3)==NAME_DOES_NOT_EXIST)?cout<<"pass test 10"<<endl:cout<<"failed test 10"<<endl;
-}
-
-void remove(Game &game,int num){
-    cout << "cheak remove " << endl;
-    (!game.removeAllPlayersWithWeakWeapon(0))?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-
-    (!game.removeAllPlayersWithWeakWeapon(5))?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-
-    (game.removeAllPlayersWithWeakWeapon(15))?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-
-}
-void inputTest2(Game &game){
-    cout << "cheak input after remove " << endl;
-    (game.addPlayer("tomer", "ak47", LIFE, 10) == SUCCESS)?cout<<"pass test 1"<<endl:cout<<"failed test 1"<<endl;
-    (game.addPlayer("sagiv", "m16", LEVEL, 10) == SUCCESS)?cout<<"pass test 2"<<endl:cout<<"failed test 2"<<endl;
-    (game.addPlayer("sean", "m16", LEVEL, 10) == NAME_ALREADY_EXISTS)?cout<<"pass test 3"<<endl:cout<<"failed test 3"<<endl;
-}
-void firstFight(Game &game) {
-
-    cout << "cheak fight " << endl;
-    (game.fight("tomer", "sean") == FIGHT_FAILED) ? cout << "pass test 1"
-                                                         << endl : cout
-            << "failed test 1" << endl;
-    (game.fight("tomer", "ari") == NAME_DOES_NOT_EXIST) ? cout << "pass test 2"
-                                                               << endl : cout
-            << "failed test 2" << endl;
-    (game.fight("sagiv", "tomer") == SUCCESS) ? cout << "pass test 3" << endl :
-    cout << "failed test 3" << endl;
-}
-void secondFight(Game &game){
-    GameStatus status;
-    status=game.makeStep("tomer");
-    if(status!=SUCCESS)
-        cout << "shaked" <<endl;
-    assert(status==SUCCESS);
-    (game.fight("tomer","seana")==FIGHT_FAILED)?cout<<"pass test 4"<<endl:cout<<"failed test 4"<<endl;
-    for (int i = 0; i <15; i++) {
-        status=game.addLife("sean");
-        assert(status==SUCCESS);
+bool warriorTest() {
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon weak_sword = Weapon("Weak Sword", LIFE, 1);
+    Warrior w1 = Warrior("Jerry", sword, false);
+    Warrior w2 = Warrior("George", sword, true);
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(!w1.fight(w2));
+    w2 = Warrior("George", weak_sword, true);
+    ASSERT_TEST((w1.fight(w2)));
+    ASSERT_TEST(!w2.isAlive());
+    w2 = Warrior("George", weak_sword, true);
+    w2.makeStep();
+    ASSERT_TEST(!w1.fight(w2));
+    ASSERT_TEST(!w2.fight(w1));
+    for (int i = 0; i < 4; ++i) {
+        w1.makeStep();
+        ASSERT_TEST(!w1.fight(w2));
+        ASSERT_TEST(!w2.fight(w1));
     }
-    (game.fight("tomer","sean")==SUCCESS)?cout<<"pass test 5"<<endl:cout<<"failed test 5"<<endl;
+    w1.makeStep();
 
-}
-void Test(){
-    ofstream outputFile("TestOutPut");
+    Weapon level_gun = Weapon("Level Gun", LEVEL, 5);
+    ASSERT_THROW(Warrior w3 = Warrior("Kramer", level_gun, false);, IllegalWeapon);
 
-    Game game=InputTest();
-    outputFile<<"INPUT RESULT"<<endl;
-    outputFile <<game ;
-
-    nextLevelTest(game);
-    makeStepTest(game);
-    addLife(game);
-    addStrength(game);
-
-
-    remove(game,2);
-    outputFile<<"REMOVE RESULT"<<endl;
-    outputFile <<game;
-
-
-    inputTest2(game);
-    outputFile<<"INPUT AFTER REMOVE RESULT"<<endl;
-    outputFile <<game;
-
-    firstFight(game);
-    outputFile<<"FIRST FIGHT"<<endl;
-    outputFile <<game;
-    secondFight(game);
-    outputFile<<"SECOND FIGHT"<<endl;
-    outputFile <<game;
-    (game.fight("tomer","sean")==SUCCESS)?cout<<"pass test 6"<<endl:cout<<"failed test 6"<<endl;
-    (game.fight("tomer","sean")==NAME_DOES_NOT_EXIST)?cout<<"pass test 7"<<endl:cout<<"failed test 7"<<endl;
-    outputFile<<"FINALE FIGHT"<<endl;
-    outputFile <<game;
-    cout<<"GOOD LUCK ON INFI 2.0"<<endl;
+    return true;
 }
 
+bool wizardTest() {
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon staff = Weapon("Staff", LEVEL, 5);
+    Weapon wand = Weapon("Wand", LEVEL, 3);
 
+    ASSERT_THROW(Wizard w1 = Wizard("Jerry", sword, 5);, IllegalWeapon);
+
+    Wizard w1 = Wizard("Jerry", staff, 5);
+    Wizard w2 = Wizard("George", wand, 3);
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(w2.isAlive());
+    ASSERT_TEST(!w1.fight(w2));
+    ASSERT_TEST(w1.isAlive());
+    ASSERT_TEST(w2.isAlive());
+
+    w2 = Wizard("George", wand, 10);
+    for (int i = 0; i < 10; ++i) {
+        w2.makeStep();
+    }
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(!w1.fight(w2));
+
+    w1 = Wizard("Jerry", staff, 20);
+    ASSERT_TEST(w2.fight(w1));
+
+    ASSERT_TEST(!w2.isAlive());
+    ASSERT_TEST(w1.isAlive());
+
+    w1 = Wizard("Jerry", wand, 20);
+    w2 = Wizard("George", staff, 10);
+    for (int i = 0; i < 15; ++i) {
+        w2.makeStep();
+    }
+    ASSERT_TEST(!w2.fight(w1));
+    ASSERT_TEST(!w1.fight(w2));
+    for (int i = 0; i < 5; ++i) {
+        w1.makeStep();
+    }
+    ASSERT_TEST(w2.fight(w1));
+    ASSERT_TEST(w1.fight(w2));
+
+
+    return true;
+}
+
+bool trollTest() {
+    Weapon club = Weapon("Club", STRENGTH, 6);
+    Weapon sword = Weapon("Sword", LIFE, 3);
+    Weapon staff = Weapon("Staff", LEVEL, 5);
+
+    Troll t1 = Troll("Danny Devito", sword, 5);
+    t1 = Troll("Danny Devito", staff, 5);
+    t1 = Troll("Danny Devito", sword, 5);
+    Troll t2 = Troll("Ron Kantorovich", staff, 5);
+    for (int i = 0; i < 30; ++i) {
+        t1.makeStep();
+        t2.makeStep();
+    }
+
+    ASSERT_TEST(t1.fight(t2));
+    ASSERT_TEST(t1.isAlive());
+    ASSERT_TEST(t2.isAlive());
+    ASSERT_TEST(t1.fight(t2));
+    ASSERT_TEST(t1.isAlive());
+    ASSERT_TEST(!t2.isAlive());
+
+    return true;
+}
+
+bool gameTest() {
+    Game g1(4);
+    ASSERT_TEST(g1.addPlayer("Jerry", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Jerry", "not Sword", STRENGTH, 3) == NAME_ALREADY_EXISTS);
+    ASSERT_TEST(g1.addPlayer("George", "Sword", LIFE, 1) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Elaine", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Kramer", "Sword", LIFE, 6) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == GAME_FULL);
+    ASSERT_TEST(g1.addPlayer("warrior", "level weapon", LEVEL, 4) == GAME_FULL);
+    ASSERT_TEST(g1.removeAllPlayersWithWeakWeapon(5) == true);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == SUCCESS);
+    ASSERT_TEST(g1.addPlayer("Newman", "Sword", LIFE, 3) == NAME_ALREADY_EXISTS);
+    ASSERT_TEST(g1.addPlayer("George", "Sword", LIFE, 3) == GAME_FULL);
+    Game g2(4);
+    ASSERT_TEST(g2.addPlayer("warrior", "level weapon", LEVEL, 4) == ILLEGAL_WEAPON);
+
+    Game g3(3);
+    g3.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g3.addWizard("George", "Staff", LEVEL, 4, 3);
+    g3.addTroll("Kramer", "Club", STRENGTH, 3, 5);
+    ASSERT_THROW(g3.addWarrior("Jerry", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g3.addWarrior("Elaine", "Sword", STRENGTH, 5, false);, mtm::GameFull);
+
+    Game g4(100);
+    g4.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g4.addWizard("George", "Staff", LEVEL, 4, 3);
+    g4.addTroll("Kramer", "Club", STRENGTH, 3, 5);
+    ASSERT_THROW(g4.addWarrior("Jerry", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g4.addWarrior("Elaine", "Sword", LEVEL, 5, false);, mtm::IllegalWeapon);
+    ASSERT_THROW(g4.addTroll("Elaine", "Sword", LEVEL, 4, -5);, mtm::InvalidParam);
+    ASSERT_THROW(g4.addWizard("Elaine", "Sword", LEVEL, 4, -3);, mtm::InvalidParam);
+
+    Game g5(4);
+    g5.addWizard("George", "Staff", LEVEL, 5, 1);
+    g5.addWarrior("Jerry", "Sword", LIFE, 3, true);
+    g5.addTroll("Kramer", "Sword", LIFE, 3, 4);
+    g5.makeStep("George");
+    ASSERT_TEST(g5.makeStep("I dont exist") == NAME_DOES_NOT_EXIST);
+    ASSERT_TEST(g5.fight("Jerry", "George") == FIGHT_FAILED);
+    g5.addWizard("Elaine", "Staff", STRENGTH, 5, 10);
+    for (int i = 0; i < 11; ++i) {
+        g5.makeStep("Elaine");
+    }
+    ASSERT_TEST(g5.fight("Kramer", "Elaine") == FIGHT_FAILED);
+    ASSERT_THROW(g5.addWarrior("Kramer", "Sword", STRENGTH, 5, false);, mtm::NameAlreadyExists);
+    ASSERT_THROW(g5.addWarrior("Newman", "Sword", LIFE, 5, false);, mtm::GameFull);
+    g5.makeStep("Kramer");
+    ASSERT_TEST(g5.fight("Kramer", "Elaine") == SUCCESS);
+    ASSERT_TEST(g5.makeStep("Kramer") == NAME_DOES_NOT_EXIST);
+    g5.addWarrior("Newman", "Sword", LIFE, 5, false);
+    for (int i = 0; i < 5; ++i) {
+        g5.makeStep("Elaine");
+    }
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == FIGHT_FAILED);
+    g5.makeStep("Jerry");
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == FIGHT_FAILED);
+    g5.makeStep("Jerry");
+    ASSERT_TEST(g5.fight("Elaine", "Jerry") == SUCCESS);
+    ASSERT_TEST(g5.makeStep("Jerry") == NAME_DOES_NOT_EXIST);
+
+    return true;
+}
+
+bool isJerry(const Player& player) {
+    return player.isPlayer("Jerry");
+}
+
+bool isNotJerry(const Player& player) {
+    return !isJerry(player);
+}
+
+bool fcnTest() {
+    Game g1(4);
+    g1.addWarrior("Jerry", "sword", LIFE, 5, false);
+    g1.addWarrior("Elaine", "sword", STRENGTH, 5, false);
+    g1.addWizard("George", "axe", LEVEL, 5, 10);
+    g1.addTroll("Kramer", "polearm", STRENGTH, 5, 10);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+    g1.removePlayersIf(isJerry);
+    ASSERT_THROW(g1.fight("Jerry", "Elaine");, mtm::NameDoesNotExist);
+    g1.addWarrior("Jerry", "sword", LIFE, 5, false);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+    g1.removePlayersIf(isNotJerry);
+    ASSERT_THROW(g1.addWarrior("Jerry", "sword", LIFE, 5, false);, mtm::NameAlreadyExists);
+    g1.addWarrior("Elaine", "sword", STRENGTH, 5, false);
+    g1.addWarrior("George", "axe", LIFE, 5, false);
+    g1.addWarrior("Kramer", "polearm", STRENGTH, 5, false);
+    ASSERT_THROW(g1.addWarrior("Newman", "sword", LIFE, 5, false);, mtm::GameFull);
+
+    return true;
+}
 
 int main() {
 
+    RUN_TEST(weaponTest);
+    RUN_TEST(gameTest);
+    RUN_TEST(fcnTest);
 
-
-    Test();
-    return 0;
+    RUN_TEST(warriorTest);
+    RUN_TEST(wizardTest);
+    RUN_TEST(trollTest);
 
 }

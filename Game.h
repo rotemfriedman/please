@@ -6,9 +6,12 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "mtm_exceptions.h"
+using namespace mtm;
 
 using std::string;
 using std::vector;
+using std::swap;
+
 
 enum GameStatus {
     NAME_ALREADY_EXISTS,
@@ -16,7 +19,8 @@ enum GameStatus {
     SUCCESS,
     NAME_DOES_NOT_EXIST,
     INVALID_PARAM,
-    FIGHT_FAILED
+    FIGHT_FAILED,
+    ILLEGAL_WEAPON
 };
 
 
@@ -25,11 +29,17 @@ class Game {
     vector<Player *> array_player;
     int last_player_in_the_array;
 
+
     /**
      * the function help the function fight to delete the user(if he dead)
      */
-    void helpFight();
+    //void helpFight();
 
+
+    /**
+     * ths function checl if one of the players dead, if yes, we remove them.
+     */
+    void fightCheckIfAlive();
 
     /**
      * the function find the max index, sort by the playerName
@@ -48,7 +58,7 @@ class Game {
  * @param player1
  * @param player2
  */
-    void swap(Player &player1, Player &player2);
+    void swap(Player* &player1, Player* &player2);
 
 
 public:
@@ -142,13 +152,11 @@ public:
     Game &operator=(const Game &game);
 
 
-
     /**
      * the function is a help function for the add player
      * @param player - a pointer to a type Player
      */
-    void addPlayerWithDifferentType(Player* player,string const& playerName);
-
+    void addPlayerWithDifferentType(Player *player, string const &playerName);
 
 
     /**
@@ -159,7 +167,7 @@ public:
      * @param hitStrength -data for the creation of the weapon
      * @param maxLife - will add to the new troll
      */
-    void addTroll(string const& playerName, string const& weaponName,
+    void addTroll(string const &playerName, string const &weaponName,
                   Target target, int hitStrength, int maxLife);
 
 
@@ -171,7 +179,7 @@ public:
      * @param hitStrength-data for the creation of the weapon
      * @param rider - will add to the new warrior
      */
-    void addWarrior(string const& playerName, string const& weaponName,
+    void addWarrior(string const &playerName, string const &weaponName,
                     Target target, int hitStrength, bool rider);
 
 
@@ -183,11 +191,53 @@ public:
  * @param hitStrength -data for the creation of the weapon
  * @param range - will add to the new wizard
  */
-    void addWizard(string const& playerName, string const& weaponName,
+    void addWizard(string const &playerName, string const &weaponName,
                    Target target, int hitStrength, int range);
 
-};
 
+    /**
+ * extend the function removeAllPlayersWithWeakWeapon
+ * @param fcn - the function that according to her we will know if to remove
+ * the player or not
+ * @return true- if the players removed. else false
+ */
+    template<class FCN>
+    bool removePlayersIf(FCN &fcn) {
+        int check_if_remove = 0;//if change to 1,than we already remove players
+        for (int i = 0; i <= last_player_in_the_array; i++) {
+            if ((fcn(static_cast<Player const &> (*this->array_player[i])) ==
+                 true) ){
+                delete array_player[i];
+                array_player.erase(array_player.begin() + i);
+                last_player_in_the_array--;
+                check_if_remove = 1;
+                i--;
+                array_player.resize(maxPlayer, nullptr);
+            }
+        }
+        if (check_if_remove == 1)
+            return true;
+        else
+            return false;
+    }
+
+
+
+/**
+ * this class help to the function "removeAllPlayersWithWeakWeapon"
+ */
+    class checkIfWeaponIsWeak{
+        int weaponStrength;
+    public:
+        checkIfWeaponIsWeak(int weaponStrength) : weaponStrength
+                                                          (weaponStrength){
+        }
+        bool operator()(Player const& player) const {
+            return(player.weaponIsWeak(weaponStrength));
+        }
+    };
+
+};
 
 
 
