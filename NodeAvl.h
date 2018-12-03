@@ -77,8 +77,15 @@ public:
         this->balance_factor = balance_factor;
     }
 
+    void nodeAvlSetValue(TValue value) {
+        this->value = value;
+    }
 
-    NodeAvl *getFollowingNode() {
+    void nodeAvlSetKey(TKey key) {
+        this->key = key;
+    }
+
+    NodeAvl* getFollowingNode() {
         NodeAvl *following_node = this;
         if (following_node->nodeAvlGetRightChild() == nullptr)
             return nullptr;
