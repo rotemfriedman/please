@@ -69,7 +69,7 @@ public:
         this->right_tree = nodeavl;
     }
 
-    void nodeAvlSetHight(int height) {
+    void nodeAvlSetHeight(int height) {
         this->height = height;
     }
 
