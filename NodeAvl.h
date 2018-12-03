@@ -18,7 +18,6 @@ public:
             NodeAvl< TKey , TValue >* left_tree,NodeAvl< TKey , TValue >* right_tree)
             : hight(hight),balance_factor(balance_factor),key(key),value(value),parent(parent),
               left_tree(left_tree),right_tree(right_tree){
-
     }
 
     ~NodeAvl()= default;

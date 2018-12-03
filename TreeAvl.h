@@ -4,6 +4,9 @@
 #include "NodeAvl.h"
 #include "Exception.h"
 
+
+//for rotem check
+
 template< class CompareFun ,class TKey, class TValue>
 class TreeAvl {
     NodeAvl<TKey, TValue> *root;
@@ -35,14 +38,11 @@ public:
  *                SUCCESS - If the item is found in the DS.
  */
 
-    /*
-     *
     void Find(int key, void** value) {
         if (*value == nullptr) {
             throw dataStructure::INVALID_INPUT();
         }
-
-        NodeAvl<TKey, TValue> new_node=new NodeAvl<TKey, TValue>
+        NodeAvl*<TKey, TValue> new_node=new NodeAvl<TKey, TValue>
                 (0,0,key, nullptr, nullptr, nullptr, nullptr);
         this->itr=this->root;
         while(itr!= nullptr){
@@ -63,8 +63,6 @@ public:
     }
 
 
-
-*/
 
 };
 
