@@ -1,7 +1,7 @@
 <application>
   <component name="FindSettings">
-    <option name="customScope" value="Project 'hw2-tree'" />
-    <option name="defaultScopeName" value="Project 'hw2-tree'" />
-    <option name="SEARCH_SCOPE" value="Project 'hw2-tree'" />
+    <option name="customScope" value="File '...\library.cpp'" />
+    <option name="defaultScopeName" value="File '...\library.cpp'" />
+    <option name="SEARCH_SCOPE" value="File '...\library.cpp'" />
   </component>
 </application>
