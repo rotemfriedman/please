@@ -34,10 +34,13 @@ public:
  *                FAILURE - If the item does not exist in the DS.
  *                SUCCESS - If the item is found in the DS.
  */
+
+    /*
     void Find(int key, void** value) {
         if (*value == nullptr) {
             throw dataStructure::INVALID_INPUT();
         }
+
         NodeAvl<TKey, TValue> new_node=new NodeAvl<TKey, TValue>
                 (0,0,key, nullptr, nullptr, nullptr, nullptr);
         this->itr=this->root;
@@ -60,6 +63,7 @@ public:
 
 
 
+*/
 
 };
 

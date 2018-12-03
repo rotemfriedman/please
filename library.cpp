@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 
-
+/*
 void *Init(){
 try{
      TreeAvl *DS=new TreeAvl;
@@ -15,3 +15,4 @@ catch (std::bad_alloc &e){
     }
 }
 
+*/
