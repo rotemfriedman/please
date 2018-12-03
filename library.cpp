@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-
+/*
 void *Init(){
 try{
      TreeAvl<int,int,void*> *DS=new TreeAvl<int,int,void*>(nullptr, nullptr,comparefun,0);
@@ -24,3 +24,4 @@ int comparefun(int x,int y){
         return 1;
     return 0;
 }
+ */
