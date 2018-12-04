@@ -5,10 +5,12 @@
 #include <stdexcept>
 #include <iostream>
 
+typedef void* element;
+typedef bool (*CompareFun)(element, element);
 
 void *Init(){
 try{
-     TreeAvl<int,void*> *DS=new TreeAvl<int,void*>();
+     TreeAvl *DS=new TreeAvl();
      return (void*) DS;
 }
 catch (std::bad_alloc &e){
@@ -109,4 +111,17 @@ StatusType Delete(void *DS, int key){
         return SUCCESS;
     }
     return SUCCESS;
+}
+
+
+
+
+void Quit(void** DS){
+    if(*DS==NULL)
+        return;
+    TreeAvl* TreeAvl = (TreeAvl*) *DS;
+    TreeAvl->Quit(TreeAvl->TreeAvlRoot());
+    delete TreeAvl;
+    *DS=NULL;
+
 }

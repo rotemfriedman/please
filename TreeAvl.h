@@ -23,6 +23,9 @@ public:
 
     TreeAvl &operator=(const TreeAvl &tree_avl) = default;
 
+    NodeAvl<TKey,TValue>* TreeAvlRoot(){
+        return this->root;
+    };
 
 /**
  * the function get a node and fix his balce factor
@@ -95,10 +98,10 @@ public:
             else
                 result = 1;
             if (result < 0) {
-                new_node->parent = itr;
+                new_node->nodeAvlSetparent(itr);
                 itr = itr->nodeAvlGetRightChild();
             } else if (result > 0) {
-                new_node->parent = itr;
+                new_node->nodeAvlSetparent(itr);
                 itr = itr->nodeAvlGetLeftChild();
             }
         }
@@ -436,7 +439,7 @@ public:
         throw dataStructure::INVALID_INPUT();
     }
     catch (dataStructure::SUCCESS  &e) {
-        throw dataStructure::ALLOCATION_ERROR();
+        throw dataStructure::SUCCESS();
     }
     catch (dataStructure::ALLOCATION_ERROR  &e) {  //maybe we dont have this catch
         throw dataStructure::ALLOCATION_ERROR();
@@ -462,6 +465,18 @@ public:
     }
 
 
+    void Quit(NodeAvl<TKey,TValue>* root){
+        if(root== nullptr) //there is no nodes in the avl_tree
+            return;
+        Quit(root->nodeAvlGetRightChild());
+        Quit(root->nodeAvlGetLeftChild());
+        delete root;
+    }
+
+
 };
+
+
+
 
 #endif //HW2_TREE_TREEAVL_H
