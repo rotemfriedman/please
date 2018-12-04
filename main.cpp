@@ -18,10 +18,10 @@ int main() {
    // int n;
 
 
-     StatusType status = Add(new_DS ,1, (void *) 2, &node);
+     StatusType status = Add(new_DS ,5, (void *) 2, &node);
     StatusType status2 = Add(new_DS, 3, (void *) 4, &node);
-    StatusType status3 = Add(new_DS, 5, (void *) 6, &node);
-    //  StatusType status3=Find(new_DS, 9, &s);
+    StatusType status3 = Add(new_DS, 1, (void *) 6, &node);
+   // StatusType status3=Find(new_DS, 9, &s);
     //StatusType status5=Delete(new_DS,1);
     //StatusType status7= Size(new_DS, &n);
    std::cout << status <<status2<<status3<< std::endl;

@@ -115,7 +115,6 @@ public:
         } else if(result>0) {
             (new_node->nodeAvlGetParent())->nodeAvlSetLeftChild(new_node);
         }
-
         while (new_node != this->root) {
             NodeAvl<TKey, TValue> *p = new_node->nodeAvlGetParent();
             if (p->nodeAvlGetHeight() >= new_node->nodeAvlGetHeight() + 1) {

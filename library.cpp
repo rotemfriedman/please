@@ -16,7 +16,6 @@ void *Init(){
     }
 }
 
-
 StatusType Add(void *DS, int key, void* value, void** node){
     if(DS== nullptr)
         return INVALID_INPUT;
