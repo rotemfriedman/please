@@ -5,23 +5,119 @@
 #include <stdexcept>
 #include <iostream>
 
+typedef void* element;
+typedef bool (*CompareFun)(element, element);
 
-/*
-void *Init(){
-try{
-     TreeAvl<int,int,void*> *DS=new TreeAvl<int,int,void*>(nullptr, nullptr,comparefun,0);
-     return (void*) DS;
-}
-catch (std::bad_alloc &e){
-        return NULL;
-    }
-}
 
-int comparefun(int x,int y){
+int compareFun(int x,int y){
     if(x-y<0)
         return -1;
     if(x-y>0)
         return 1;
     return 0;
 }
- */
+
+void *Init(){
+try{
+     TreeAvl *DS=new TreeAvl();
+     return (void*) DS;
+}
+catch (std::bad_alloc &e){
+        return nullptr;
+    }
+}
+
+
+StatusType Add(void *DS, int key, void* value, void** node){
+    if(DS== nullptr)
+        return INVALID_INPUT;
+    try {
+        ((TreeAvl*) DS)->Add(key, value, node);
+    }
+    catch (dataStructure::INVALID_INPUT& e) {
+        return INVALID_INPUT;
+    }
+    catch (dataStructure::ALLOCATION_ERROR& e) {
+        return ALLOCATION_ERROR;
+    }
+    catch (dataStructure::SUCCESS& e) {
+        return SUCCESS;
+    }
+    return SUCCESS;
+}
+
+
+StatusType Size(void *DS, int *n){
+    if(DS== nullptr)
+        return INVALID_INPUT;
+    try {
+        ((TreeAvl*) DS)->Size(n);
+    }
+    catch (dataStructure::INVALID_INPUT& e) {
+        return INVALID_INPUT;
+    }
+    catch (dataStructure::SUCCESS& e) {
+        return SUCCESS;
+    }
+    return SUCCESS;
+}
+
+
+StatusType DeleteByPointer(void *DS, void* p){
+    if(DS== nullptr)
+        return INVALID_INPUT;
+    try {
+        ((TreeAvl *) DS)->DeleteByPointer(p);
+    }
+    catch (dataStructure::INVALID_INPUT& e) {
+        return INVALID_INPUT;
+    }
+    catch (dataStructure::SUCCESS& e) {
+        return SUCCESS;
+    }
+    return SUCCESS;
+}
+
+
+StatusType Find(void *DS, int key, void** value){
+    if(DS== nullptr)
+        return INVALID_INPUT;
+    try {
+       ((TreeAvl*) DS)->Find(key,value);
+    }
+    catch (dataStructure::INVALID_INPUT& e) {
+        return INVALID_INPUT;
+    }
+    catch (dataStructure::ALLOCATION_ERROR& e) {
+        return ALLOCATION_ERROR;
+    }
+    catch (dataStructure::FAILURE& e) {
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+
+
+
+StatusType Delete(void *DS, int key){
+    if(DS== nullptr)
+        return INVALID_INPUT;
+    int key_copy=key;
+    try {
+        ((TreeAvl *) DS)->Delete(key_copy);
+    }
+    catch (dataStructure::INVALID_INPUT& e) {
+        return INVALID_INPUT;
+    }
+    catch (dataStructure::ALLOCATION_ERROR& e) {
+        return ALLOCATION_ERROR;
+    }
+    catch (dataStructure::FAILURE& e) {
+        return FAILURE;
+    }
+    catch (dataStructure::SUCCESS& e) {
+        return SUCCESS;
+    }
+    return SUCCESS;
+}
