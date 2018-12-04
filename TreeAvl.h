@@ -82,12 +82,7 @@ public:
             throw dataStructure::INVALID_INPUT();
         NodeAvl<TKey, TValue> *new_node;
         try {
-            new_node = new NodeAvl<TKey, TValue>(0, 0,
-                                                 key,
-                                                 value,
-                                                 nullptr,
-                                                 nullptr,
-                                                 nullptr);
+            new_node = new NodeAvl<TKey, TValue>(key,value)
         }
         catch (std::bad_alloc &e) {
             throw dataStructure::ALLOCATION_ERROR();
@@ -246,7 +241,7 @@ public:
         NodeAvl<TKey, TValue>* new_node;
         try{
             new_node=new NodeAvl<TKey, TValue>
-                    (0,0,key, nullptr, nullptr, nullptr, nullptr);
+                    (key, nullptr);
         }
         catch (std::bad_alloc& e){
             throw dataStructure::ALLOCATION_ERROR();
@@ -394,6 +389,7 @@ public:
                 throw dataStructure::SUCCESS();
             }
             p->nodeAvlSetHeight(save_parent->nodeAvlGetHeight() + 1);
+            setFactorBalance(p);
             setFactorBalance(p);
             bool roll=checkRollForP(p);
             save_parent = p;
