@@ -109,4 +109,15 @@ StatusType Delete(void *DS, int key){
         return SUCCESS;
     }
     return SUCCESS;
+
+
+    void Quit(void** DS){
+        if(*DS==NULL)
+            return;
+        TreeAvl* TreeAvl = (TreeAvl*) *DS;
+        TreeAvl->Quit(TreeAvl->TreeAvlRoot());
+        delete TreeAvl;
+        *DS=NULL;
+
+
 }

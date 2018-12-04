@@ -465,7 +465,6 @@ public:
         throw dataStructure::SUCCESS();
     }
 
-
     void Quit(NodeAvl<TKey,TValue>* root){
         if(root== nullptr) //there is no nodes in the avl_tree
             return;
