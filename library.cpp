@@ -5,21 +5,10 @@
 #include <stdexcept>
 #include <iostream>
 
-typedef void* element;
-typedef bool (*CompareFun)(element, element);
-
-
-int compareFun(int x,int y){
-    if(x-y<0)
-        return -1;
-    if(x-y>0)
-        return 1;
-    return 0;
-}
 
 void *Init(){
 try{
-     TreeAvl *DS=new TreeAvl();
+     TreeAvl<int,void*> *DS=new TreeAvl<int,void*>();
      return (void*) DS;
 }
 catch (std::bad_alloc &e){

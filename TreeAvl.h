@@ -4,18 +4,18 @@
 #include "NodeAvl.h"
 #include "Exception.h"
 #include <stdexcept>
-template< class CompareFun ,class TKey, class TValue>
+template<class TKey, class TValue>
 class TreeAvl {
     NodeAvl<TKey, TValue> *root;
     NodeAvl<TKey, TValue> *itr;
-    CompareFun compare;
+    //CompareFun compare;
     int tree_size;
 
 public:
 
     //לבדוק האם צריך לאתחל את הcompare
     //constractor of the class TreeAvl
-    TreeAvl(CompareFun compare) :root(nullptr),itr(nullptr),compare(compare),
+    TreeAvl() :root(nullptr),itr(nullptr),
                                  tree_size(0){};
     ~TreeAvl() = default;
 
@@ -82,7 +82,7 @@ public:
             throw dataStructure::INVALID_INPUT();
         NodeAvl<TKey, TValue> *new_node;
         try {
-            new_node = new NodeAvl<TKey, TValue>(key,value)
+            new_node = new NodeAvl<TKey, TValue>(key,value);
         }
         catch (std::bad_alloc &e) {
             throw dataStructure::ALLOCATION_ERROR();
@@ -90,7 +90,10 @@ public:
         this->itr = this->root;
         int result = 0;
         while (itr != nullptr) {
-            result = this->compare(itr, new_node);
+            if(itr<new_node)
+                result = -1;
+            else
+                result = 1;
             if (result < 0) {
                 new_node->parent = itr;
                 itr = itr->nodeAvlGetRightChild();
@@ -248,7 +251,10 @@ public:
         }
         this->itr=this->root;
         while(itr!= nullptr){
-            int result=this->compare(itr, new_node);
+            if(itr<new_node)
+               int result = -1;
+            else
+               int result = 1;
             if(result<0)                           //itr->key < new_node->key
                 itr=itr->nodeAvlGetRightChild();
             else if( result>0)                      //itr->key > new_node->key
