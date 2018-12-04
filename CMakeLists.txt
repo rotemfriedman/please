@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 3.9)
-project(hw5-new)
+cmake_minimum_required(VERSION 3.10)
+project(hw2-tree)
 
 set(CMAKE_CXX_STANDARD 11)
 
-
-add_executable(hw5-new main.cpp Game.cpp Game.h Weapon.cpp Weapon.h Player.cpp
-        Player.h mtm_exceptions.h )
+add_executable(hw2-tree main.cpp TreeAvl.h NodeAvl.h library.h library.cpp Exception.h)
