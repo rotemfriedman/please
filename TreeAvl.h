@@ -250,6 +250,7 @@ public:
             throw dataStructure::ALLOCATION_ERROR();
         }
         this->itr=this->root;
+        int result = 0;
         while(itr!= nullptr){
             if(itr<new_node)
                int result = -1;

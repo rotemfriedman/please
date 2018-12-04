@@ -8,7 +8,7 @@
 
 void *Init(){
 try{
-     TreeAvl<int,void*> *DS=new TreeAvl<int,void*>();
+     TreeAvl *DS=new TreeAvl;
      return (void*) DS;
 }
 catch (std::bad_alloc &e){
