@@ -14,12 +14,10 @@ class NodeAvl {
     NodeAvl<TKey, TValue> *right_tree;
 
 public:
-    NodeAvl(int height, int balance_factor, TKey key, TValue value,
-            NodeAvl<TKey, TValue> *parent,
-            NodeAvl<TKey, TValue> *left_tree, NodeAvl<TKey, TValue> *right_tree)
-            : height(height), balance_factor(balance_factor), key(key),
-              value(value), parent(parent),
-              left_tree(left_tree), right_tree(right_tree) {
+    NodeAvl( TKey key, TValue value)
+            : height(0), balance_factor(0), key(key),
+              value(value), parent(nullptr),
+              left_tree(nullptr), right_tree(nullptr) {
     }
 
     ~NodeAvl() = default;
