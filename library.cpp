@@ -112,12 +112,12 @@ StatusType Delete(void *DS, int key) {
 }
 
 void Quit(void **DS) {
-    if (*DS == NULL)
+    if (*DS == nullptr)
         return;
     TreeAvl<int,void*>* tree_avl = (TreeAvl<int,void*>*) *DS;
     tree_avl->Quit(tree_avl->TreeAvlRoot());
     delete (TreeAvl<int,void*> *)*DS;
-    *DS = NULL;
+    *DS = nullptr;
 
 
 }

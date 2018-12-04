@@ -91,9 +91,14 @@ public:
             throw dataStructure::ALLOCATION_ERROR();
         }
         this->itr = this->root;
+        if(this->root== nullptr){//new node is the root;
+            this->root=new_node;
+            this->tree_size++;
+            throw dataStructure::SUCCESS();
+        }
         int result = 0;
         while (itr != nullptr) {
-            if(itr<new_node)
+            if(itr->nodeAvlGetKey()<new_node->nodeAvlGetKey())
                 result = -1;
             else
                 result = 1;
@@ -107,9 +112,10 @@ public:
         }
         if (result < 0) {
             (new_node->nodeAvlGetParent())->nodeAvlSetRightChild(new_node);
-        } else {
+        } else if(result>0) {
             (new_node->nodeAvlGetParent())->nodeAvlSetLeftChild(new_node);
         }
+
         while (new_node != this->root) {
             NodeAvl<TKey, TValue> *p = new_node->nodeAvlGetParent();
             if (p->nodeAvlGetHeight() >= new_node->nodeAvlGetHeight() + 1) {
@@ -155,7 +161,7 @@ public:
     void RRRoll( NodeAvl<TKey, TValue> * node_avl) {
 
         NodeAvl<TKey, TValue> *right_left_tree;
-        NodeAvl<TKey, TValue> *right_tree = node_avl->nodeAvlGetLeftChild();
+        NodeAvl<TKey, TValue> *right_tree = node_avl->nodeAvlGetRightChild();
         if (this->root == node_avl) {
             this->root = right_tree;
         }
@@ -255,7 +261,7 @@ public:
         this->itr=this->root;
         int result = 0;
         while(itr!= nullptr){
-            if(itr<new_node)
+            if(itr->nodeAvlGetKey()<new_node->nodeAvlGetKey())
                 int result = -1;
             else
                 int result = 1;
