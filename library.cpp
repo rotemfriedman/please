@@ -1,17 +1,17 @@
 
 #include "library.h"
 #include "TreeAvl.h"
-#include "NodeAvl.h"
+//#include "NodeAvl.h"
 #include <stdexcept>
 #include <iostream>
 
 
 void *Init(){
-try{
-     TreeAvl<int,void*> *DS=new TreeAvl<int,void*>;
-     return (void*) DS;
-}
-catch (std::bad_alloc &e){
+    try{
+        TreeAvl<int,void*> *DS=new TreeAvl<int,void*>;
+        return (void*) DS;
+    }
+    catch (std::bad_alloc &e){
         return nullptr;
     }
 }
@@ -56,7 +56,7 @@ StatusType DeleteByPointer(void *DS, void* p){
     if(DS== nullptr)
         return INVALID_INPUT;
     try {
-        ((TreeAvl <int,void*>*) DS)->DeleteByPointer(p);
+        ((TreeAvl<int,void*>*) DS)->DeleteByPointer(p);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
@@ -72,7 +72,7 @@ StatusType Find(void *DS, int key, void** value){
     if(DS== nullptr)
         return INVALID_INPUT;
     try {
-       ((TreeAvl<int,void*>*) DS)->Find(key,value);
+        ((TreeAvl<int,void*>*) DS)->Find(key,value);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
@@ -89,35 +89,35 @@ StatusType Find(void *DS, int key, void** value){
 
 
 
-StatusType Delete(void *DS, int key){
-    if(DS== nullptr)
+StatusType Delete(void *DS, int key) {
+    if (DS == nullptr)
         return INVALID_INPUT;
-    int key_copy=key;
+    int key_copy = key;
     try {
-        ((TreeAvl<int,void*> *) DS)->Delete(key_copy);
+        ((TreeAvl<int, void *> *) DS)->Delete(key_copy);
     }
-    catch (dataStructure::INVALID_INPUT& e) {
+    catch (dataStructure::INVALID_INPUT &e) {
         return INVALID_INPUT;
     }
-    catch (dataStructure::ALLOCATION_ERROR& e) {
+    catch (dataStructure::ALLOCATION_ERROR &e) {
         return ALLOCATION_ERROR;
     }
-    catch (dataStructure::FAILURE& e) {
+    catch (dataStructure::FAILURE &e) {
         return FAILURE;
     }
-    catch (dataStructure::SUCCESS& e) {
+    catch (dataStructure::SUCCESS &e) {
         return SUCCESS;
     }
     return SUCCESS;
+}
 
-
-    void Quit(void** DS){
-        if(*DS==NULL)
-            return;
-        TreeAvl* TreeAvl = (TreeAvl*) *DS;
-        TreeAvl->Quit(TreeAvl->TreeAvlRoot());
-        delete TreeAvl;
-        *DS=NULL;
+void Quit(void **DS) {
+    if (*DS == NULL)
+        return;
+    TreeAvl<int,void*>* tree_avl = (TreeAvl<int,void*>*) *DS;
+    tree_avl->Quit(tree_avl->TreeAvlRoot());
+    delete (TreeAvl<int,void*> *)*DS;
+    *DS = NULL;
 
 
 }

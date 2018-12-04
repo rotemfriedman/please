@@ -16,7 +16,7 @@ public:
     //לבדוק האם צריך לאתחל את הcompare
     //constractor of the class TreeAvl
     TreeAvl() :root(nullptr),itr(nullptr),
-                                 tree_size(0){};
+               tree_size(0){};
     ~TreeAvl() = default;
 
     TreeAvl(const TreeAvl &tree_avl) = default;
@@ -33,12 +33,12 @@ public:
  */
     void setFactorBalance(NodeAvl<TKey, TValue> *node_avl) {
         int right_height, left_height;
-        if ((node_avl->nodeAvlGetRightChild())->nodeAvlGetHeight() == NULL)
+        if ((node_avl->nodeAvlGetRightChild()) == NULL)
             right_height = -1;
         else {
             right_height = (node_avl->nodeAvlGetRightChild())->nodeAvlGetHeight();
         }
-        if ((node_avl->nodeAvlGetLeftChild())->nodeAvlGetHeight() == NULL)
+        if ((node_avl->nodeAvlGetLeftChild()) == NULL)
             left_height = -1;
         else {
             left_height = (node_avl->nodeAvlGetLeftChild())->nodeAvlGetHeight();
@@ -256,9 +256,9 @@ public:
         int result = 0;
         while(itr!= nullptr){
             if(itr<new_node)
-               int result = -1;
+                int result = -1;
             else
-               int result = 1;
+                int result = 1;
             if(result<0)                           //itr->key < new_node->key
                 itr=itr->nodeAvlGetRightChild();
             else if( result>0)                      //itr->key > new_node->key
@@ -380,11 +380,11 @@ public:
             save_parent = following_node->nodeAvlGetParent();
 //following the algoritem, we will change node_avl and following_node
             TValue save_value = node_avl->nodeAvlGetValue();
-            node_avl->nodeAvlSetValue(following_node);
+            node_avl->nodeAvlSetValue(following_node->nodeAvlGetValue());
             following_node->nodeAvlSetValue(save_value);
 
             TKey save_key = node_avl->nodeAvlGetKey();
-            node_avl->nodeAvlSetKey(following_node);
+            node_avl->nodeAvlSetKey(following_node->nodeAvlGetKey());
             following_node->nodeAvlSetKey(save_key);
             counter_child=DeleteOneChildOrLeaf(following_node);
         }
@@ -419,35 +419,35 @@ public:
  *                SUCCESS - Otherwise.
  */
     void Delete(int key){
-    void* value;
-    NodeAvl<TKey,TValue>* pointer_node;
-    try {
-        pointer_node=Find(key, &value);
-    }
-    catch (dataStructure::INVALID_INPUT  &e) {
-        throw dataStructure::INVALID_INPUT();
-    }
-    catch (dataStructure::ALLOCATION_ERROR  &e) {
-        throw dataStructure::ALLOCATION_ERROR();
-    }
-    catch (dataStructure::FAILURE  &e) { //the key doesnt find
-        throw dataStructure::FAILURE();
-    }
-    try {
-        DeleteByPointer(pointer_node); //this is the node that we want to delete
-    }
-    catch (dataStructure::INVALID_INPUT  &e) {
-        throw dataStructure::INVALID_INPUT();
-    }
-    catch (dataStructure::SUCCESS  &e) {
-        throw dataStructure::SUCCESS();
-    }
-    catch (dataStructure::ALLOCATION_ERROR  &e) {  //maybe we dont have this catch
-        throw dataStructure::ALLOCATION_ERROR();
-    }
-    catch (dataStructure::FAILURE  &e) { //maybe we dont have this catch
-        throw dataStructure::FAILURE();
-    }
+        void* value;
+        NodeAvl<TKey,TValue>* pointer_node;
+        try {
+            pointer_node=Find(key, &value);
+        }
+        catch (dataStructure::INVALID_INPUT  &e) {
+            throw dataStructure::INVALID_INPUT();
+        }
+        catch (dataStructure::ALLOCATION_ERROR  &e) {
+            throw dataStructure::ALLOCATION_ERROR();
+        }
+        catch (dataStructure::FAILURE  &e) { //the key doesnt find
+            throw dataStructure::FAILURE();
+        }
+        try {
+            DeleteByPointer(pointer_node); //this is the node that we want to delete
+        }
+        catch (dataStructure::INVALID_INPUT  &e) {
+            throw dataStructure::INVALID_INPUT();
+        }
+        catch (dataStructure::SUCCESS  &e) {
+            throw dataStructure::SUCCESS();
+        }
+        catch (dataStructure::ALLOCATION_ERROR  &e) {  //maybe we dont have this catch
+            throw dataStructure::ALLOCATION_ERROR();
+        }
+        catch (dataStructure::FAILURE  &e) { //maybe we dont have this catch
+            throw dataStructure::FAILURE();
+        }
 
     }
 
