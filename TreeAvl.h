@@ -239,7 +239,7 @@ public:
  *                FAILURE - If the item does not exist in the DS.
  *                SUCCESS - If the item is found in the DS.
  */
-    void Find(int key, void** value) {
+    NodeAvl<TKey,TValue>* Find(int key, void** value) {
         if (*value == nullptr) {
             throw dataStructure::INVALID_INPUT();
         }
@@ -261,13 +261,68 @@ public:
             else{         //in this case result=0, and we found the node
                 *value=itr->nodeAvlGetValue();
                 delete new_node;
-                throw dataStructure::SUCCESS();
+                return itr;
             }/// if we here the key is not in the tree
             delete new_node;
             *value= nullptr;
             throw dataStructure::FAILURE();
         }
     }
+
+/**
+ * this function get a pointer to a node, that its not the root
+ * @param node_avl - the node is a leaf. we are going to delete this node
+ */
+    void deleteLeaf(NodeAvl<TKey,TValue>* node_avl){
+        NodeAvl<TKey,TValue>* parent=node_avl->nodeAvlGetParent();
+        if(parent->nodeAvlGetLeftChild()==node_avl)
+            parent->nodeAvlSetLeftChild(nullptr);
+        else
+            parent->nodeAvlSetRightChild(nullptr);
+    }
+
+
+    /**
+     * this function get a pointer to a node.
+     * @param node_avl - the node has one child, and its not the root
+     */
+    void deleteOneChild(NodeAvl<TKey,TValue>* node_avl){
+        NodeAvl<TKey,TValue>* parent=node_avl->nodeAvlGetParent();
+        if(node_avl->nodeAvlGetLeftChild()!= nullptr){
+            if(parent->nodeAvlGetLeftChild()==node_avl)
+                parent->nodeAvlSetLeftChild(node_avl->nodeAvlGetLeftChild());
+            else
+                parent->nodeAvlSetRightChild(node_avl->nodeAvlGetLeftChild());
+        }
+        else{
+            if(parent->nodeAvlGetLeftChild()==node_avl)
+                parent->nodeAvlSetLeftChild(node_avl->nodeAvlGetRightChild());
+            else
+                parent->nodeAvlSetRightChild(node_avl->nodeAvlGetRightChild());
+        }
+    }
+
+
+/**
+     * this function get a pointer to a node.
+     * @param node_avl - the node has one child, and the node is the root
+     */
+    void rootDeleteOneChild(NodeAvl<TKey,TValue>* node_avl){
+        NodeAvl<TKey,TValue>* node_left=node_avl->nodeAvlGetLeftChild();
+        NodeAvl<TKey,TValue>* node_right=node_avl->nodeAvlGetRightChild();
+        if(node_right!= nullptr) {
+            this->root = node_right;
+            node_right->nodeAvlSetparent(nullptr);
+            //node_right= nullptr //check if we need this
+        }
+        else {
+            this->root = node_left;
+            node_left->nodeAvlSetparent(nullptr);
+            //node_left=nullptr //check if we need this
+        }
+    }
+
+
 
 /**
  * the function get a node, and if the node have one chile or the node is a leaf,
@@ -348,7 +403,52 @@ public:
 
 
 
-/**
+/* Description:   Delete an item from the data structure.
+ * Input:         DS - A pointer to the data structure.
+ *                key - The item to delete.
+ * Output:        None.
+ * Return Values: ALLOCATION_ERROR - In case of an allocation error.
+ *                INVALID_INPUT - If DS==NULL.
+ *                FAILURE - If the item does not exist in the DS.
+ *                SUCCESS - Otherwise.
+ */
+    void Delete(int key){
+    void* value;
+    NodeAvl<TKey,TValue>* pointer_node;
+    try {
+        pointer_node=Find(key, &value);
+    }
+    catch (dataStructure::INVALID_INPUT  &e) {
+        throw dataStructure::INVALID_INPUT();
+    }
+    catch (dataStructure::ALLOCATION_ERROR  &e) {
+        throw dataStructure::ALLOCATION_ERROR();
+    }
+    catch (dataStructure::FAILURE  &e) { //the key doesnt find
+        throw dataStructure::FAILURE();
+    }
+    try {
+        DeleteByPointer(pointer_node); //this is the node that we want to delete
+    }
+    catch (dataStructure::INVALID_INPUT  &e) {
+        throw dataStructure::INVALID_INPUT();
+    }
+    catch (dataStructure::SUCCESS  &e) {
+        throw dataStructure::ALLOCATION_ERROR();
+    }
+    catch (dataStructure::ALLOCATION_ERROR  &e) {  //maybe we dont have this catch
+        throw dataStructure::ALLOCATION_ERROR();
+    }
+    catch (dataStructure::FAILURE  &e) { //maybe we dont have this catch
+        throw dataStructure::FAILURE();
+    }
+
+    }
+
+
+
+
+    /**
  * the function return the size of the tree, the number if the nodes in the tree
  * @param n
  */
