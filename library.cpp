@@ -8,7 +8,7 @@
 
 void *Init(){
 try{
-     TreeAvl *DS=new TreeAvl;
+     TreeAvl<int,void*> *DS=new TreeAvl<int,void*>;
      return (void*) DS;
 }
 catch (std::bad_alloc &e){
@@ -21,7 +21,7 @@ StatusType Add(void *DS, int key, void* value, void** node){
     if(DS== nullptr)
         return INVALID_INPUT;
     try {
-        ((TreeAvl*) DS)->Add(key, value, node);
+        ((TreeAvl<int,void*>*) DS)->Add(key, value, node);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
@@ -40,7 +40,7 @@ StatusType Size(void *DS, int *n){
     if(DS== nullptr)
         return INVALID_INPUT;
     try {
-        ((TreeAvl*) DS)->Size(n);
+        ((TreeAvl<int,void*>*) DS)->Size(n);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
@@ -56,7 +56,7 @@ StatusType DeleteByPointer(void *DS, void* p){
     if(DS== nullptr)
         return INVALID_INPUT;
     try {
-        ((TreeAvl *) DS)->DeleteByPointer(p);
+        ((TreeAvl <int,void*>*) DS)->DeleteByPointer(p);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
@@ -72,7 +72,7 @@ StatusType Find(void *DS, int key, void** value){
     if(DS== nullptr)
         return INVALID_INPUT;
     try {
-       ((TreeAvl*) DS)->Find(key,value);
+       ((TreeAvl<int,void*>*) DS)->Find(key,value);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
@@ -94,7 +94,7 @@ StatusType Delete(void *DS, int key){
         return INVALID_INPUT;
     int key_copy=key;
     try {
-        ((TreeAvl *) DS)->Delete(key_copy);
+        ((TreeAvl<int,void*> *) DS)->Delete(key_copy);
     }
     catch (dataStructure::INVALID_INPUT& e) {
         return INVALID_INPUT;
