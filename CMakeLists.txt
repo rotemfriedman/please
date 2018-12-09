@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
-project(hw2-tree)
+cmake_minimum_required(VERSION 3.12)
+project(please)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(hw2-tree main.cpp TreeAvl.h NodeAvl.h library.h library.cpp Exception.h)
+add_executable(please main.cpp StaticEye.h)
