@@ -1,5 +1,7 @@
+
 #ifndef HW2_TREE_TREEAVL_H
 #define HW2_TREE_TREEAVL_H
+
 
 #include "NodeAvl.h"
 #include "Exception.h"
@@ -33,12 +35,12 @@ public:
  */
     void setFactorBalance(NodeAvl<TKey, TValue> *node_avl) {
         int right_height, left_height;
-        if ((node_avl->nodeAvlGetRightChild()) == NULL)
+        if ((node_avl->nodeAvlGetRightChild()) == nullptr)
             right_height = -1;
         else {
             right_height = (node_avl->nodeAvlGetRightChild())->nodeAvlGetHeight();
         }
-        if ((node_avl->nodeAvlGetLeftChild()) == NULL)
+        if ((node_avl->nodeAvlGetLeftChild()) == nullptr)
             left_height = -1;
         else {
             left_height = (node_avl->nodeAvlGetLeftChild())->nodeAvlGetHeight();
@@ -80,6 +82,14 @@ public:
     }
 
 
+
+    /**
+ * the function add node to his place in the avl tree and fix him to be a correct
+ * avltree.
+ * @param key
+ * @param value
+ * @param node
+ */
     void Add(int key, void *value, void **node) {
         if (node == nullptr)
             throw dataStructure::INVALID_INPUT();
@@ -90,6 +100,7 @@ public:
         catch (std::bad_alloc &e) {
             throw dataStructure::ALLOCATION_ERROR();
         }
+        *node=new_node;
         this->itr = this->root;
         if(this->root== nullptr){//new node is the root;
             this->root=new_node;
@@ -119,20 +130,24 @@ public:
             NodeAvl<TKey, TValue> *p = new_node->nodeAvlGetParent();
             if (p->nodeAvlGetHeight() >= new_node->nodeAvlGetHeight() + 1) {
                 this->tree_size++;
+                setFactorBalance(p);
                 throw dataStructure::SUCCESS();
             }
             p->nodeAvlSetHeight(new_node->nodeAvlGetHeight() + 1);
             setFactorBalance(p);
             bool roll = checkRollForP(p);
-
             if (roll == true) {
                 this->tree_size++;
+                // fixHeight(p->nodeAvlGetParent());
                 throw dataStructure::SUCCESS();
             }
             new_node = p;
         }//finish while
         this->tree_size++;
+        throw dataStructure::SUCCESS();
     }
+
+
 
 
     bool checkRollForP(NodeAvl<TKey, TValue> *p) {
@@ -157,6 +172,7 @@ public:
         return false;
     }
 
+
     void RRRoll( NodeAvl<TKey, TValue> * node_avl) {
 
         NodeAvl<TKey, TValue> *right_left_tree;
@@ -170,6 +186,8 @@ public:
             right_left_tree = node_avl->nodeAvlGetRightChild()->nodeAvlGetLeftChild();
 
         node_avl->nodeAvlSetRightChild(right_left_tree);
+        if(right_left_tree!= nullptr)
+            right_left_tree->nodeAvlSetparent(node_avl);
         if (node_avl->nodeAvlGetParent() == nullptr) {
             right_tree->nodeAvlSetparent(nullptr);
         } else {
@@ -180,10 +198,12 @@ public:
             }//finish else
         }//finish if
         right_tree->nodeAvlSetLeftChild(node_avl);
-        fixHeight(right_tree);
+        right_tree->nodeAvlSetparent(node_avl->nodeAvlGetParent());
+        node_avl->nodeAvlSetparent(right_tree);
         fixHeight(node_avl);
-        setFactorBalance(right_tree);
+        fixHeight(right_tree);
         setFactorBalance(node_avl);
+        setFactorBalance(right_tree);
     }
 
 
@@ -203,6 +223,8 @@ public:
             left_right_tree = node_avl->nodeAvlGetLeftChild()->nodeAvlGetRightChild();
 
         node_avl->nodeAvlSetLeftChild(left_right_tree);
+        if(left_right_tree!= nullptr)
+            left_right_tree->nodeAvlSetparent(node_avl);
         if (node_avl->nodeAvlGetParent() == nullptr) {
             left_tree->nodeAvlSetparent(nullptr);
         } else {
@@ -213,11 +235,16 @@ public:
             }//finish else
         }//finish if
         left_tree->nodeAvlSetRightChild(node_avl);
-        fixHeight(left_tree);
+        left_tree->nodeAvlSetparent(node_avl->nodeAvlGetParent());
+        node_avl->nodeAvlSetparent(left_tree);
         fixHeight(node_avl);
-        setFactorBalance(left_tree);
+        fixHeight(left_tree);
         setFactorBalance(node_avl);
+        setFactorBalance(left_tree);
     }
+
+
+
 
     void LRroll(NodeAvl<TKey, TValue> * node_avl)
     {
@@ -246,7 +273,7 @@ public:
  *                SUCCESS - If the item is found in the DS.
  */
     NodeAvl<TKey,TValue>* Find(int key, void** value) {
-        if (*value == nullptr) {
+        if (value == nullptr) {
             throw dataStructure::INVALID_INPUT();
         }
         NodeAvl<TKey, TValue>* new_node;
@@ -258,28 +285,38 @@ public:
             throw dataStructure::ALLOCATION_ERROR();
         }
         this->itr=this->root;
-        int result = 0;
-        while(itr!= nullptr){
-            if(itr->nodeAvlGetKey()<new_node->nodeAvlGetKey())
-                int result = -1;
-            else
-                int result = 1;
-            if(result<0)                           //itr->key < new_node->key
-                itr=itr->nodeAvlGetRightChild();
-            else if( result>0)                      //itr->key > new_node->key
-                itr=itr->nodeAvlGetLeftChild();
-            else{         //in this case result=0, and we found the node
-                *value=itr->nodeAvlGetValue();
+        int result=3;
+        while(itr!= nullptr) {
+            if (itr->nodeAvlGetKey() < new_node->nodeAvlGetKey())
+                result = -1;
+            else if (itr->nodeAvlGetKey() > new_node->nodeAvlGetKey())
+                result = 1;
+            else if(itr->nodeAvlGetKey() == new_node->nodeAvlGetKey())
+                result = 0;
+            if (result ==-1) {                       //itr->key < new_node->key
+                itr = itr->nodeAvlGetRightChild();
+            } else if (result ==1) {                      //itr->key > new_node->key
+                itr = itr->nodeAvlGetLeftChild();
+            } else if (result ==
+                       0) {         //in this case result=0, and we found the node
+                *value = itr->nodeAvlGetValue();
                 delete new_node;
                 return itr;
             }/// if we here the key is not in the tree
-            delete new_node;
-            *value= nullptr;
-            throw dataStructure::FAILURE();
         }
+        delete new_node;
+        *value= nullptr;
+        throw dataStructure::FAILURE();
     }
 
-/**
+
+
+
+
+
+
+
+    /**
  * this function get a pointer to a node, that its not the root
  * @param node_avl - the node is a leaf. we are going to delete this node
  */
@@ -298,17 +335,25 @@ public:
      */
     void deleteOneChild(NodeAvl<TKey,TValue>* node_avl){
         NodeAvl<TKey,TValue>* parent=node_avl->nodeAvlGetParent();
-        if(node_avl->nodeAvlGetLeftChild()!= nullptr){
-            if(parent->nodeAvlGetLeftChild()==node_avl)
+        if(node_avl->nodeAvlGetLeftChild()!= nullptr) {
+            if (parent->nodeAvlGetLeftChild() == node_avl) {
                 parent->nodeAvlSetLeftChild(node_avl->nodeAvlGetLeftChild());
-            else
+                (node_avl->nodeAvlGetLeftChild())->nodeAvlSetparent(parent);
+            }else {
                 parent->nodeAvlSetRightChild(node_avl->nodeAvlGetLeftChild());
+                (node_avl->nodeAvlGetLeftChild())->nodeAvlSetparent(parent);
+
+            }
         }
         else{
-            if(parent->nodeAvlGetLeftChild()==node_avl)
+            if(parent->nodeAvlGetLeftChild()==node_avl) {
                 parent->nodeAvlSetLeftChild(node_avl->nodeAvlGetRightChild());
-            else
+                (node_avl->nodeAvlGetRightChild())->nodeAvlSetparent(parent);
+            }
+            else{
                 parent->nodeAvlSetRightChild(node_avl->nodeAvlGetRightChild());
+                (node_avl->nodeAvlGetRightChild())->nodeAvlSetparent(parent);
+            }
         }
     }
 
@@ -353,15 +398,19 @@ public:
         //counter the number of child of the node_avl
         int counter_child = counter_right + counter_left;
         if (node_avl->nodeAvlGetParent()!= nullptr && counter_child == 0) {
+            tree_size--;
             deleteLeaf(node_avl);
         }
         else if (counter_child == 0) {  //the node_avl is the root and dont have children
+            tree_size--;
             this->root = nullptr;
         }
         else if (node_avl->nodeAvlGetParent()!= nullptr && counter_child == 1) {
+            tree_size--;
             deleteOneChild(node_avl);
         }
         else if (counter_child == 1) { //the node_avl is the root and have 1 children
+            tree_size--;
             rootDeleteOneChild(node_avl);
         }
         return counter_child;
@@ -377,37 +426,50 @@ public:
         NodeAvl<TKey,TValue> *node_avl = (NodeAvl<TKey,TValue>*) node;
         if (node_avl == nullptr)
             throw dataStructure::INVALID_INPUT();
+        bool two_children=false; //if two_children=true its mean that the node
+        // that we want to delete had 2 children
         NodeAvl<TKey,TValue>*save_parent = node_avl->nodeAvlGetParent();
-
+        NodeAvl<TKey,TValue>*following_node;
         int counter_child=DeleteOneChildOrLeaf(node_avl);
         if (counter_child == 2) {
-            NodeAvl<TKey,TValue>*following_node=node_avl->getFollowingNode();
+            two_children=true;
+            following_node=node_avl->getFollowingNode();
             save_parent = following_node->nodeAvlGetParent();
 //following the algoritem, we will change node_avl and following_node
-            TValue save_value = node_avl->nodeAvlGetValue();
-            node_avl->nodeAvlSetValue(following_node->nodeAvlGetValue());
-            following_node->nodeAvlSetValue(save_value);
+            TValue save_value = following_node->nodeAvlGetValue();
+            node_avl->nodeAvlSetValue(save_value);
+            //following_node->nodeAvlSetValue(save_value);
 
-            TKey save_key = node_avl->nodeAvlGetKey();
-            node_avl->nodeAvlSetKey(following_node->nodeAvlGetKey());
-            following_node->nodeAvlSetKey(save_key);
+            TKey save_key = following_node->nodeAvlGetKey();
+            node_avl->nodeAvlSetKey(save_key);
+            //following_node->nodeAvlSetKey(save_key);
             counter_child=DeleteOneChildOrLeaf(following_node);
         }
-        delete node_avl;
-        if(save_parent==this->root){
-            fixHeight(save_parent);
-            setFactorBalance(save_parent);
+        if(two_children==true)
+            delete following_node;
+        else
+            delete node_avl;
+        int old_height;
+        if(save_parent==this->root && save_parent!= nullptr){
+            fixHeight(root);
+            setFactorBalance(root);
+            checkRollForP(save_parent);
         }
-        while (save_parent != this->root) {
-            NodeAvl<TKey, TValue>* p = save_parent->nodeAvlGetParent();
-            if ((p->nodeAvlGetHeight()) >= ((save_parent->nodeAvlGetHeight()) + 1)) {
-                throw dataStructure::SUCCESS();
+        else {
+            while (save_parent != this->root && save_parent != nullptr) {
+                old_height=save_parent->nodeAvlGetHeight();
+                fixHeight(save_parent);
+                setFactorBalance(save_parent);
+                bool roll = checkRollForP(save_parent);
+                if(old_height==save_parent->nodeAvlGetHeight())
+                    break;
+                NodeAvl<TKey,TValue>* temp_parent=save_parent->nodeAvlGetParent();
+                save_parent = temp_parent;
             }
-            p->nodeAvlSetHeight(save_parent->nodeAvlGetHeight() + 1);
-            setFactorBalance(p);
-            setFactorBalance(p);
-            bool roll=checkRollForP(p);
-            save_parent = p;
+        }
+        if(root!= nullptr) {
+            fixHeight(root);
+            setFactorBalance(root);
         }
         throw dataStructure::SUCCESS();
     }
@@ -439,7 +501,7 @@ public:
             throw dataStructure::FAILURE();
         }
         try {
-            DeleteByPointer(pointer_node); //this is the node that we want to delete
+            DeleteByPointer((void*)pointer_node); //this is the node that we want to delete
         }
         catch (dataStructure::INVALID_INPUT  &e) {
             throw dataStructure::INVALID_INPUT();
@@ -464,7 +526,7 @@ public:
  * @param n
  */
     void Size(int *n){
-        if(n==NULL)
+        if(n== nullptr)
             throw dataStructure::INVALID_INPUT();
         *n=this->tree_size;
         throw dataStructure::SUCCESS();

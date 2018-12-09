@@ -1,3 +1,4 @@
+
 /****************************************************************************/
 /*                                                                          */
 /* This file contains the interface functions                               */
@@ -10,9 +11,12 @@
 /* File Name : library1.h                                                */
 /*                                                                          */
 /****************************************************************************/
+#include "Map.h"
 
 #ifndef _234218_WET1_DICT
 #define _234218_WET1_DICT
+
+#include "Exception.h"
 
 #ifdef __cplusplus
 extern "C" {
