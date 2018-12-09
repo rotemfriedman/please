@@ -1,6 +1,6 @@
 #include <cstring>
 #include <iostream>
-#include "library1.h"
+//#include "library1.h"
 #include "Map.h"
 #include <iostream>
 
@@ -11,6 +11,11 @@ Map::Map():size(0) {
 
 int Map::MapSize ()const{
     return this->size;
+}
+
+
+Map::Node<int>* Map::returnHead(){
+    return this->head;
 }
 
 
@@ -35,6 +40,8 @@ template <class T>
 void Map::Node<T>::nodesetNext(Node* node){
     this->next=node;
 }
+
+
 
 
 template <class T>

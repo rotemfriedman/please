@@ -6,14 +6,13 @@
 #include "Map.h"
 #include "StaticEye.h"
 
+
 class ImageValue {
     int image_segments;
     Map *missingLable;
     int *labels;
 
 public:
-
-
     ImageValue(int image_segments) :image_segments(image_segments){
         labels=new int[image_segments];
         missingLable = new Map();
@@ -37,6 +36,41 @@ public:
                 }
 
             }
+    }
+
+    ~ImageValue() {
+        delete[] labels;
+        for(Map::Node<int>* itr=missingLable->returnHead();itr!= nullptr;itr=itr->nodeGetNext()){
+            missingLable->DeleteByPointer(itr);
+        }
+        delete missingLable;
+    }
+
+    ImageValue(const ImageValue &image_value): image_segments(image_value.image_segments),missingLable(image_value.missingLable){
+        for (int i = 0; i < image_segments; i++) {
+            labels[i] = image_value.labels[i];
+        }
+    }
+
+
+    ImageValue &operator=(const ImageValue &image_value){
+              if(this==&image_value)
+                  return *this;
+        for (int i = 0; i < image_segments; i++) {
+          labels[i] =image_value.labels[i];
+        }
+      this->image_segments=image_value.image_segments;
+        this->missingLable=image_value.missingLable;
+
+        return *this;
+    }
+
+    int* ImageValueGetLabels (){
+        return this->labels;
+    }
+
+    Map* ImageValueGetMap (){
+        return this->missingLable;
     }
 
 

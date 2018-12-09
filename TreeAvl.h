@@ -1,4 +1,3 @@
-
 #ifndef HW2_TREE_TREEAVL_H
 #define HW2_TREE_TREEAVL_H
 
@@ -12,9 +11,9 @@ class TreeAvl {
     //CompareFun compare;
     int tree_size;
 
-
 public:
 
+    //לבדוק האם צריך לאתחל את הcompare
     //constractor of the class TreeAvl
     TreeAvl() :root(nullptr),itr(nullptr),
                tree_size(0){};

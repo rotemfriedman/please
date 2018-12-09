@@ -1,6 +1,7 @@
 #ifndef UNTITLED_MAP_H
 #define UNTITLED_MAP_H
 
+#include "Exception.h"
 class Map{
 
     template <class T>
@@ -119,7 +120,7 @@ public:
  *  the function retuan the head in the map
  * @return
  */
-    void* returnHead ();
+    Node<int>* returnHead ();
 
 
 /* Description:   Adds a new item to the data structure.
