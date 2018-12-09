@@ -2,7 +2,6 @@
 #ifndef HW2_TREE_TREEAVL_H
 #define HW2_TREE_TREEAVL_H
 
-
 #include "NodeAvl.h"
 #include "Exception.h"
 #include <stdexcept>
@@ -12,6 +11,7 @@ class TreeAvl {
     NodeAvl<TKey, TValue> *itr;
     //CompareFun compare;
     int tree_size;
+
 
 public:
 

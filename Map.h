@@ -1,7 +1,6 @@
 #ifndef UNTITLED_MAP_H
 #define UNTITLED_MAP_H
 
-
 class Map{
 
     template <class T>

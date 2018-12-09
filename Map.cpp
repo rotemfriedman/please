@@ -16,6 +16,7 @@ int Map::MapSize ()const{
 
 
 
+
 template <class T>
 Map::Node<T> ::Node(T key,  void* value): key(key),value(value),next(NULL),prev(NULL){
 

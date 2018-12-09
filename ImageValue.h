@@ -6,7 +6,6 @@
 #include "Map.h"
 #include "StaticEye.h"
 
-
 class ImageValue{
         int image_segments;
         Map* MissingLable; //המפתח ברשימה המקושרת יהיה ה segment_id
