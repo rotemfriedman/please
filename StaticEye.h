@@ -12,5 +12,4 @@ class StaticEye{
     int segments;
 };
 
-
 #endif //PLEASE_STATICEYE_H
