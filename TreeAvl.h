@@ -92,8 +92,9 @@ public:
         if (node == nullptr)
             throw dataStructure::INVALID_INPUT();
         NodeAvl<TKey, TValue> *new_node;
+        TValue* temp_value = (TValue*)value;
         try {
-            new_node = new NodeAvl<TKey, TValue>(key,value);
+            new_node = new NodeAvl<TKey, TValue>((TKey)key,*temp_value);
         }
         catch (std::bad_alloc &e) {
             throw dataStructure::ALLOCATION_ERROR();
@@ -105,6 +106,8 @@ public:
             this->tree_size++;
             throw dataStructure::SUCCESS();
         }
+
+
         int result = 0;
         while (itr != nullptr) {
             if(itr->nodeAvlGetKey()<new_node->nodeAvlGetKey())
@@ -270,14 +273,15 @@ public:
  *                FAILURE - If the item does not exist in the DS.
  *                SUCCESS - If the item is found in the DS.
  */
-    NodeAvl<TKey,TValue>* Find(int key, void** value) {
-        if (value == nullptr) {
-            throw dataStructure::INVALID_INPUT();
-        }
+    NodeAvl<TKey,TValue>* Find(int key) {
+     //   if (value == nullptr) {
+      //      throw dataStructure::INVALID_INPUT();
+     //   }
+       TValue value;
         NodeAvl<TKey, TValue>* new_node;
         try{
-            new_node=new NodeAvl<TKey, TValue>
-                    (key, nullptr);
+            new_node=
+                    new NodeAvl<TKey, TValue>(key,value);
         }
         catch (std::bad_alloc& e){
             throw dataStructure::ALLOCATION_ERROR();
@@ -297,13 +301,13 @@ public:
                 itr = itr->nodeAvlGetLeftChild();
             } else if (result ==
                        0) {         //in this case result=0, and we found the node
-                *value = itr->nodeAvlGetValue();
+               // *value = itr->nodeAvlGetValue();
                 delete new_node;
                 return itr;
             }/// if we here the key is not in the tree
         }
         delete new_node;
-        *value= nullptr;
+       // *value= nullptr;
         throw dataStructure::FAILURE();
     }
 
@@ -484,10 +488,10 @@ public:
  *                SUCCESS - Otherwise.
  */
     void Delete(int key){
-        void* value;
+      //  void* value;
         NodeAvl<TKey,TValue>* pointer_node;
         try {
-            pointer_node=Find(key, &value);
+            pointer_node=Find(key);
         }
         catch (dataStructure::INVALID_INPUT  &e) {
             throw dataStructure::INVALID_INPUT();

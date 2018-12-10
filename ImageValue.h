@@ -13,6 +13,9 @@ class ImageValue {
     int *labels;
 
 public:
+
+    ImageValue(){};
+
     ImageValue(int image_segments) :image_segments(image_segments){
         labels=new int[image_segments];
         missingLable = new Map();
@@ -37,6 +40,8 @@ public:
 
             }
     }
+
+
 
     ~ImageValue() {
         delete[] labels;
