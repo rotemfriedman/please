@@ -6,52 +6,60 @@
 #include "TreeAvl.h"
 #include "NodeAvl.h"
 //#include "library1.h"
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main() {
 
 
     std::cout << "Hello, World!" << std::endl;
-
     void* new_DS = Init(3);
-   // void* node1;
-    //void* node2;
-    //void* node3;
-    //void* node4;
-    //void* node5;
-    //void* node6;
-    //void* node7;
-    //void* node8;
-    //void* node9;
-    AddImage(new_DS,2);
-  //  AddImage(new_DS,3);
-    AddImage(new_DS,6);
-    AddImage(new_DS,1);
-    AddImage(new_DS,4);
-    AddImage(new_DS,7);
+     AddImage(new_DS,10);
+     AddImage(new_DS,11);
+    AddImage(new_DS,12);
+   //  AddImage(new_DS,13);
+ //   AddImage(new_DS,14);
+    AddLabel(new_DS,10,0,999);
+    AddLabel(new_DS,10,1,94);
+    AddLabel(new_DS,10,2,999);
+    AddLabel(new_DS,11,0,999);
+    AddLabel(new_DS,12,0,4545);
+    AddLabel(new_DS,12,1,999);
+    //AddLabel(new_DS,10,2,95);
+    int courseID=999;
+    int numOfLabels;
+    int *images, *segments;
+    StatusType res = GetAllSegmentsByLabel(new_DS, courseID, &images, &segments, &numOfLabels);
 
-    DeleteImage(new_DS,6);
-    DeleteImage(new_DS,2);
-   DeleteImage(new_DS,3);
-
-
-    /*
-    StatusType status = Add(new_DS ,1, (void *) 2, &node1);
-    StatusType status1 = Add(new_DS ,2, (void *) 2, &node2);
-    StatusType status2 = Add(new_DS ,3, (void *) 2, &node3);
-    StatusType status3 = Add(new_DS ,4, (void *) 2, &node5);
-    StatusType status4 = Add(new_DS ,8, (void *) 2, &node6);
-    StatusType status5 = Add(new_DS ,5, (void *) 2, &node7);
-    StatusType status6 = Add(new_DS ,7, (void *) 2, &node8);
-  */  //StatusType status7 = Add(new_DS ,6, (void *) 2, &node9);
+    for (int i = 0; i < numOfLabels; i++)
+    {
+        printf("%d\t||\t%d\n", images[i], segments[i]);
+    }
 
 
 
-    //StatusType status2 = Add(new_DS, 3, (void *) 4, &node);
-    //StatusType status3 = Add(new_DS, 1, (void *) 6, &node);
-    // StatusType status3=Find(new_DS, 9, &s);
 
+
+//    DeleteImage(new_DS,12);
+  //  DeleteImage(new_DS,11);
+   //  AddImage(new_DS,10);
+   // AddImage(new_DS,11);
+   // StatusType status8 = DeleteLabel(new_DS,10,0);
+ //   StatusType status11 = DeleteLabel(new_DS,11,0);
+
+
+    /* StatusType status6=AddLabel(new_DS,10,1,96);
+    int lable94;
+    int lable95;
+    int lable96;
+    StatusType status7=GetLabel(new_DS,10,0,&lable94);
+    StatusType status8=GetLabel(new_DS,10,2,&lable95);
+    StatusType status9=GetLabel(new_DS,10,1,&lable96);
+
+*/
 
     return 0;
 
 }
-
