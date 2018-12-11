@@ -178,7 +178,7 @@ public:
  * Return Values: None.
  */
 
-    void Quit(void **DS);
+    void Quit();
 };
 
 #endif //UNTITLED_MAP_H

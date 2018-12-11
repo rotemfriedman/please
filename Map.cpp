@@ -202,7 +202,7 @@ void Map::Size(int *n){
 }
 
 
-void Map::Quit(void **DS){
+void Map::Quit(){
     Node<int>* save_itr=this->head;
     Node<int>* itr=save_itr;
     for(; itr!=NULL; itr=save_itr){

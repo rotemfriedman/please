@@ -92,13 +92,18 @@ public:
         if (node == nullptr)
             throw dataStructure::INVALID_INPUT();
         NodeAvl<TKey, TValue> *new_node;
+
         TValue* temp_value = (TValue*)value;
-        try {
-            new_node = new NodeAvl<TKey, TValue>((TKey)key,*temp_value);
-        }
-        catch (std::bad_alloc &e) {
-            throw dataStructure::ALLOCATION_ERROR();
-        }
+        new_node = new NodeAvl<TKey, TValue>((TKey)key,(*temp_value));
+
+
+        //TValue* temp_value = (TValue*)value;
+        //try{
+        //    new_node = new NodeAvl<TKey, TValue>((TKey)key,(*temp_value));
+        //}
+        //catch (std::bad_alloc &e) {
+        //    throw dataStructure::ALLOCATION_ERROR();
+        //}
         *node=new_node;
         this->itr = this->root;
         if(this->root== nullptr){//new node is the root;
@@ -274,26 +279,14 @@ public:
  *                SUCCESS - If the item is found in the DS.
  */
     NodeAvl<TKey,TValue>* Find(int key) {
-     //   if (value == nullptr) {
-      //      throw dataStructure::INVALID_INPUT();
-     //   }
-       TValue value;
-        NodeAvl<TKey, TValue>* new_node;
-        try{
-            new_node=
-                    new NodeAvl<TKey, TValue>(key,value);
-        }
-        catch (std::bad_alloc& e){
-            throw dataStructure::ALLOCATION_ERROR();
-        }
         this->itr=this->root;
         int result=3;
         while(itr!= nullptr) {
-            if (itr->nodeAvlGetKey() < new_node->nodeAvlGetKey())
+            if (itr->nodeAvlGetKey() < key)
                 result = -1;
-            else if (itr->nodeAvlGetKey() > new_node->nodeAvlGetKey())
+            else if (itr->nodeAvlGetKey() > key)
                 result = 1;
-            else if(itr->nodeAvlGetKey() == new_node->nodeAvlGetKey())
+            else if(itr->nodeAvlGetKey() == key)
                 result = 0;
             if (result ==-1) {                       //itr->key < new_node->key
                 itr = itr->nodeAvlGetRightChild();
@@ -301,13 +294,13 @@ public:
                 itr = itr->nodeAvlGetLeftChild();
             } else if (result ==
                        0) {         //in this case result=0, and we found the node
-               // *value = itr->nodeAvlGetValue();
-                delete new_node;
+                // *value = itr->nodeAvlGetValue();
+                //delete new_node;
                 return itr;
             }/// if we here the key is not in the tree
         }
-        delete new_node;
-       // *value= nullptr;
+        //delete new_node;
+        // *value= nullptr;
         throw dataStructure::FAILURE();
     }
 
@@ -438,7 +431,7 @@ public:
             following_node=node_avl->getFollowingNode();
             save_parent = following_node->nodeAvlGetParent();
 //following the algoritem, we will change node_avl and following_node
-            TValue save_value = following_node->nodeAvlGetValue();
+            TValue& save_value = following_node->nodeAvlGetValue();
             node_avl->nodeAvlSetValue(save_value);
             //following_node->nodeAvlSetValue(save_value);
 
@@ -488,7 +481,7 @@ public:
  *                SUCCESS - Otherwise.
  */
     void Delete(int key){
-      //  void* value;
+        //  void* value;
         NodeAvl<TKey,TValue>* pointer_node;
         try {
             pointer_node=Find(key);
