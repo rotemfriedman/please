@@ -27,6 +27,8 @@ int main() {
     AddLabel(new_DS,11,0,999);
     AddLabel(new_DS,12,0,4545);
     AddLabel(new_DS,12,1,999);
+    AddLabel(new_DS,12,2,555);
+
     //AddLabel(new_DS,10,2,95);
     int courseID=999;
     int numOfLabels;

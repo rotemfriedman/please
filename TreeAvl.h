@@ -94,16 +94,12 @@ public:
         NodeAvl<TKey, TValue> *new_node;
 
         TValue* temp_value = (TValue*)value;
-        new_node = new NodeAvl<TKey, TValue>((TKey)key,(*temp_value));
-
-
-        //TValue* temp_value = (TValue*)value;
-        //try{
-        //    new_node = new NodeAvl<TKey, TValue>((TKey)key,(*temp_value));
-        //}
-        //catch (std::bad_alloc &e) {
-        //    throw dataStructure::ALLOCATION_ERROR();
-        //}
+        try {
+            new_node = new NodeAvl<TKey, TValue>((TKey) key, (*temp_value));
+        }
+        catch (std::bad_alloc &e) {
+            throw dataStructure::ALLOCATION_ERROR();
+        }
         *node=new_node;
         this->itr = this->root;
         if(this->root== nullptr){//new node is the root;
@@ -279,6 +275,18 @@ public:
  *                SUCCESS - If the item is found in the DS.
  */
     NodeAvl<TKey,TValue>* Find(int key) {
+        //   if (value == nullptr) {
+        //      throw dataStructure::INVALID_INPUT();
+        //   }
+        // TValue value;
+        //  NodeAvl<TKey, TValue>* new_node;
+        //  try{
+        //      new_node=
+        //              new NodeAvl<TKey, TValue>(key,value);
+        // }
+        //  catch (std::bad_alloc& e){
+        //      throw dataStructure::ALLOCATION_ERROR();
+        //  }
         this->itr=this->root;
         int result=3;
         while(itr!= nullptr) {
@@ -498,11 +506,11 @@ public:
         try {
             DeleteByPointer((void*)pointer_node); //this is the node that we want to delete
         }
-        catch (dataStructure::INVALID_INPUT  &e) {
-            throw dataStructure::INVALID_INPUT();
-        }
         catch (dataStructure::SUCCESS  &e) {
             throw dataStructure::SUCCESS();
+        }
+        catch (dataStructure::INVALID_INPUT  &e) {
+            throw dataStructure::INVALID_INPUT();
         }
         catch (dataStructure::ALLOCATION_ERROR  &e) {  //maybe we dont have this catch
             throw dataStructure::ALLOCATION_ERROR();

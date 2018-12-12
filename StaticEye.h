@@ -5,17 +5,18 @@
 #include "NodeAvl.h"
 #include "Map.h"
 #include "ImageValue.h"
-#include <stack>
+#include <stdlib.h>
+#include <stdio.h>
 
 class StaticEye {
-    TreeAvl<int, ImageValue>* Pictures;
+    TreeAvl<int, ImageValue> *Pictures;
     int segments;
+    int count_for_array;
 
 public:
 
-    StaticEye(int segments) {
+    StaticEye(int segments) : segments(segments), count_for_array(0) {
         this->Pictures = new TreeAvl<int, ImageValue>();
-        this->segments = segments;
     }
 
     ~StaticEye() {
@@ -24,7 +25,8 @@ public:
     }
 
 
-    StaticEye(const StaticEye &static_eye) : segments(static_eye.segments), Pictures(static_eye.Pictures) {
+    StaticEye(const StaticEye &static_eye) : segments(static_eye.segments), Pictures(static_eye.Pictures),
+                                             count_for_array(count_for_array) {
     }
 
     StaticEye &operator=(const StaticEye &static_eye) {
@@ -32,10 +34,10 @@ public:
             return *this;
         this->Pictures = static_eye.Pictures;
         this->segments = static_eye.segments;
+        this->count_for_array=static_eye.count_for_array;
 
         return *this;
     }
-
 
 
     void AddImage(int imageID) {
@@ -44,13 +46,13 @@ public:
         }
         //ImageValue temp(segments);
         // ImageValue pointer_ImageValue=Pictures->TreeAvlRoot()->nodeAvlGetValue();
-        ImageValue* new_value = new ImageValue(segments);
-        NodeAvl<int,ImageValue>* save_node;
-        NodeAvl<int, ImageValue>* node_that_found;
+        ImageValue *new_value = new ImageValue(segments);
+        NodeAvl<int, ImageValue> *save_node;
+        NodeAvl<int, ImageValue> *node_that_found;
         try {
             node_that_found = (this->Pictures)->Find(imageID);
-            if(node_that_found!= nullptr) //the key exist
-                throw dataStructure::SUCCESS();  // the key exist and its failure
+            if (node_that_found != nullptr) //the key exist
+                throw dataStructure::SUCCESS();
         }
         catch (dataStructure::ALLOCATION_ERROR &e) {
             throw dataStructure::ALLOCATION_ERROR();
@@ -58,12 +60,12 @@ public:
         catch (dataStructure::INVALID_INPUT &e) {
             throw dataStructure::INVALID_INPUT();
         }
-            catch (dataStructure::SUCCESS &e) { //the key exist
-                throw dataStructure::FAILURE();
-            }
+        catch (dataStructure::SUCCESS &e) { //the key exist
+            throw dataStructure::FAILURE();
+        }
         catch (dataStructure::FAILURE &e) { //the key not exist
             try {
-                (this->Pictures)->Add(imageID,(ImageValue*)new_value,(void**) &save_node);
+                (this->Pictures)->Add(imageID, (ImageValue *) new_value, (void **) &save_node);
                 //(ImageID, &new_value, &save_node);
             }
             catch (dataStructure::ALLOCATION_ERROR &e) {
@@ -84,7 +86,16 @@ public:
             throw dataStructure::INVALID_INPUT();
         }
         try {
+            NodeAvl<int, ImageValue> *new_node = Pictures->Find(imageID);
+            for (int i = 0; i < segments; i++) {
+
+                new_node->nodeAvlGetValue().ImageValueGetMap()->Delete(i);
+            }
+            delete[] new_node->nodeAvlGetValue().ImageValueGetLabels();
+
             this->Pictures->Delete(imageID);
+
+            throw dataStructure::SUCCESS();
         }
         catch (dataStructure::INVALID_INPUT &e) {
             throw dataStructure::INVALID_INPUT();
@@ -94,30 +105,6 @@ public:
         }
         catch (dataStructure::FAILURE &e) {
             throw dataStructure::FAILURE();
-        }
-        catch (dataStructure::SUCCESS &e) {
-            // destroy the connected list missing_lable
-            //void *value;
-            try {
-                NodeAvl<int, ImageValue> *new_node = Pictures->Find(imageID);
-
-                for (int i = 0; i < segments; i++) {
-
-                    new_node->nodeAvlGetValue().ImageValueGetMap()->Delete(i);
-                }
-                delete[] new_node->nodeAvlGetValue().ImageValueGetLabels();
-
-                throw dataStructure::SUCCESS();
-            }
-            catch (dataStructure::ALLOCATION_ERROR &e) {
-                throw dataStructure::ALLOCATION_ERROR();
-            }
-            catch (dataStructure::INVALID_INPUT &e) {
-                throw dataStructure::INVALID_INPUT();
-            }
-            catch (dataStructure::FAILURE &e) { //the imageID not exist
-                throw dataStructure::FAILURE();
-            }
         }
     }
 
@@ -144,7 +131,6 @@ public:
 
             //}//finish catch- SUCCESS
             throw dataStructure::SUCCESS();
-
 
 
         }
@@ -226,30 +212,31 @@ public:
     }
 
 
-    void GetAllUnLabeledSegments(int imageID, int **segments, int* numOfSegments){
-        if(imageID<=0 || segments== nullptr || numOfSegments== nullptr)
+    void GetAllUnLabeledSegments(int imageID, int **segments, int *numOfSegments) {
+        if (imageID <= 0 || segments == nullptr || numOfSegments == nullptr)
             throw dataStructure::INVALID_INPUT();
-        *numOfSegments=0;
+        *numOfSegments = 0;
         // ImageValue *pointer_ImageValue;
-        NodeAvl<int,ImageValue>* found_image;
+        NodeAvl<int, ImageValue> *found_image;
         try {
             found_image = (this->Pictures)->Find(imageID);
 
-            if(found_image->nodeAvlGetValue().ImageValueGetMap()->MapSize()==0)
+            if (found_image->nodeAvlGetValue().ImageValueGetMap()->MapSize() == 0)
                 throw dataStructure::FAILURE();
 
-            int size_arry=found_image->nodeAvlGetValue().ImageValueGetMap()->MapSize();
-            *segments = (int*) malloc(size_arry*sizeof(int));
-            if(*segments== nullptr)
+            int size_array = found_image->nodeAvlGetValue().ImageValueGetMap()->MapSize();
+            int *temp_segments = (int *) malloc(sizeof(int) * size_array);
+            if (temp_segments == nullptr)
                 throw dataStructure::ALLOCATION_ERROR();
-            int counter=0;
-            for(Map::Node<int>* itr=found_image->nodeAvlGetValue().ImageValueGetMap()->returnHead();
-                itr!= nullptr;
-                itr=itr->nodeGetNext()){
-                *segments[counter]=itr->getKey();
+            int counter = 0;
+            for (Map::Node<int> *itr = found_image->nodeAvlGetValue().ImageValueGetMap()->returnHead();
+                 itr != nullptr;
+                 itr = itr->nodeGetNext()) {
+                temp_segments[counter] = itr->getKey();
                 counter++;
-                *numOfSegments++;
+                (*numOfSegments)++;
             }
+            *segments = temp_segments;
             throw dataStructure::SUCCESS();
         }
         catch (dataStructure::ALLOCATION_ERROR &e) {
@@ -264,59 +251,54 @@ public:
     }
 
 
-    int inorder_count(NodeAvl<int,ImageValue> *p,int label){
-        p =this->Pictures->TreeAvlRoot();
-        int count=0;
-        while (1) {
-            while (p != NULL) {
-                push(p);
-                p = p->nodeAvlGetLeftChild();
-            }
-            if (is_empty()) break;
-            p = pop();
-            for(int i=0; i<segments;i++) {
-                if (p->nodeAvlGetValue().ImageValueGetLabels()[i] == label)
-                    count++;
-            }
-            p = p->nodeAvlGetRightChild();
-        }
-        return count;
-    }
-
-    void write_inorder(NodeAvl<int,ImageValue> *p,int label,int **images, int **segments){
-        if(p== nullptr)
+    void inorder_count(NodeAvl<int,ImageValue> *p,int label){
+        if(p==nullptr)
             return;
-        write_inorder(p->nodeAvlGetLeftChild(),label,images, segments);
+        inorder_count(p->nodeAvlGetLeftChild(),label);
+        for(int i=0; i<segments;i++) {
+            if (p->nodeAvlGetValue().ImageValueGetLabels()[i] == label)
+                this->count_for_array++;
+        }
+        inorder_count(p->nodeAvlGetRightChild(),label);
+    }
 
-        for(int i=0; i<this->segments; i++){
-            if(p->nodeAvlGetValue().ImageValueGetLabels()[i] == label){
-                *images[i]=p->nodeAvlGetKey();
-                *segments[i]=i;
+    void write_inorder(NodeAvl<int, ImageValue> *p, int label, int *images, int *segments) {
+        if (p == nullptr)
+            return;
+        write_inorder(p->nodeAvlGetLeftChild(), label, images, segments);
+
+        for (int i = 0; i < this->segments; i++) {
+            if (p->nodeAvlGetValue().ImageValueGetLabels()[i] == label) {
+                images[i] = p->nodeAvlGetKey();
+                segments[i] = i;
             }
         }
 
-        write_inorder(p->nodeAvlGetRightChild(),label,images, segments);
+        write_inorder(p->nodeAvlGetRightChild(), label, images, segments);
     }
 
 
-    void GetAllSegmentsByLabel(int label, int **images, int **segments, int *numOfSegments){
-        if(images== nullptr || segments== nullptr || numOfSegments== nullptr || label<=0)
+    void GetAllSegmentsByLabel(int label, int **images, int **segments, int *numOfSegments) {
+        if (images == nullptr || segments == nullptr || numOfSegments == nullptr || label <= 0)
             throw dataStructure::INVALID_INPUT();
         //count how much area we have with the same lable
-
-        int count= inorder_count(Pictures->TreeAvlRoot(),label);
-        *segments = (int*) malloc(count*sizeof(int));
-        if(*segments== nullptr)
+        inorder_count(Pictures->TreeAvlRoot(),label);
+       int *temp_segments = (int *) malloc(count_for_array * sizeof(int));
+        if (temp_segments == nullptr)
             throw dataStructure::ALLOCATION_ERROR();
-        *images = (int*) malloc(count*sizeof(int));
-        if(*images== nullptr)
+        int *temp_images = (int *) malloc(count_for_array * sizeof(int));
+        if (temp_images == nullptr)
             throw dataStructure::ALLOCATION_ERROR();
 
-        write_inorder(Pictures->TreeAvlRoot(),label,images,segments);
-        *numOfSegments=count;
-
+        write_inorder(Pictures->TreeAvlRoot(), label,temp_images, temp_segments);
+        *numOfSegments = count_for_array;
+        for(int i=0;i<this->segments;i++) {
+            *segments[i] = temp_segments[i];
+            *images[i] = temp_images[i];
+        }
         throw dataStructure::SUCCESS();
     }
+
 
 };
 

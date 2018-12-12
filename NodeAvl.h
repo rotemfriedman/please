@@ -15,7 +15,7 @@ class NodeAvl {
     NodeAvl<TKey, TValue> *right_tree;
 
 public:
-    NodeAvl(TKey key,TValue& value)
+    NodeAvl( TKey key, TValue& value)
             : height(0), balance_factor(0), key(key),
               value(value), parent(nullptr),
               left_tree(nullptr), right_tree(nullptr) {
@@ -76,7 +76,7 @@ public:
         this->balance_factor = balance_factor;
     }
 
-    void nodeAvlSetValue(TValue& value) {
+    void nodeAvlSetValue(TValue value) {
         this->value = value;
     }
 
